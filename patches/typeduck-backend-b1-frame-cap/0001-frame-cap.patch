@@ -1,0 +1,115 @@
+From cc8d5c812ee7a1522054748ea8704f4f7d3d6139 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Fri, 16 Oct 2026 03:15:01 +0000
+Subject: [PATCH] Cap stdin/stdout frame payloads at 1 MiB and align CI Go to
+ 1.25.0
+
+Match TypeDuck-Windows ProtoFraming limits in readFrame/writeFrame with
+unit tests. Update nightly and release workflows to Go 1.25.0 per go.mod.
+---
+ .github/workflows/nightly.yml |  2 +-
+ .github/workflows/release.yml |  2 +-
+ protocol_io.go                |  8 ++++++++
+ protocol_io_test.go           | 31 +++++++++++++++++++++++++++++++
+ 4 files changed, 41 insertions(+), 2 deletions(-)
+ create mode 100644 protocol_io_test.go
+
+diff --git a/.github/workflows/nightly.yml b/.github/workflows/nightly.yml
+index 4705894..640b558 100644
+--- a/.github/workflows/nightly.yml
++++ b/.github/workflows/nightly.yml
+@@ -30,7 +30,7 @@ jobs:
+       - name: Set up Go
+         uses: actions/setup-go@v5
+         with:
+-          go-version: "1.24.6"
++          go-version: "1.25.0"
+           cache-dependency-path: go.sum
+ 
+       - name: Build moqi-ime runtime
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 4fef22f..5098350 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -31,7 +31,7 @@ jobs:
+       - name: Set up Go
+         uses: actions/setup-go@v5
+         with:
+-          go-version: "1.24.6"
++          go-version: "1.25.0"
+           cache-dependency-path: go.sum
+ 
+       - name: Build moqi-ime runtime
+diff --git a/protocol_io.go b/protocol_io.go
+index ff6956b..4719542 100644
+--- a/protocol_io.go
++++ b/protocol_io.go
+@@ -10,6 +10,8 @@ import (
+ 	gproto "google.golang.org/protobuf/proto"
+ )
+ 
++const maxFramePayloadBytes = 1024 * 1024
++
+ func readFrame(reader *bufio.Reader) ([]byte, error) {
+ 	var sizeBuf [4]byte
+ 	if _, err := io.ReadFull(reader, sizeBuf[:]); err != nil {
+@@ -19,6 +21,9 @@ func readFrame(reader *bufio.Reader) ([]byte, error) {
+ 	if size == 0 {
+ 		return nil, fmt.Errorf("invalid empty frame")
+ 	}
++	if size > maxFramePayloadBytes {
++		return nil, fmt.Errorf("frame payload too large: %d", size)
++	}
+ 	payload := make([]byte, size)
+ 	if _, err := io.ReadFull(reader, payload); err != nil {
+ 		return nil, err
+@@ -27,6 +32,9 @@ func readFrame(reader *bufio.Reader) ([]byte, error) {
+ }
+ 
+ func writeFrame(writer io.Writer, payload []byte) error {
++	if len(payload) > maxFramePayloadBytes {
++		return fmt.Errorf("frame payload too large: %d", len(payload))
++	}
+ 	var sizeBuf [4]byte
+ 	binary.LittleEndian.PutUint32(sizeBuf[:], uint32(len(payload)))
+ 	if _, err := writer.Write(sizeBuf[:]); err != nil {
+diff --git a/protocol_io_test.go b/protocol_io_test.go
+new file mode 100644
+index 0000000..d4eac91
+--- /dev/null
++++ b/protocol_io_test.go
+@@ -0,0 +1,31 @@
++package main
++
++import (
++	"bufio"
++	"bytes"
++	"encoding/binary"
++	"strings"
++	"testing"
++)
++
++func TestReadFrameRejectsOversizePayload(t *testing.T) {
++	var frame bytes.Buffer
++	size := uint32(maxFramePayloadBytes + 1)
++	_ = binary.Write(&frame, binary.LittleEndian, size)
++
++	_, err := readFrame(bufio.NewReader(&frame))
++	if err == nil {
++		t.Fatal("expected oversize frame to fail")
++	}
++	if !strings.Contains(err.Error(), "too large") {
++		t.Fatalf("unexpected error: %v", err)
++	}
++}
++
++func TestWriteFrameRejectsOversizePayload(t *testing.T) {
++	payload := make([]byte, maxFramePayloadBytes+1)
++	err := writeFrame(&bytes.Buffer{}, payload)
++	if err == nil {
++		t.Fatal("expected oversize write to fail")
++	}
++}
+-- 
+2.43.0
+
