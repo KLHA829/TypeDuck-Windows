@@ -52,11 +52,25 @@ try {
     @{ Expected = $checkedInCc; Actual = $generatedCc; Label = "moqi.pb.cc" },
     @{ Expected = $checkedInH; Actual = $generatedH; Label = "moqi.pb.h" }
   )
+  function Get-NormalizedTextHash {
+    param([string] $Path)
+    $raw = [System.IO.File]::ReadAllText($Path, [System.Text.Encoding]::UTF8)
+    $normalized = $raw -replace "`r`n", "`n"
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($normalized)
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+      return ([BitConverter]::ToString($sha.ComputeHash($bytes)) -replace '-', '').ToLowerInvariant()
+    }
+    finally {
+      $sha.Dispose()
+    }
+  }
+
   foreach ($pair in $pairs) {
-    $expectedHash = (Get-FileHash -LiteralPath $pair.Expected -Algorithm SHA256).Hash
-    $actualHash = (Get-FileHash -LiteralPath $pair.Actual -Algorithm SHA256).Hash
+    $expectedHash = Get-NormalizedTextHash -Path $pair.Expected
+    $actualHash = Get-NormalizedTextHash -Path $pair.Actual
     if ($expectedHash -ne $actualHash) {
-      throw "Checked-in $($pair.Label) does not match protoc output from proto/moqi.proto. Regenerate with protoc 33.5 and commit proto/moqi.pb.*"
+      throw "Checked-in $($pair.Label) does not match protoc output from proto/moqi.proto. Regenerate with protoc 33.5 on Windows and commit proto/moqi.pb.*"
     }
   }
 
