@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      backend_ref:
+        description: Git ref for TypeDuck-Windows-backend
+        required: false
+        default: main
 
 permissions:
   contents: write
@@ -36,6 +41,7 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/TypeDuck-Windows-backend
           path: TypeDuck-Windows-backend
+          ref: ${{ github.event.inputs.backend_ref || 'main' }}
           submodules: recursive
           fetch-depth: 0
 
@@ -53,7 +59,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.24.6"
+          go-version: "1.25.0"
           cache-dependency-path: TypeDuck-Windows-backend/go.sum
 
       - name: Install Inno Setup
@@ -74,6 +80,17 @@ jobs:
           Expand-Archive -Path $zipPath -DestinationPath $protocRoot -Force
 
           "PROTOBUF_ROOT=$protocRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Write TypeDuck release manifest
+        working-directory: ${{ github.workspace }}/TypeDuck-Windows
+        env:
+          BACKEND_REF: ${{ github.event.inputs.backend_ref || 'main' }}
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Write-TypeDuckReleaseManifest.ps1 `
+            -RepoRoot . `
+            -BackendRoot "$env:GITHUB_WORKSPACE\TypeDuck-Windows-backend" `
+            -BackendRef $env:BACKEND_REF `
+            -SchemaRef desktop
 
       - name: Build nightly installer
         working-directory: ${{ github.workspace }}/TypeDuck-Windows
