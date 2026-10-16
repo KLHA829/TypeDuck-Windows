@@ -160,7 +160,7 @@ User data and logs use TypeDuck-specific folders:
 
 ## Testing
 
-Pull requests and pushes to `main` run the **CI** workflow on `windows-2022`. That job builds Win32 Debug, runs CTest, and runs the Strict guard scripts for protocol contract, TSF identity, installer skeleton, and privacy or security cleanup (with `TypeDuck-Windows-backend` checked out beside this repository).
+Pull requests and pushes to `main` run the **CI** workflow on `windows-2022`. That job builds Win32 Debug, runs CTest, and runs Strict guards for protocol contract, TSF identity, and installer skeleton, plus the aggregate privacy or security cleanup guard (non-Strict, with sibling `TypeDuck-Windows-backend` for cross-repo source checks). Full Strict privacy checks remain in `Invoke-TypeDuckReleaseVerification.ps1`.
 
 Build first, then run CTest against a configured Win32 build:
 

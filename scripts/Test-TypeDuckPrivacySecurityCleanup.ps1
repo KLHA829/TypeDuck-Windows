@@ -285,17 +285,36 @@ $workflowText = "$releaseWorkflow`n$nightlyWorkflow"
 $packageScriptText = Get-FileText (Join-Path $repo "scripts/_all_in_package.ps1")
 $installerReadme = Get-FileText (Join-Path $repo "installer/README.txt")
 
-foreach ($pattern in @(
-    'typeduck-windows-ime-setup-\$\{\{\s*github\.event\.release\.tag_name\s*\|\|\s*github\.sha\s*\}\}\.exe',
-    'typeduck-windows-ime-release-',
-    'typeduck-windows-ime-nightly-',
-    'path:\s+TypeDuck-Windows',
-    'path:\s+TypeDuck-Windows-backend',
-    'https://github\.com/TypeDuck-HK/schema/releases/download/latest/TypeDuck-Windows\.zip',
-    'Expand-Archive\s+-Path\s+\$schemaZip\s+-DestinationPath\s+\$schemaDir\s+-Force',
-    '-RimeDataSource',
-    'pwsh -NoProfile -ExecutionPolicy Bypass -File \.\\scripts\\_all_in_package\.ps1')) {
+$releaseWorkflowPatterns = @(
+  'typeduck-windows-ime-setup-\$\{\{\s*github\.event\.release\.tag_name\s*\|\|\s*github\.sha\s*\}\}\.exe',
+  'typeduck-windows-ime-release-',
+  'typeduck-windows-ime-nightly-',
+  'path:\s+TypeDuck-Windows',
+  'path:\s+TypeDuck-Windows-backend',
+  '-RimeDataSource',
+  'pwsh -NoProfile -ExecutionPolicy Bypass -File \.\\scripts\\_all_in_package\.ps1'
+)
+foreach ($pattern in $releaseWorkflowPatterns) {
   Assert-PatternPresent $violations "ci-artifacts" $workflowText $pattern "Release/nightly workflow is missing required TypeDuck CI/runtime pattern: $pattern"
+}
+
+$usesSchemaGitCheckout = ($workflowText -match 'repository:\s*TypeDuck-HK/schema') -and
+  ($workflowText -match 'ref:\s*desktop') -and
+  ($workflowText -match 'TypeDuck-HK-schema')
+if ($usesSchemaGitCheckout) {
+  foreach ($pattern in @(
+      'repository:\s*TypeDuck-HK/schema',
+      'ref:\s*desktop',
+      'TypeDuck-HK-schema')) {
+    Assert-PatternPresent $violations "ci-artifacts" $workflowText $pattern "Release/nightly workflow must pin the TypeDuck schema git checkout: $pattern"
+  }
+}
+else {
+  foreach ($pattern in @(
+      'https://github\.com/TypeDuck-HK/schema/releases/download/latest/TypeDuck-Windows\.zip',
+      'Expand-Archive\s+-Path\s+\$schemaZip\s+-DestinationPath\s+\$schemaDir\s+-Force')) {
+    Assert-PatternPresent $violations "ci-artifacts" $workflowText $pattern "Release/nightly workflow is missing required TypeDuck schema zip staging pattern: $pattern"
+  }
 }
 foreach ($pattern in @(
     'rime-frost',
