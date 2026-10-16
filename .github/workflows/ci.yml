@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PROTOBUF_VERSION: "33.5"
+
+jobs:
+  build-and-guard:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout TypeDuck-Windows
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Checkout TypeDuck-Windows-backend
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/TypeDuck-Windows-backend
+          path: TypeDuck-Windows-backend
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Apply TypeDuck submodule patches
+        run: pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Apply-TypeDuckSubmodulePatches.ps1 -RepoRoot .
+
+      - name: Download protoc
+        run: |
+          $protocRoot = Join-Path $env:RUNNER_TEMP "protoc-$env:PROTOBUF_VERSION-win64"
+          $zipPath = Join-Path $env:RUNNER_TEMP "protoc-$env:PROTOBUF_VERSION-win64.zip"
+
+          if (Test-Path -LiteralPath $protocRoot) {
+            Remove-Item -LiteralPath $protocRoot -Recurse -Force
+          }
+
+          Invoke-WebRequest `
+            -Uri "https://github.com/protocolbuffers/protobuf/releases/download/v$env:PROTOBUF_VERSION/protoc-$env:PROTOBUF_VERSION-win64.zip" `
+            -OutFile $zipPath
+          Expand-Archive -Path $zipPath -DestinationPath $protocRoot -Force
+
+          "PROTOBUF_ROOT=$protocRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build frontend (Win32 Debug)
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\build.ps1 `
+            -RepoRoot $env:GITHUB_WORKSPACE `
+            -Configuration Debug `
+            -ProtobufRoot $env:PROTOBUF_ROOT
+
+      - name: Run CTest (Win32 Debug)
+        run: ctest --test-dir build-vs32 -C Debug --output-on-failure
+
+      - name: Run TypeDuck guard scripts (Strict)
+        env:
+          BACKEND_ROOT: ${{ github.workspace }}/TypeDuck-Windows-backend
+        run: |
+          $strict = @{ RepoRoot = $env:GITHUB_WORKSPACE; Strict = $true }
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckProtocolContract.ps1 @strict
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckTsfIdentity.ps1 @strict
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckInstallerSkeleton.ps1 @strict
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckPrivacySecurityCleanup.ps1 -RepoRoot $env:GITHUB_WORKSPACE -BackendRoot $env:BACKEND_ROOT
