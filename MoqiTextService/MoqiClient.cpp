@@ -708,8 +708,6 @@ void Client::updateCommitString(Json::Value &msg, Ime::EditSession *session,
       }
       textService_->setCompositionString(session, commitString.c_str(),
                                          commitString.length());
-      // FIXME: update the position of candidate and message window when the
-      // composition string is changed.
       if (textService_->hasCandidateWindow()) {
         textService_->updateCandidatesWindow(session);
       }
@@ -787,8 +785,6 @@ void Client::updateComposition(Json::Value &msg, Ime::EditSession *session,
                                              compositionString.length());
         }
       }
-      // FIXME: update the position of candidate and message window when the
-      // composition string is changed.
       if (textService_->hasCandidateWindow()) {
         textService_->updateCandidatesWindow(session);
       }
@@ -830,6 +826,12 @@ void Client::updateComposition(Json::Value &msg, Ime::EditSession *session,
     const int fixedSelEnd =
         utf16CursorFromCodePointCursor(compositionString, selEndVal.asInt());
     textService_->setCandidatePreeditSelection(fixedSelStart, fixedSelEnd);
+  }
+  if (textService_->hasCandidateWindow()) {
+    textService_->updateCandidatesWindow(session);
+  }
+  if (textService_->messageWindow_ != nullptr) {
+    textService_->updateMessageWindow(session);
   }
   if (endComposition) {
     textService_->endComposition(session->context());
@@ -1794,18 +1796,18 @@ bool Client::callRpcMethod(moqi::protocol::ClientRequest &request,
 bool Client::isPipeCreatedByMoqiServer(HANDLE pipe) {
   ULONG serverPid = 0;
   if (!::GetNamedPipeServerProcessId(pipe, &serverPid)) {
-    appendRpcGuardLog(L"launcher identity check accepted: server pid unavailable error=" +
+    appendRpcGuardLog(L"launcher identity check rejected: server pid unavailable error=" +
                       std::to_wstring(::GetLastError()));
-    return true;
+    return false;
   }
 
   HANDLE serverProcess =
       ::OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, serverPid);
   if (serverProcess == nullptr) {
-    appendRpcGuardLog(L"launcher identity check accepted: process inspection denied pid=" +
+    appendRpcGuardLog(L"launcher identity check rejected: process inspection denied pid=" +
                       std::to_wstring(serverPid) + L" error=" +
                       std::to_wstring(::GetLastError()));
-    return true;
+    return false;
   }
 
   wchar_t imagePath[32768] = {};
@@ -1813,10 +1815,10 @@ bool Client::isPipeCreatedByMoqiServer(HANDLE pipe) {
   if (!::QueryFullProcessImageNameW(serverProcess, 0, imagePath, &imagePathLen)) {
     const DWORD error = ::GetLastError();
     ::CloseHandle(serverProcess);
-    appendRpcGuardLog(L"launcher identity check accepted: image path unavailable pid=" +
+    appendRpcGuardLog(L"launcher identity check rejected: image path unavailable pid=" +
                       std::to_wstring(serverPid) + L" error=" +
                       std::to_wstring(error));
-    return true;
+    return false;
   }
   ::CloseHandle(serverProcess);
 

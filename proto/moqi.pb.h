@@ -61,6 +61,10 @@ enum Method : int;
 extern const uint32_t Method_internal_data_[];
 enum TrayNotificationIcon : int;
 extern const uint32_t TrayNotificationIcon_internal_data_[];
+enum TypeDuckErrorCode : int;
+extern const uint32_t TypeDuckErrorCode_internal_data_[];
+enum TypeDuckHealthStatus : int;
+extern const uint32_t TypeDuckHealthStatus_internal_data_[];
 class AutoPairRule;
 struct AutoPairRuleDefaultTypeInternal;
 extern AutoPairRuleDefaultTypeInternal _AutoPairRule_default_instance_;
@@ -105,6 +109,42 @@ class TrayNotification;
 struct TrayNotificationDefaultTypeInternal;
 extern TrayNotificationDefaultTypeInternal _TrayNotification_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull TrayNotification_class_data_;
+class TypeDuckCandidatePage;
+struct TypeDuckCandidatePageDefaultTypeInternal;
+extern TypeDuckCandidatePageDefaultTypeInternal _TypeDuckCandidatePage_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckCandidatePage_class_data_;
+class TypeDuckDeployRequest;
+struct TypeDuckDeployRequestDefaultTypeInternal;
+extern TypeDuckDeployRequestDefaultTypeInternal _TypeDuckDeployRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckDeployRequest_class_data_;
+class TypeDuckEngineCapability;
+struct TypeDuckEngineCapabilityDefaultTypeInternal;
+extern TypeDuckEngineCapabilityDefaultTypeInternal _TypeDuckEngineCapability_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckEngineCapability_class_data_;
+class TypeDuckEngineHealth;
+struct TypeDuckEngineHealthDefaultTypeInternal;
+extern TypeDuckEngineHealthDefaultTypeInternal _TypeDuckEngineHealth_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckEngineHealth_class_data_;
+class TypeDuckError;
+struct TypeDuckErrorDefaultTypeInternal;
+extern TypeDuckErrorDefaultTypeInternal _TypeDuckError_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckError_class_data_;
+class TypeDuckProtocolInfo;
+struct TypeDuckProtocolInfoDefaultTypeInternal;
+extern TypeDuckProtocolInfoDefaultTypeInternal _TypeDuckProtocolInfo_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckProtocolInfo_class_data_;
+class TypeDuckReconfigureRequest;
+struct TypeDuckReconfigureRequestDefaultTypeInternal;
+extern TypeDuckReconfigureRequestDefaultTypeInternal _TypeDuckReconfigureRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckReconfigureRequest_class_data_;
+class TypeDuckSettingsSnapshot;
+struct TypeDuckSettingsSnapshotDefaultTypeInternal;
+extern TypeDuckSettingsSnapshotDefaultTypeInternal _TypeDuckSettingsSnapshot_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckSettingsSnapshot_class_data_;
+class TypeDuckSettingsUpdate;
+struct TypeDuckSettingsUpdateDefaultTypeInternal;
+extern TypeDuckSettingsUpdateDefaultTypeInternal _TypeDuckSettingsUpdate_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckSettingsUpdate_class_data_;
 }  // namespace protocol
 }  // namespace moqi
 namespace google {
@@ -118,6 +158,12 @@ internal::EnumTraitsT<::moqi::protocol::Method_internal_data_>
 template <>
 internal::EnumTraitsT<::moqi::protocol::TrayNotificationIcon_internal_data_>
     internal::EnumTraitsImpl::value<::moqi::protocol::TrayNotificationIcon>;
+template <>
+internal::EnumTraitsT<::moqi::protocol::TypeDuckErrorCode_internal_data_>
+    internal::EnumTraitsImpl::value<::moqi::protocol::TypeDuckErrorCode>;
+template <>
+internal::EnumTraitsT<::moqi::protocol::TypeDuckHealthStatus_internal_data_>
+    internal::EnumTraitsImpl::value<::moqi::protocol::TypeDuckHealthStatus>;
 }  // namespace protobuf
 }  // namespace google
 
@@ -143,7 +189,11 @@ enum Method : int {
   METHOD_HIGHLIGHT_CANDIDATE = 16,
   METHOD_SELECT_CANDIDATE = 17,
   METHOD_CHANGE_PAGE = 18,
-  METHOD_CLOUD_CLIPBOARD_UPLOAD = 19,
+  METHOD_TYPEDUCK_SETTINGS_SNAPSHOT = 100,
+  METHOD_TYPEDUCK_SETTINGS_UPDATE = 101,
+  METHOD_TYPEDUCK_DEPLOY = 102,
+  METHOD_TYPEDUCK_RECONFIGURE = 103,
+  METHOD_TYPEDUCK_HEALTH = 104,
   Method_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   Method_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -154,23 +204,18 @@ extern const uint32_t Method_internal_data_[];
 inline constexpr Method Method_MIN =
     static_cast<Method>(0);
 inline constexpr Method Method_MAX =
-    static_cast<Method>(19);
+    static_cast<Method>(104);
 inline bool Method_IsValid(int value) {
-  return 0 <= value && value <= 19;
+  return ::google::protobuf::internal::ValidateEnum(value, Method_internal_data_);
 }
-inline constexpr int Method_ARRAYSIZE = 19 + 1;
+inline constexpr int Method_ARRAYSIZE = 104 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL Method_descriptor();
 template <typename T>
 const ::std::string& Method_Name(T value) {
   static_assert(::std::is_same<T, Method>::value ||
                     ::std::is_integral<T>::value,
                 "Incorrect type passed to Method_Name().");
-  return Method_Name(static_cast<Method>(value));
-}
-template <>
-inline const ::std::string& Method_Name(Method value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<Method_descriptor, 0, 19>(
-      static_cast<int>(value));
+  return ::google::protobuf::internal::NameOfEnum(Method_descriptor(), value);
 }
 inline bool Method_Parse(
     ::absl::string_view name, Method* PROTOBUF_NONNULL value) {
@@ -215,6 +260,87 @@ inline bool ButtonType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ButtonType>(ButtonType_descriptor(), name,
                                            value);
 }
+enum TypeDuckHealthStatus : int {
+  TYPEDUCK_HEALTH_STATUS_UNSPECIFIED = 0,
+  TYPEDUCK_HEALTH_OK = 1,
+  TYPEDUCK_HEALTH_DEGRADED = 2,
+  TYPEDUCK_HEALTH_RESTARTING = 3,
+  TYPEDUCK_HEALTH_FAILED = 4,
+  TypeDuckHealthStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::min(),
+  TypeDuckHealthStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::max(),
+};
+
+extern const uint32_t TypeDuckHealthStatus_internal_data_[];
+inline constexpr TypeDuckHealthStatus TypeDuckHealthStatus_MIN =
+    static_cast<TypeDuckHealthStatus>(0);
+inline constexpr TypeDuckHealthStatus TypeDuckHealthStatus_MAX =
+    static_cast<TypeDuckHealthStatus>(4);
+inline bool TypeDuckHealthStatus_IsValid(int value) {
+  return 0 <= value && value <= 4;
+}
+inline constexpr int TypeDuckHealthStatus_ARRAYSIZE = 4 + 1;
+const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL TypeDuckHealthStatus_descriptor();
+template <typename T>
+const ::std::string& TypeDuckHealthStatus_Name(T value) {
+  static_assert(::std::is_same<T, TypeDuckHealthStatus>::value ||
+                    ::std::is_integral<T>::value,
+                "Incorrect type passed to TypeDuckHealthStatus_Name().");
+  return TypeDuckHealthStatus_Name(static_cast<TypeDuckHealthStatus>(value));
+}
+template <>
+inline const ::std::string& TypeDuckHealthStatus_Name(TypeDuckHealthStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<TypeDuckHealthStatus_descriptor, 0, 4>(
+      static_cast<int>(value));
+}
+inline bool TypeDuckHealthStatus_Parse(
+    ::absl::string_view name, TypeDuckHealthStatus* PROTOBUF_NONNULL value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TypeDuckHealthStatus>(TypeDuckHealthStatus_descriptor(), name,
+                                           value);
+}
+enum TypeDuckErrorCode : int {
+  TYPEDUCK_ERROR_UNSPECIFIED = 0,
+  TYPEDUCK_ERROR_MALFORMED_FRAME = 1,
+  TYPEDUCK_ERROR_PAYLOAD_TOO_LARGE = 2,
+  TYPEDUCK_ERROR_MALFORMED_PAYLOAD = 3,
+  TYPEDUCK_ERROR_BACKEND_TIMEOUT = 4,
+  TYPEDUCK_ERROR_BACKEND_RESTART = 5,
+  TYPEDUCK_ERROR_ENGINE_INIT_FAILED = 6,
+  TYPEDUCK_ERROR_SETTINGS_APPLY_FAILED = 7,
+  TypeDuckErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::min(),
+  TypeDuckErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::max(),
+};
+
+extern const uint32_t TypeDuckErrorCode_internal_data_[];
+inline constexpr TypeDuckErrorCode TypeDuckErrorCode_MIN =
+    static_cast<TypeDuckErrorCode>(0);
+inline constexpr TypeDuckErrorCode TypeDuckErrorCode_MAX =
+    static_cast<TypeDuckErrorCode>(7);
+inline bool TypeDuckErrorCode_IsValid(int value) {
+  return 0 <= value && value <= 7;
+}
+inline constexpr int TypeDuckErrorCode_ARRAYSIZE = 7 + 1;
+const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL TypeDuckErrorCode_descriptor();
+template <typename T>
+const ::std::string& TypeDuckErrorCode_Name(T value) {
+  static_assert(::std::is_same<T, TypeDuckErrorCode>::value ||
+                    ::std::is_integral<T>::value,
+                "Incorrect type passed to TypeDuckErrorCode_Name().");
+  return TypeDuckErrorCode_Name(static_cast<TypeDuckErrorCode>(value));
+}
+template <>
+inline const ::std::string& TypeDuckErrorCode_Name(TypeDuckErrorCode value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<TypeDuckErrorCode_descriptor, 0, 7>(
+      static_cast<int>(value));
+}
+inline bool TypeDuckErrorCode_Parse(
+    ::absl::string_view name, TypeDuckErrorCode* PROTOBUF_NONNULL value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TypeDuckErrorCode>(TypeDuckErrorCode_descriptor(), name,
+                                           value);
+}
 enum TrayNotificationIcon : int {
   TRAY_NOTIFICATION_ICON_UNSPECIFIED = 0,
   TRAY_NOTIFICATION_ICON_INFO = 1,
@@ -257,6 +383,2524 @@ inline bool TrayNotificationIcon_Parse(
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class TypeDuckSettingsUpdate final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckSettingsUpdate) */ {
+ public:
+  inline TypeDuckSettingsUpdate() : TypeDuckSettingsUpdate(nullptr) {}
+  ~TypeDuckSettingsUpdate() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckSettingsUpdate* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckSettingsUpdate));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckSettingsUpdate(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckSettingsUpdate(const TypeDuckSettingsUpdate& from) : TypeDuckSettingsUpdate(nullptr, from) {}
+  inline TypeDuckSettingsUpdate(TypeDuckSettingsUpdate&& from) noexcept
+      : TypeDuckSettingsUpdate(nullptr, ::std::move(from)) {}
+  inline TypeDuckSettingsUpdate& operator=(const TypeDuckSettingsUpdate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckSettingsUpdate& operator=(TypeDuckSettingsUpdate&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckSettingsUpdate& default_instance() {
+    return *reinterpret_cast<const TypeDuckSettingsUpdate*>(
+        &_TypeDuckSettingsUpdate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(TypeDuckSettingsUpdate& a, TypeDuckSettingsUpdate& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckSettingsUpdate* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckSettingsUpdate* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckSettingsUpdate* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckSettingsUpdate>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckSettingsUpdate& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckSettingsUpdate& from) { TypeDuckSettingsUpdate::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckSettingsUpdate* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckSettingsUpdate"; }
+
+  explicit TypeDuckSettingsUpdate(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckSettingsUpdate(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckSettingsUpdate& from);
+  TypeDuckSettingsUpdate(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckSettingsUpdate&& from) noexcept
+      : TypeDuckSettingsUpdate(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDisplayLanguagesFieldNumber = 20,
+    kLanguageFieldNumber = 1,
+    kSchemaIdFieldNumber = 2,
+    kDisplayLanguageFieldNumber = 3,
+    kMainLanguageFieldNumber = 21,
+    kShowRomanizationFieldNumber = 24,
+    kCandidatePageSizeFieldNumber = 6,
+    kAsciiModeFieldNumber = 4,
+    kTraditionalHongKongFieldNumber = 5,
+    kIsHeiTypefaceFieldNumber = 23,
+    kEnableCompletionFieldNumber = 25,
+    kPageSizeFieldNumber = 22,
+    kEnableCorrectionFieldNumber = 26,
+    kEnableSentenceFieldNumber = 27,
+    kEnableLearningFieldNumber = 28,
+    kShowReverseCodeFieldNumber = 29,
+    kIsCangjie5FieldNumber = 30,
+  };
+  // repeated string display_languages = 20;
+  int display_languages_size() const;
+  private:
+  int _internal_display_languages_size() const;
+
+  public:
+  void clear_display_languages() ;
+  const ::std::string& display_languages(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_display_languages(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_display_languages(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_display_languages();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_display_languages(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& display_languages() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_display_languages();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_display_languages() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_display_languages();
+
+  public:
+  // optional string language = 1;
+  bool has_language() const;
+  void clear_language() ;
+  const ::std::string& language() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_language(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_language();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_language();
+  void set_allocated_language(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_language() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_language(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_language();
+
+  public:
+  // optional string schema_id = 2;
+  bool has_schema_id() const;
+  void clear_schema_id() ;
+  const ::std::string& schema_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_schema_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_schema_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_schema_id();
+  void set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_schema_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_schema_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_schema_id();
+
+  public:
+  // optional string display_language = 3;
+  bool has_display_language() const;
+  void clear_display_language() ;
+  const ::std::string& display_language() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_display_language(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_display_language();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_display_language();
+  void set_allocated_display_language(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_display_language() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_display_language(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_display_language();
+
+  public:
+  // optional string main_language = 21;
+  bool has_main_language() const;
+  void clear_main_language() ;
+  const ::std::string& main_language() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_main_language(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_main_language();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_main_language();
+  void set_allocated_main_language(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_main_language() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_main_language(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_main_language();
+
+  public:
+  // optional string show_romanization = 24;
+  bool has_show_romanization() const;
+  void clear_show_romanization() ;
+  const ::std::string& show_romanization() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_show_romanization(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_show_romanization();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_show_romanization();
+  void set_allocated_show_romanization(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_show_romanization() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_show_romanization(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_show_romanization();
+
+  public:
+  // optional uint32 candidate_page_size = 6;
+  bool has_candidate_page_size() const;
+  void clear_candidate_page_size() ;
+  ::uint32_t candidate_page_size() const;
+  void set_candidate_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_candidate_page_size() const;
+  void _internal_set_candidate_page_size(::uint32_t value);
+
+  public:
+  // optional bool ascii_mode = 4;
+  bool has_ascii_mode() const;
+  void clear_ascii_mode() ;
+  bool ascii_mode() const;
+  void set_ascii_mode(bool value);
+
+  private:
+  bool _internal_ascii_mode() const;
+  void _internal_set_ascii_mode(bool value);
+
+  public:
+  // optional bool traditional_hong_kong = 5;
+  bool has_traditional_hong_kong() const;
+  void clear_traditional_hong_kong() ;
+  bool traditional_hong_kong() const;
+  void set_traditional_hong_kong(bool value);
+
+  private:
+  bool _internal_traditional_hong_kong() const;
+  void _internal_set_traditional_hong_kong(bool value);
+
+  public:
+  // optional bool is_hei_typeface = 23;
+  bool has_is_hei_typeface() const;
+  void clear_is_hei_typeface() ;
+  bool is_hei_typeface() const;
+  void set_is_hei_typeface(bool value);
+
+  private:
+  bool _internal_is_hei_typeface() const;
+  void _internal_set_is_hei_typeface(bool value);
+
+  public:
+  // optional bool enable_completion = 25;
+  bool has_enable_completion() const;
+  void clear_enable_completion() ;
+  bool enable_completion() const;
+  void set_enable_completion(bool value);
+
+  private:
+  bool _internal_enable_completion() const;
+  void _internal_set_enable_completion(bool value);
+
+  public:
+  // optional uint32 page_size = 22;
+  bool has_page_size() const;
+  void clear_page_size() ;
+  ::uint32_t page_size() const;
+  void set_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_size() const;
+  void _internal_set_page_size(::uint32_t value);
+
+  public:
+  // optional bool enable_correction = 26;
+  bool has_enable_correction() const;
+  void clear_enable_correction() ;
+  bool enable_correction() const;
+  void set_enable_correction(bool value);
+
+  private:
+  bool _internal_enable_correction() const;
+  void _internal_set_enable_correction(bool value);
+
+  public:
+  // optional bool enable_sentence = 27;
+  bool has_enable_sentence() const;
+  void clear_enable_sentence() ;
+  bool enable_sentence() const;
+  void set_enable_sentence(bool value);
+
+  private:
+  bool _internal_enable_sentence() const;
+  void _internal_set_enable_sentence(bool value);
+
+  public:
+  // optional bool enable_learning = 28;
+  bool has_enable_learning() const;
+  void clear_enable_learning() ;
+  bool enable_learning() const;
+  void set_enable_learning(bool value);
+
+  private:
+  bool _internal_enable_learning() const;
+  void _internal_set_enable_learning(bool value);
+
+  public:
+  // optional bool show_reverse_code = 29;
+  bool has_show_reverse_code() const;
+  void clear_show_reverse_code() ;
+  bool show_reverse_code() const;
+  void set_show_reverse_code(bool value);
+
+  private:
+  bool _internal_show_reverse_code() const;
+  void _internal_set_show_reverse_code(bool value);
+
+  public:
+  // optional bool is_cangjie5 = 30;
+  bool has_is_cangjie5() const;
+  void clear_is_cangjie5() ;
+  bool is_cangjie5() const;
+  void set_is_cangjie5(bool value);
+
+  private:
+  bool _internal_is_cangjie5() const;
+  void _internal_set_is_cangjie5(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckSettingsUpdate)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<5, 17,
+                                   0, 141,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckSettingsUpdate& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> display_languages_;
+    ::google::protobuf::internal::ArenaStringPtr language_;
+    ::google::protobuf::internal::ArenaStringPtr schema_id_;
+    ::google::protobuf::internal::ArenaStringPtr display_language_;
+    ::google::protobuf::internal::ArenaStringPtr main_language_;
+    ::google::protobuf::internal::ArenaStringPtr show_romanization_;
+    ::uint32_t candidate_page_size_;
+    bool ascii_mode_;
+    bool traditional_hong_kong_;
+    bool is_hei_typeface_;
+    bool enable_completion_;
+    ::uint32_t page_size_;
+    bool enable_correction_;
+    bool enable_sentence_;
+    bool enable_learning_;
+    bool show_reverse_code_;
+    bool is_cangjie5_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckSettingsUpdate_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckSettingsSnapshot final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckSettingsSnapshot) */ {
+ public:
+  inline TypeDuckSettingsSnapshot() : TypeDuckSettingsSnapshot(nullptr) {}
+  ~TypeDuckSettingsSnapshot() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckSettingsSnapshot* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckSettingsSnapshot));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckSettingsSnapshot(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckSettingsSnapshot(const TypeDuckSettingsSnapshot& from) : TypeDuckSettingsSnapshot(nullptr, from) {}
+  inline TypeDuckSettingsSnapshot(TypeDuckSettingsSnapshot&& from) noexcept
+      : TypeDuckSettingsSnapshot(nullptr, ::std::move(from)) {}
+  inline TypeDuckSettingsSnapshot& operator=(const TypeDuckSettingsSnapshot& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckSettingsSnapshot& operator=(TypeDuckSettingsSnapshot&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckSettingsSnapshot& default_instance() {
+    return *reinterpret_cast<const TypeDuckSettingsSnapshot*>(
+        &_TypeDuckSettingsSnapshot_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(TypeDuckSettingsSnapshot& a, TypeDuckSettingsSnapshot& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckSettingsSnapshot* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckSettingsSnapshot* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckSettingsSnapshot* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckSettingsSnapshot>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckSettingsSnapshot& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckSettingsSnapshot& from) { TypeDuckSettingsSnapshot::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckSettingsSnapshot* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckSettingsSnapshot"; }
+
+  explicit TypeDuckSettingsSnapshot(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckSettingsSnapshot(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckSettingsSnapshot& from);
+  TypeDuckSettingsSnapshot(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckSettingsSnapshot&& from) noexcept
+      : TypeDuckSettingsSnapshot(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDisplayLanguagesFieldNumber = 20,
+    kLanguageFieldNumber = 1,
+    kSchemaIdFieldNumber = 2,
+    kDisplayLanguageFieldNumber = 3,
+    kMainLanguageFieldNumber = 21,
+    kShowRomanizationFieldNumber = 24,
+    kSourceFieldNumber = 31,
+    kStatusMessageFieldNumber = 32,
+    kCandidatePageSizeFieldNumber = 6,
+    kAsciiModeFieldNumber = 4,
+    kTraditionalHongKongFieldNumber = 5,
+    kIsHeiTypefaceFieldNumber = 23,
+    kEnableCompletionFieldNumber = 25,
+    kPageSizeFieldNumber = 22,
+    kEnableCorrectionFieldNumber = 26,
+    kEnableSentenceFieldNumber = 27,
+    kEnableLearningFieldNumber = 28,
+    kShowReverseCodeFieldNumber = 29,
+    kIsCangjie5FieldNumber = 30,
+  };
+  // repeated string display_languages = 20;
+  int display_languages_size() const;
+  private:
+  int _internal_display_languages_size() const;
+
+  public:
+  void clear_display_languages() ;
+  const ::std::string& display_languages(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_display_languages(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_display_languages(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_display_languages();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_display_languages(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& display_languages() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_display_languages();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_display_languages() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_display_languages();
+
+  public:
+  // string language = 1;
+  void clear_language() ;
+  const ::std::string& language() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_language(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_language();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_language();
+  void set_allocated_language(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_language() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_language(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_language();
+
+  public:
+  // string schema_id = 2;
+  void clear_schema_id() ;
+  const ::std::string& schema_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_schema_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_schema_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_schema_id();
+  void set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_schema_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_schema_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_schema_id();
+
+  public:
+  // string display_language = 3;
+  void clear_display_language() ;
+  const ::std::string& display_language() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_display_language(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_display_language();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_display_language();
+  void set_allocated_display_language(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_display_language() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_display_language(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_display_language();
+
+  public:
+  // string main_language = 21;
+  void clear_main_language() ;
+  const ::std::string& main_language() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_main_language(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_main_language();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_main_language();
+  void set_allocated_main_language(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_main_language() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_main_language(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_main_language();
+
+  public:
+  // string show_romanization = 24;
+  void clear_show_romanization() ;
+  const ::std::string& show_romanization() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_show_romanization(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_show_romanization();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_show_romanization();
+  void set_allocated_show_romanization(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_show_romanization() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_show_romanization(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_show_romanization();
+
+  public:
+  // string source = 31;
+  void clear_source() ;
+  const ::std::string& source() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source();
+  void set_allocated_source(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source();
+
+  public:
+  // string status_message = 32;
+  void clear_status_message() ;
+  const ::std::string& status_message() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_status_message(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_status_message();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_status_message();
+  void set_allocated_status_message(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_status_message() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_status_message(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_status_message();
+
+  public:
+  // uint32 candidate_page_size = 6;
+  void clear_candidate_page_size() ;
+  ::uint32_t candidate_page_size() const;
+  void set_candidate_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_candidate_page_size() const;
+  void _internal_set_candidate_page_size(::uint32_t value);
+
+  public:
+  // bool ascii_mode = 4;
+  void clear_ascii_mode() ;
+  bool ascii_mode() const;
+  void set_ascii_mode(bool value);
+
+  private:
+  bool _internal_ascii_mode() const;
+  void _internal_set_ascii_mode(bool value);
+
+  public:
+  // bool traditional_hong_kong = 5;
+  void clear_traditional_hong_kong() ;
+  bool traditional_hong_kong() const;
+  void set_traditional_hong_kong(bool value);
+
+  private:
+  bool _internal_traditional_hong_kong() const;
+  void _internal_set_traditional_hong_kong(bool value);
+
+  public:
+  // bool is_hei_typeface = 23;
+  void clear_is_hei_typeface() ;
+  bool is_hei_typeface() const;
+  void set_is_hei_typeface(bool value);
+
+  private:
+  bool _internal_is_hei_typeface() const;
+  void _internal_set_is_hei_typeface(bool value);
+
+  public:
+  // bool enable_completion = 25;
+  void clear_enable_completion() ;
+  bool enable_completion() const;
+  void set_enable_completion(bool value);
+
+  private:
+  bool _internal_enable_completion() const;
+  void _internal_set_enable_completion(bool value);
+
+  public:
+  // uint32 page_size = 22;
+  void clear_page_size() ;
+  ::uint32_t page_size() const;
+  void set_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_size() const;
+  void _internal_set_page_size(::uint32_t value);
+
+  public:
+  // bool enable_correction = 26;
+  void clear_enable_correction() ;
+  bool enable_correction() const;
+  void set_enable_correction(bool value);
+
+  private:
+  bool _internal_enable_correction() const;
+  void _internal_set_enable_correction(bool value);
+
+  public:
+  // bool enable_sentence = 27;
+  void clear_enable_sentence() ;
+  bool enable_sentence() const;
+  void set_enable_sentence(bool value);
+
+  private:
+  bool _internal_enable_sentence() const;
+  void _internal_set_enable_sentence(bool value);
+
+  public:
+  // bool enable_learning = 28;
+  void clear_enable_learning() ;
+  bool enable_learning() const;
+  void set_enable_learning(bool value);
+
+  private:
+  bool _internal_enable_learning() const;
+  void _internal_set_enable_learning(bool value);
+
+  public:
+  // bool show_reverse_code = 29;
+  void clear_show_reverse_code() ;
+  bool show_reverse_code() const;
+  void set_show_reverse_code(bool value);
+
+  private:
+  bool _internal_show_reverse_code() const;
+  void _internal_set_show_reverse_code(bool value);
+
+  public:
+  // bool is_cangjie5 = 30;
+  void clear_is_cangjie5() ;
+  bool is_cangjie5() const;
+  void set_is_cangjie5(bool value);
+
+  private:
+  bool _internal_is_cangjie5() const;
+  void _internal_set_is_cangjie5(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckSettingsSnapshot)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<5, 19,
+                                   0, 163,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckSettingsSnapshot& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> display_languages_;
+    ::google::protobuf::internal::ArenaStringPtr language_;
+    ::google::protobuf::internal::ArenaStringPtr schema_id_;
+    ::google::protobuf::internal::ArenaStringPtr display_language_;
+    ::google::protobuf::internal::ArenaStringPtr main_language_;
+    ::google::protobuf::internal::ArenaStringPtr show_romanization_;
+    ::google::protobuf::internal::ArenaStringPtr source_;
+    ::google::protobuf::internal::ArenaStringPtr status_message_;
+    ::uint32_t candidate_page_size_;
+    bool ascii_mode_;
+    bool traditional_hong_kong_;
+    bool is_hei_typeface_;
+    bool enable_completion_;
+    ::uint32_t page_size_;
+    bool enable_correction_;
+    bool enable_sentence_;
+    bool enable_learning_;
+    bool show_reverse_code_;
+    bool is_cangjie5_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckSettingsSnapshot_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckReconfigureRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckReconfigureRequest) */ {
+ public:
+  inline TypeDuckReconfigureRequest() : TypeDuckReconfigureRequest(nullptr) {}
+  ~TypeDuckReconfigureRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckReconfigureRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckReconfigureRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckReconfigureRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckReconfigureRequest(const TypeDuckReconfigureRequest& from) : TypeDuckReconfigureRequest(nullptr, from) {}
+  inline TypeDuckReconfigureRequest(TypeDuckReconfigureRequest&& from) noexcept
+      : TypeDuckReconfigureRequest(nullptr, ::std::move(from)) {}
+  inline TypeDuckReconfigureRequest& operator=(const TypeDuckReconfigureRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckReconfigureRequest& operator=(TypeDuckReconfigureRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckReconfigureRequest& default_instance() {
+    return *reinterpret_cast<const TypeDuckReconfigureRequest*>(
+        &_TypeDuckReconfigureRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(TypeDuckReconfigureRequest& a, TypeDuckReconfigureRequest& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckReconfigureRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckReconfigureRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckReconfigureRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckReconfigureRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckReconfigureRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckReconfigureRequest& from) { TypeDuckReconfigureRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckReconfigureRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckReconfigureRequest"; }
+
+  explicit TypeDuckReconfigureRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckReconfigureRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckReconfigureRequest& from);
+  TypeDuckReconfigureRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckReconfigureRequest&& from) noexcept
+      : TypeDuckReconfigureRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kSchemaIdFieldNumber = 1,
+    kReloadUserDictFieldNumber = 2,
+    kRestartBackendFieldNumber = 3,
+  };
+  // string schema_id = 1;
+  void clear_schema_id() ;
+  const ::std::string& schema_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_schema_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_schema_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_schema_id();
+  void set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_schema_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_schema_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_schema_id();
+
+  public:
+  // bool reload_user_dict = 2;
+  void clear_reload_user_dict() ;
+  bool reload_user_dict() const;
+  void set_reload_user_dict(bool value);
+
+  private:
+  bool _internal_reload_user_dict() const;
+  void _internal_set_reload_user_dict(bool value);
+
+  public:
+  // bool restart_backend = 3;
+  void clear_restart_backend() ;
+  bool restart_backend() const;
+  void set_restart_backend(bool value);
+
+  private:
+  bool _internal_restart_backend() const;
+  void _internal_set_restart_backend(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckReconfigureRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 58,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckReconfigureRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr schema_id_;
+    bool reload_user_dict_;
+    bool restart_backend_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckReconfigureRequest_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckProtocolInfo final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckProtocolInfo) */ {
+ public:
+  inline TypeDuckProtocolInfo() : TypeDuckProtocolInfo(nullptr) {}
+  ~TypeDuckProtocolInfo() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckProtocolInfo* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckProtocolInfo));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckProtocolInfo(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckProtocolInfo(const TypeDuckProtocolInfo& from) : TypeDuckProtocolInfo(nullptr, from) {}
+  inline TypeDuckProtocolInfo(TypeDuckProtocolInfo&& from) noexcept
+      : TypeDuckProtocolInfo(nullptr, ::std::move(from)) {}
+  inline TypeDuckProtocolInfo& operator=(const TypeDuckProtocolInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckProtocolInfo& operator=(TypeDuckProtocolInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckProtocolInfo& default_instance() {
+    return *reinterpret_cast<const TypeDuckProtocolInfo*>(
+        &_TypeDuckProtocolInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(TypeDuckProtocolInfo& a, TypeDuckProtocolInfo& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckProtocolInfo* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckProtocolInfo* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckProtocolInfo* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckProtocolInfo>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckProtocolInfo& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckProtocolInfo& from) { TypeDuckProtocolInfo::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckProtocolInfo* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckProtocolInfo"; }
+
+  explicit TypeDuckProtocolInfo(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckProtocolInfo(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckProtocolInfo& from);
+  TypeDuckProtocolInfo(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckProtocolInfo&& from) noexcept
+      : TypeDuckProtocolInfo(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kProductFieldNumber = 2,
+    kCompatibilityBridgeFieldNumber = 3,
+    kVersionFieldNumber = 1,
+  };
+  // string product = 2;
+  void clear_product() ;
+  const ::std::string& product() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_product(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_product();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_product();
+  void set_allocated_product(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_product() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_product(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_product();
+
+  public:
+  // string compatibility_bridge = 3;
+  void clear_compatibility_bridge() ;
+  const ::std::string& compatibility_bridge() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_compatibility_bridge(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_compatibility_bridge();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_compatibility_bridge();
+  void set_allocated_compatibility_bridge(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_compatibility_bridge() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_compatibility_bridge(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_compatibility_bridge();
+
+  public:
+  // uint32 version = 1;
+  void clear_version() ;
+  ::uint32_t version() const;
+  void set_version(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_version() const;
+  void _internal_set_version(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckProtocolInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 70,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckProtocolInfo& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr product_;
+    ::google::protobuf::internal::ArenaStringPtr compatibility_bridge_;
+    ::uint32_t version_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckProtocolInfo_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckError final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckError) */ {
+ public:
+  inline TypeDuckError() : TypeDuckError(nullptr) {}
+  ~TypeDuckError() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckError* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckError));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckError(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckError(const TypeDuckError& from) : TypeDuckError(nullptr, from) {}
+  inline TypeDuckError(TypeDuckError&& from) noexcept
+      : TypeDuckError(nullptr, ::std::move(from)) {}
+  inline TypeDuckError& operator=(const TypeDuckError& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckError& operator=(TypeDuckError&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckError& default_instance() {
+    return *reinterpret_cast<const TypeDuckError*>(
+        &_TypeDuckError_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 13;
+  friend void swap(TypeDuckError& a, TypeDuckError& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckError* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckError* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckError* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckError>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckError& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckError& from) { TypeDuckError::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckError* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckError"; }
+
+  explicit TypeDuckError(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckError(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckError& from);
+  TypeDuckError(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckError&& from) noexcept
+      : TypeDuckError(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 2,
+    kDetailFieldNumber = 4,
+    kCodeFieldNumber = 1,
+    kRecoverableFieldNumber = 3,
+  };
+  // string message = 2;
+  void clear_message() ;
+  const ::std::string& message() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_message();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_message();
+  void set_allocated_message(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_message() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_message(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_message();
+
+  public:
+  // string detail = 4;
+  void clear_detail() ;
+  const ::std::string& detail() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_detail(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_detail();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_detail();
+  void set_allocated_detail(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_detail() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_detail(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_detail();
+
+  public:
+  // .moqi.protocol.TypeDuckErrorCode code = 1;
+  void clear_code() ;
+  ::moqi::protocol::TypeDuckErrorCode code() const;
+  void set_code(::moqi::protocol::TypeDuckErrorCode value);
+
+  private:
+  ::moqi::protocol::TypeDuckErrorCode _internal_code() const;
+  void _internal_set_code(::moqi::protocol::TypeDuckErrorCode value);
+
+  public:
+  // bool recoverable = 3;
+  void clear_recoverable() ;
+  bool recoverable() const;
+  void set_recoverable(bool value);
+
+  private:
+  bool _internal_recoverable() const;
+  void _internal_set_recoverable(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckError)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 49,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckError& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    ::google::protobuf::internal::ArenaStringPtr detail_;
+    int code_;
+    bool recoverable_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckError_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckEngineHealth final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckEngineHealth) */ {
+ public:
+  inline TypeDuckEngineHealth() : TypeDuckEngineHealth(nullptr) {}
+  ~TypeDuckEngineHealth() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckEngineHealth* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckEngineHealth));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckEngineHealth(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckEngineHealth(const TypeDuckEngineHealth& from) : TypeDuckEngineHealth(nullptr, from) {}
+  inline TypeDuckEngineHealth(TypeDuckEngineHealth&& from) noexcept
+      : TypeDuckEngineHealth(nullptr, ::std::move(from)) {}
+  inline TypeDuckEngineHealth& operator=(const TypeDuckEngineHealth& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckEngineHealth& operator=(TypeDuckEngineHealth&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckEngineHealth& default_instance() {
+    return *reinterpret_cast<const TypeDuckEngineHealth*>(
+        &_TypeDuckEngineHealth_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(TypeDuckEngineHealth& a, TypeDuckEngineHealth& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckEngineHealth* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckEngineHealth* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckEngineHealth* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckEngineHealth>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckEngineHealth& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckEngineHealth& from) { TypeDuckEngineHealth::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckEngineHealth* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckEngineHealth"; }
+
+  explicit TypeDuckEngineHealth(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckEngineHealth(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckEngineHealth& from);
+  TypeDuckEngineHealth(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckEngineHealth&& from) noexcept
+      : TypeDuckEngineHealth(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kBackendNameFieldNumber = 2,
+    kMessageFieldNumber = 3,
+    kStatusFieldNumber = 1,
+    kRecoverableFieldNumber = 4,
+    kRestartCountFieldNumber = 5,
+  };
+  // string backend_name = 2;
+  void clear_backend_name() ;
+  const ::std::string& backend_name() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_backend_name(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_backend_name();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_backend_name();
+  void set_allocated_backend_name(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_backend_name() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_backend_name(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_backend_name();
+
+  public:
+  // string message = 3;
+  void clear_message() ;
+  const ::std::string& message() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_message();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_message();
+  void set_allocated_message(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_message() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_message(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_message();
+
+  public:
+  // .moqi.protocol.TypeDuckHealthStatus status = 1;
+  void clear_status() ;
+  ::moqi::protocol::TypeDuckHealthStatus status() const;
+  void set_status(::moqi::protocol::TypeDuckHealthStatus value);
+
+  private:
+  ::moqi::protocol::TypeDuckHealthStatus _internal_status() const;
+  void _internal_set_status(::moqi::protocol::TypeDuckHealthStatus value);
+
+  public:
+  // bool recoverable = 4;
+  void clear_recoverable() ;
+  bool recoverable() const;
+  void set_recoverable(bool value);
+
+  private:
+  bool _internal_recoverable() const;
+  void _internal_set_recoverable(bool value);
+
+  public:
+  // uint32 restart_count = 5;
+  void clear_restart_count() ;
+  ::uint32_t restart_count() const;
+  void set_restart_count(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_restart_count() const;
+  void _internal_set_restart_count(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckEngineHealth)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   0, 62,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckEngineHealth& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr backend_name_;
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    int status_;
+    bool recoverable_;
+    ::uint32_t restart_count_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckEngineHealth_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckEngineCapability final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckEngineCapability) */ {
+ public:
+  inline TypeDuckEngineCapability() : TypeDuckEngineCapability(nullptr) {}
+  ~TypeDuckEngineCapability() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckEngineCapability* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckEngineCapability));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckEngineCapability(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckEngineCapability(const TypeDuckEngineCapability& from) : TypeDuckEngineCapability(nullptr, from) {}
+  inline TypeDuckEngineCapability(TypeDuckEngineCapability&& from) noexcept
+      : TypeDuckEngineCapability(nullptr, ::std::move(from)) {}
+  inline TypeDuckEngineCapability& operator=(const TypeDuckEngineCapability& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckEngineCapability& operator=(TypeDuckEngineCapability&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckEngineCapability& default_instance() {
+    return *reinterpret_cast<const TypeDuckEngineCapability*>(
+        &_TypeDuckEngineCapability_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(TypeDuckEngineCapability& a, TypeDuckEngineCapability& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckEngineCapability* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckEngineCapability* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckEngineCapability* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckEngineCapability>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckEngineCapability& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckEngineCapability& from) { TypeDuckEngineCapability::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckEngineCapability* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckEngineCapability"; }
+
+  explicit TypeDuckEngineCapability(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckEngineCapability(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckEngineCapability& from);
+  TypeDuckEngineCapability(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckEngineCapability&& from) noexcept
+      : TypeDuckEngineCapability(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNameFieldNumber = 1,
+    kVersionFieldNumber = 3,
+    kDetailFieldNumber = 4,
+    kSupportedFieldNumber = 2,
+  };
+  // string name = 1;
+  void clear_name() ;
+  const ::std::string& name() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_name(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_name();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_name();
+  void set_allocated_name(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_name() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_name(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
+
+  public:
+  // string version = 3;
+  void clear_version() ;
+  const ::std::string& version() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_version(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_version();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_version();
+  void set_allocated_version(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_version() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_version(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_version();
+
+  public:
+  // string detail = 4;
+  void clear_detail() ;
+  const ::std::string& detail() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_detail(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_detail();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_detail();
+  void set_allocated_detail(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_detail() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_detail(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_detail();
+
+  public:
+  // bool supported = 2;
+  void clear_supported() ;
+  bool supported() const;
+  void set_supported(bool value);
+
+  private:
+  bool _internal_supported() const;
+  void _internal_set_supported(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckEngineCapability)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 64,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckEngineCapability& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr name_;
+    ::google::protobuf::internal::ArenaStringPtr version_;
+    ::google::protobuf::internal::ArenaStringPtr detail_;
+    bool supported_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckEngineCapability_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckDeployRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckDeployRequest) */ {
+ public:
+  inline TypeDuckDeployRequest() : TypeDuckDeployRequest(nullptr) {}
+  ~TypeDuckDeployRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckDeployRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckDeployRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckDeployRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckDeployRequest(const TypeDuckDeployRequest& from) : TypeDuckDeployRequest(nullptr, from) {}
+  inline TypeDuckDeployRequest(TypeDuckDeployRequest&& from) noexcept
+      : TypeDuckDeployRequest(nullptr, ::std::move(from)) {}
+  inline TypeDuckDeployRequest& operator=(const TypeDuckDeployRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckDeployRequest& operator=(TypeDuckDeployRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckDeployRequest& default_instance() {
+    return *reinterpret_cast<const TypeDuckDeployRequest*>(
+        &_TypeDuckDeployRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(TypeDuckDeployRequest& a, TypeDuckDeployRequest& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckDeployRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckDeployRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckDeployRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckDeployRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckDeployRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckDeployRequest& from) { TypeDuckDeployRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckDeployRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckDeployRequest"; }
+
+  explicit TypeDuckDeployRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckDeployRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckDeployRequest& from);
+  TypeDuckDeployRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckDeployRequest&& from) noexcept
+      : TypeDuckDeployRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRuntimePathFieldNumber = 1,
+    kSchemaIdFieldNumber = 2,
+    kForceFieldNumber = 3,
+  };
+  // string runtime_path = 1;
+  void clear_runtime_path() ;
+  const ::std::string& runtime_path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_runtime_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_runtime_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_runtime_path();
+  void set_allocated_runtime_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_runtime_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_runtime_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_runtime_path();
+
+  public:
+  // string schema_id = 2;
+  void clear_schema_id() ;
+  const ::std::string& schema_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_schema_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_schema_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_schema_id();
+  void set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_schema_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_schema_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_schema_id();
+
+  public:
+  // bool force = 3;
+  void clear_force() ;
+  bool force() const;
+  void set_force(bool value);
+
+  private:
+  bool _internal_force() const;
+  void _internal_set_force(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckDeployRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 65,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckDeployRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr runtime_path_;
+    ::google::protobuf::internal::ArenaStringPtr schema_id_;
+    bool force_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckDeployRequest_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckCandidatePage final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckCandidatePage) */ {
+ public:
+  inline TypeDuckCandidatePage() : TypeDuckCandidatePage(nullptr) {}
+  ~TypeDuckCandidatePage() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckCandidatePage* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckCandidatePage));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckCandidatePage(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckCandidatePage(const TypeDuckCandidatePage& from) : TypeDuckCandidatePage(nullptr, from) {}
+  inline TypeDuckCandidatePage(TypeDuckCandidatePage&& from) noexcept
+      : TypeDuckCandidatePage(nullptr, ::std::move(from)) {}
+  inline TypeDuckCandidatePage& operator=(const TypeDuckCandidatePage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckCandidatePage& operator=(TypeDuckCandidatePage&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckCandidatePage& default_instance() {
+    return *reinterpret_cast<const TypeDuckCandidatePage*>(
+        &_TypeDuckCandidatePage_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(TypeDuckCandidatePage& a, TypeDuckCandidatePage& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckCandidatePage* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckCandidatePage* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckCandidatePage* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckCandidatePage>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckCandidatePage& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckCandidatePage& from) { TypeDuckCandidatePage::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckCandidatePage* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckCandidatePage"; }
+
+  explicit TypeDuckCandidatePage(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckCandidatePage(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckCandidatePage& from);
+  TypeDuckCandidatePage(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckCandidatePage&& from) noexcept
+      : TypeDuckCandidatePage(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPageIndexFieldNumber = 1,
+    kPageSizeFieldNumber = 2,
+    kTotalCountFieldNumber = 3,
+    kHasPreviousFieldNumber = 4,
+    kHasNextFieldNumber = 5,
+  };
+  // uint32 page_index = 1;
+  void clear_page_index() ;
+  ::uint32_t page_index() const;
+  void set_page_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_index() const;
+  void _internal_set_page_index(::uint32_t value);
+
+  public:
+  // uint32 page_size = 2;
+  void clear_page_size() ;
+  ::uint32_t page_size() const;
+  void set_page_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_page_size() const;
+  void _internal_set_page_size(::uint32_t value);
+
+  public:
+  // uint32 total_count = 3;
+  void clear_total_count() ;
+  ::uint32_t total_count() const;
+  void set_total_count(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_total_count() const;
+  void _internal_set_total_count(::uint32_t value);
+
+  public:
+  // bool has_previous = 4;
+  void clear_has_previous() ;
+  bool has_previous() const;
+  void set_has_previous(bool value);
+
+  private:
+  bool _internal_has_previous() const;
+  void _internal_set_has_previous(bool value);
+
+  public:
+  // bool has_next = 5;
+  void clear_has_next() ;
+  bool has_next() const;
+  void set_has_next(bool value);
+
+  private:
+  bool _internal_has_next() const;
+  void _internal_set_has_next(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckCandidatePage)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckCandidatePage& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t page_index_;
+    ::uint32_t page_size_;
+    ::uint32_t total_count_;
+    bool has_previous_;
+    bool has_next_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckCandidatePage_class_data_;
 // -------------------------------------------------------------------
 
 class TrayNotification final : public ::google::protobuf::Message
@@ -314,7 +2958,7 @@ class TrayNotification final : public ::google::protobuf::Message
     return *reinterpret_cast<const TrayNotification*>(
         &_TrayNotification_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 17;
   friend void swap(TrayNotification& a, TrayNotification& b) { a.Swap(&b); }
   inline void Swap(TrayNotification* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -757,7 +3401,7 @@ class MessageWindow final : public ::google::protobuf::Message
     return *reinterpret_cast<const MessageWindow*>(
         &_MessageWindow_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 16;
   friend void swap(MessageWindow& a, MessageWindow& b) { a.Swap(&b); }
   inline void Swap(MessageWindow* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1572,9 +4216,61 @@ class CandidateEntry final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kTranslationsFieldNumber = 7,
+    kPromptsFieldNumber = 8,
     kTextFieldNumber = 1,
     kCommentFieldNumber = 2,
+    kIdFieldNumber = 3,
+    kInputCodeFieldNumber = 4,
+    kJyutpingFieldNumber = 5,
+    kRawLookupCommentFieldNumber = 6,
+    kSourceIndexFieldNumber = 9,
+    kSelectableFieldNumber = 10,
   };
+  // repeated string translations = 7;
+  int translations_size() const;
+  private:
+  int _internal_translations_size() const;
+
+  public:
+  void clear_translations() ;
+  const ::std::string& translations(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_translations(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_translations(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_translations();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_translations(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& translations() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_translations();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_translations() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_translations();
+
+  public:
+  // repeated string prompts = 8;
+  int prompts_size() const;
+  private:
+  int _internal_prompts_size() const;
+
+  public:
+  void clear_prompts() ;
+  const ::std::string& prompts(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_prompts(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_prompts(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_prompts();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_prompts(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& prompts() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_prompts();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_prompts() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_prompts();
+
+  public:
   // string text = 1;
   void clear_text() ;
   const ::std::string& text() const;
@@ -1605,12 +4301,94 @@ class CandidateEntry final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_comment();
 
   public:
+  // string id = 3;
+  void clear_id() ;
+  const ::std::string& id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_id();
+  void set_allocated_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
+
+  public:
+  // string input_code = 4;
+  void clear_input_code() ;
+  const ::std::string& input_code() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_input_code(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_input_code();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_input_code();
+  void set_allocated_input_code(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_input_code() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_input_code(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_input_code();
+
+  public:
+  // string jyutping = 5;
+  void clear_jyutping() ;
+  const ::std::string& jyutping() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_jyutping(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_jyutping();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_jyutping();
+  void set_allocated_jyutping(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_jyutping() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_jyutping(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_jyutping();
+
+  public:
+  // string raw_lookup_comment = 6;
+  void clear_raw_lookup_comment() ;
+  const ::std::string& raw_lookup_comment() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_raw_lookup_comment(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_raw_lookup_comment();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_raw_lookup_comment();
+  void set_allocated_raw_lookup_comment(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_raw_lookup_comment() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_raw_lookup_comment(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_raw_lookup_comment();
+
+  public:
+  // optional uint32 source_index = 9;
+  bool has_source_index() const;
+  void clear_source_index() ;
+  ::uint32_t source_index() const;
+  void set_source_index(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_source_index() const;
+  void _internal_set_source_index(::uint32_t value);
+
+  public:
+  // optional bool selectable = 10;
+  bool has_selectable() const;
+  void clear_selectable() ;
+  bool selectable() const;
+  void set_selectable(bool value);
+
+  private:
+  bool _internal_selectable() const;
+  void _internal_set_selectable(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:moqi.protocol.CandidateEntry)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 48,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
+                                   0, 113,
                                    2>
       _table_;
 
@@ -1631,8 +4409,16 @@ class CandidateEntry final : public ::google::protobuf::Message
         const CandidateEntry& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> translations_;
+    ::google::protobuf::RepeatedPtrField<::std::string> prompts_;
     ::google::protobuf::internal::ArenaStringPtr text_;
     ::google::protobuf::internal::ArenaStringPtr comment_;
+    ::google::protobuf::internal::ArenaStringPtr id_;
+    ::google::protobuf::internal::ArenaStringPtr input_code_;
+    ::google::protobuf::internal::ArenaStringPtr jyutping_;
+    ::google::protobuf::internal::ArenaStringPtr raw_lookup_comment_;
+    ::uint32_t source_index_;
+    bool selectable_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2004,7 +4790,7 @@ class AutoPairRule final : public ::google::protobuf::Message
     return *reinterpret_cast<const AutoPairRule*>(
         &_AutoPairRule_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(AutoPairRule& a, AutoPairRule& b) { a.Swap(&b); }
   inline void Swap(AutoPairRule* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2216,7 +5002,7 @@ class CustomizeUi final : public ::google::protobuf::Message
     return *reinterpret_cast<const CustomizeUi*>(
         &_CustomizeUi_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(CustomizeUi& a, CustomizeUi& b) { a.Swap(&b); }
   inline void Swap(CustomizeUi* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2661,7 +5447,7 @@ class ClientRequest final : public ::google::protobuf::Message
     return *reinterpret_cast<const ClientRequest*>(
         &_ClientRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 18;
   friend void swap(ClientRequest& a, ClientRequest& b) { a.Swap(&b); }
   inline void Swap(ClientRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2755,8 +5541,12 @@ class ClientRequest final : public ::google::protobuf::Message
     kPreservedKeyGuidFieldNumber = 20,
     kCompartmentGuidFieldNumber = 21,
     kClientIdFieldNumber = 23,
-    kCloudClipboardTextFieldNumber = 26,
     kKeyEventFieldNumber = 11,
+    kTypeduckProtocolFieldNumber = 27,
+    kTypeduckSettingsSnapshotFieldNumber = 28,
+    kTypeduckSettingsUpdateFieldNumber = 29,
+    kTypeduckDeployRequestFieldNumber = 30,
+    kTypeduckReconfigureRequestFieldNumber = 31,
     kSeqNumFieldNumber = 1,
     kMethodFieldNumber = 2,
     kIsWindows8AboveFieldNumber = 4,
@@ -2892,22 +5682,6 @@ class ClientRequest final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_client_id();
 
   public:
-  // optional string cloud_clipboard_text = 26;
-  bool has_cloud_clipboard_text() const;
-  void clear_cloud_clipboard_text() ;
-  const ::std::string& cloud_clipboard_text() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_cloud_clipboard_text(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_cloud_clipboard_text();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_cloud_clipboard_text();
-  void set_allocated_cloud_clipboard_text(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_cloud_clipboard_text() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_cloud_clipboard_text(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_cloud_clipboard_text();
-
-  public:
   // .moqi.protocol.KeyEvent key_event = 11;
   bool has_key_event() const;
   void clear_key_event() ;
@@ -2921,6 +5695,81 @@ class ClientRequest final : public ::google::protobuf::Message
   private:
   const ::moqi::protocol::KeyEvent& _internal_key_event() const;
   ::moqi::protocol::KeyEvent* PROTOBUF_NONNULL _internal_mutable_key_event();
+
+  public:
+  // optional .moqi.protocol.TypeDuckProtocolInfo typeduck_protocol = 27;
+  bool has_typeduck_protocol() const;
+  void clear_typeduck_protocol() ;
+  const ::moqi::protocol::TypeDuckProtocolInfo& typeduck_protocol() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE release_typeduck_protocol();
+  ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL mutable_typeduck_protocol();
+  void set_allocated_typeduck_protocol(::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_protocol(::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_protocol();
+
+  private:
+  const ::moqi::protocol::TypeDuckProtocolInfo& _internal_typeduck_protocol() const;
+  ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL _internal_mutable_typeduck_protocol();
+
+  public:
+  // optional .moqi.protocol.TypeDuckSettingsSnapshot typeduck_settings_snapshot = 28;
+  bool has_typeduck_settings_snapshot() const;
+  void clear_typeduck_settings_snapshot() ;
+  const ::moqi::protocol::TypeDuckSettingsSnapshot& typeduck_settings_snapshot() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE release_typeduck_settings_snapshot();
+  ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL mutable_typeduck_settings_snapshot();
+  void set_allocated_typeduck_settings_snapshot(::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_settings_snapshot(::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_settings_snapshot();
+
+  private:
+  const ::moqi::protocol::TypeDuckSettingsSnapshot& _internal_typeduck_settings_snapshot() const;
+  ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL _internal_mutable_typeduck_settings_snapshot();
+
+  public:
+  // optional .moqi.protocol.TypeDuckSettingsUpdate typeduck_settings_update = 29;
+  bool has_typeduck_settings_update() const;
+  void clear_typeduck_settings_update() ;
+  const ::moqi::protocol::TypeDuckSettingsUpdate& typeduck_settings_update() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE release_typeduck_settings_update();
+  ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL mutable_typeduck_settings_update();
+  void set_allocated_typeduck_settings_update(::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_settings_update(::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_settings_update();
+
+  private:
+  const ::moqi::protocol::TypeDuckSettingsUpdate& _internal_typeduck_settings_update() const;
+  ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL _internal_mutable_typeduck_settings_update();
+
+  public:
+  // optional .moqi.protocol.TypeDuckDeployRequest typeduck_deploy_request = 30;
+  bool has_typeduck_deploy_request() const;
+  void clear_typeduck_deploy_request() ;
+  const ::moqi::protocol::TypeDuckDeployRequest& typeduck_deploy_request() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE release_typeduck_deploy_request();
+  ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NONNULL mutable_typeduck_deploy_request();
+  void set_allocated_typeduck_deploy_request(::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_deploy_request(::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_deploy_request();
+
+  private:
+  const ::moqi::protocol::TypeDuckDeployRequest& _internal_typeduck_deploy_request() const;
+  ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NONNULL _internal_mutable_typeduck_deploy_request();
+
+  public:
+  // optional .moqi.protocol.TypeDuckReconfigureRequest typeduck_reconfigure_request = 31;
+  bool has_typeduck_reconfigure_request() const;
+  void clear_typeduck_reconfigure_request() ;
+  const ::moqi::protocol::TypeDuckReconfigureRequest& typeduck_reconfigure_request() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE release_typeduck_reconfigure_request();
+  ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NONNULL mutable_typeduck_reconfigure_request();
+  void set_allocated_typeduck_reconfigure_request(::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_reconfigure_request(::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_reconfigure_request();
+
+  private:
+  const ::moqi::protocol::TypeDuckReconfigureRequest& _internal_typeduck_reconfigure_request() const;
+  ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NONNULL _internal_mutable_typeduck_reconfigure_request();
 
   public:
   // uint32 seq_num = 1;
@@ -3100,8 +5949,8 @@ class ClientRequest final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<5, 26,
-                                   1, 168,
+  static const ::google::protobuf::internal::TcParseTable<5, 30,
+                                   6, 148,
                                    2>
       _table_;
 
@@ -3129,8 +5978,12 @@ class ClientRequest final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr preserved_key_guid_;
     ::google::protobuf::internal::ArenaStringPtr compartment_guid_;
     ::google::protobuf::internal::ArenaStringPtr client_id_;
-    ::google::protobuf::internal::ArenaStringPtr cloud_clipboard_text_;
     ::moqi::protocol::KeyEvent* PROTOBUF_NULLABLE key_event_;
+    ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE typeduck_protocol_;
+    ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE typeduck_settings_snapshot_;
+    ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE typeduck_settings_update_;
+    ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE typeduck_deploy_request_;
+    ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE typeduck_reconfigure_request_;
     ::uint32_t seq_num_;
     int method_;
     bool is_windows8_above_;
@@ -3212,7 +6065,7 @@ class ServerResponse final : public ::google::protobuf::Message
     return *reinterpret_cast<const ServerResponse*>(
         &_ServerResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 19;
   friend void swap(ServerResponse& a, ServerResponse& b) { a.Swap(&b); }
   inline void Swap(ServerResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3315,6 +6168,10 @@ class ServerResponse final : public ::google::protobuf::Message
     kCustomizeUiFieldNumber = 16,
     kShowMessageFieldNumber = 20,
     kTrayNotificationFieldNumber = 26,
+    kTypeduckProtocolFieldNumber = 28,
+    kTypeduckCandidatePageFieldNumber = 29,
+    kTypeduckSettingsSnapshotFieldNumber = 30,
+    kTypeduckSettingsUpdateFieldNumber = 31,
     kSeqNumFieldNumber = 2,
     kReturnValueFieldNumber = 4,
     kCursorPosFieldNumber = 10,
@@ -3326,6 +6183,9 @@ class ServerResponse final : public ::google::protobuf::Message
     kHideMessageFieldNumber = 21,
     kOpenKeyboardFieldNumber = 22,
     kSelEndFieldNumber = 14,
+    kTypeduckCapabilitiesFieldNumber = 32,
+    kTypeduckEngineHealthFieldNumber = 33,
+    kTypeduckErrorFieldNumber = 34,
   };
   // repeated .moqi.protocol.MenuItem menu_items = 5;
   int menu_items_size() const;
@@ -3599,6 +6459,66 @@ class ServerResponse final : public ::google::protobuf::Message
   ::moqi::protocol::TrayNotification* PROTOBUF_NONNULL _internal_mutable_tray_notification();
 
   public:
+  // optional .moqi.protocol.TypeDuckProtocolInfo typeduck_protocol = 28;
+  bool has_typeduck_protocol() const;
+  void clear_typeduck_protocol() ;
+  const ::moqi::protocol::TypeDuckProtocolInfo& typeduck_protocol() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE release_typeduck_protocol();
+  ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL mutable_typeduck_protocol();
+  void set_allocated_typeduck_protocol(::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_protocol(::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_protocol();
+
+  private:
+  const ::moqi::protocol::TypeDuckProtocolInfo& _internal_typeduck_protocol() const;
+  ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL _internal_mutable_typeduck_protocol();
+
+  public:
+  // optional .moqi.protocol.TypeDuckCandidatePage typeduck_candidate_page = 29;
+  bool has_typeduck_candidate_page() const;
+  void clear_typeduck_candidate_page() ;
+  const ::moqi::protocol::TypeDuckCandidatePage& typeduck_candidate_page() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE release_typeduck_candidate_page();
+  ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NONNULL mutable_typeduck_candidate_page();
+  void set_allocated_typeduck_candidate_page(::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_candidate_page(::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_candidate_page();
+
+  private:
+  const ::moqi::protocol::TypeDuckCandidatePage& _internal_typeduck_candidate_page() const;
+  ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NONNULL _internal_mutable_typeduck_candidate_page();
+
+  public:
+  // optional .moqi.protocol.TypeDuckSettingsSnapshot typeduck_settings_snapshot = 30;
+  bool has_typeduck_settings_snapshot() const;
+  void clear_typeduck_settings_snapshot() ;
+  const ::moqi::protocol::TypeDuckSettingsSnapshot& typeduck_settings_snapshot() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE release_typeduck_settings_snapshot();
+  ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL mutable_typeduck_settings_snapshot();
+  void set_allocated_typeduck_settings_snapshot(::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_settings_snapshot(::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_settings_snapshot();
+
+  private:
+  const ::moqi::protocol::TypeDuckSettingsSnapshot& _internal_typeduck_settings_snapshot() const;
+  ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL _internal_mutable_typeduck_settings_snapshot();
+
+  public:
+  // optional .moqi.protocol.TypeDuckSettingsUpdate typeduck_settings_update = 31;
+  bool has_typeduck_settings_update() const;
+  void clear_typeduck_settings_update() ;
+  const ::moqi::protocol::TypeDuckSettingsUpdate& typeduck_settings_update() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE release_typeduck_settings_update();
+  ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL mutable_typeduck_settings_update();
+  void set_allocated_typeduck_settings_update(::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_settings_update(::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_settings_update();
+
+  private:
+  const ::moqi::protocol::TypeDuckSettingsUpdate& _internal_typeduck_settings_update() const;
+  ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL _internal_mutable_typeduck_settings_update();
+
+  public:
   // uint32 seq_num = 2;
   void clear_seq_num() ;
   ::uint32_t seq_num() const;
@@ -3710,13 +6630,60 @@ class ServerResponse final : public ::google::protobuf::Message
   void _internal_set_sel_end(::int32_t value);
 
   public:
+  // repeated .moqi.protocol.TypeDuckEngineCapability typeduck_capabilities = 32;
+  int typeduck_capabilities_size() const;
+  private:
+  int _internal_typeduck_capabilities_size() const;
+
+  public:
+  void clear_typeduck_capabilities() ;
+  ::moqi::protocol::TypeDuckEngineCapability* PROTOBUF_NONNULL mutable_typeduck_capabilities(int index);
+  ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>* PROTOBUF_NONNULL mutable_typeduck_capabilities();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>& _internal_typeduck_capabilities() const;
+  ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>* PROTOBUF_NONNULL _internal_mutable_typeduck_capabilities();
+  public:
+  const ::moqi::protocol::TypeDuckEngineCapability& typeduck_capabilities(int index) const;
+  ::moqi::protocol::TypeDuckEngineCapability* PROTOBUF_NONNULL add_typeduck_capabilities();
+  const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>& typeduck_capabilities() const;
+  // optional .moqi.protocol.TypeDuckEngineHealth typeduck_engine_health = 33;
+  bool has_typeduck_engine_health() const;
+  void clear_typeduck_engine_health() ;
+  const ::moqi::protocol::TypeDuckEngineHealth& typeduck_engine_health() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE release_typeduck_engine_health();
+  ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NONNULL mutable_typeduck_engine_health();
+  void set_allocated_typeduck_engine_health(::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_engine_health(::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_engine_health();
+
+  private:
+  const ::moqi::protocol::TypeDuckEngineHealth& _internal_typeduck_engine_health() const;
+  ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NONNULL _internal_mutable_typeduck_engine_health();
+
+  public:
+  // optional .moqi.protocol.TypeDuckError typeduck_error = 34;
+  bool has_typeduck_error() const;
+  void clear_typeduck_error() ;
+  const ::moqi::protocol::TypeDuckError& typeduck_error() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE release_typeduck_error();
+  ::moqi::protocol::TypeDuckError* PROTOBUF_NONNULL mutable_typeduck_error();
+  void set_allocated_typeduck_error(::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_error(::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_error();
+
+  private:
+  const ::moqi::protocol::TypeDuckError& _internal_typeduck_error() const;
+  ::moqi::protocol::TypeDuckError* PROTOBUF_NONNULL _internal_mutable_typeduck_error();
+
+  public:
   // @@protoc_insertion_point(class_scope:moqi.protocol.ServerResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<5, 27,
-                                   8, 165,
-                                   2>
+  static const ::google::protobuf::internal::TcParseTable<5, 34,
+                                   15, 173,
+                                   7>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -3734,7 +6701,7 @@ class ServerResponse final : public ::google::protobuf::Message
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
         const ServerResponse& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::HasBits<2> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::moqi::protocol::MenuItem > menu_items_;
     ::google::protobuf::RepeatedPtrField<::std::string> candidate_list_;
@@ -3752,6 +6719,10 @@ class ServerResponse final : public ::google::protobuf::Message
     ::moqi::protocol::CustomizeUi* PROTOBUF_NULLABLE customize_ui_;
     ::moqi::protocol::MessageWindow* PROTOBUF_NULLABLE show_message_;
     ::moqi::protocol::TrayNotification* PROTOBUF_NULLABLE tray_notification_;
+    ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE typeduck_protocol_;
+    ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE typeduck_candidate_page_;
+    ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE typeduck_settings_snapshot_;
+    ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE typeduck_settings_update_;
     ::uint32_t seq_num_;
     ::int32_t return_value_;
     ::int32_t cursor_pos_;
@@ -3763,6 +6734,9 @@ class ServerResponse final : public ::google::protobuf::Message
     bool hide_message_;
     bool open_keyboard_;
     ::int32_t sel_end_;
+    ::google::protobuf::RepeatedPtrField< ::moqi::protocol::TypeDuckEngineCapability > typeduck_capabilities_;
+    ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE typeduck_engine_health_;
+    ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE typeduck_error_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4708,7 +7682,7 @@ inline void CandidateEntry::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000001U);
+                  0x00000004U);
 }
 inline const ::std::string& CandidateEntry::text() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -4718,13 +7692,13 @@ inline const ::std::string& CandidateEntry::text() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void CandidateEntry::set_text(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   _impl_.text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.text)
 }
 inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_text()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   ::std::string* _s = _internal_mutable_text();
   // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.text)
   return _s;
@@ -4744,10 +7718,10 @@ inline ::std::string* PROTOBUF_NONNULL CandidateEntry::_internal_mutable_text() 
 inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:moqi.protocol.CandidateEntry.text)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   auto* released = _impl_.text_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.text_.Set("", GetArena());
@@ -4757,9 +7731,9 @@ inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_text() {
 inline void CandidateEntry::set_allocated_text(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   }
   _impl_.text_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.text_.IsDefault()) {
@@ -4773,7 +7747,7 @@ inline void CandidateEntry::clear_comment() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.comment_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000008U);
 }
 inline const ::std::string& CandidateEntry::comment() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -4783,13 +7757,13 @@ inline const ::std::string& CandidateEntry::comment() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void CandidateEntry::set_comment(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   _impl_.comment_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.comment)
 }
 inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_comment()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::std::string* _s = _internal_mutable_comment();
   // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.comment)
   return _s;
@@ -4809,10 +7783,10 @@ inline ::std::string* PROTOBUF_NONNULL CandidateEntry::_internal_mutable_comment
 inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_comment() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:moqi.protocol.CandidateEntry.comment)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   auto* released = _impl_.comment_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.comment_.Set("", GetArena());
@@ -4822,15 +7796,3206 @@ inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_comment() {
 inline void CandidateEntry::set_allocated_comment(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   _impl_.comment_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.comment_.IsDefault()) {
     _impl_.comment_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:moqi.protocol.CandidateEntry.comment)
+}
+
+// string id = 3;
+inline void CandidateEntry::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& CandidateEntry::id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.id)
+  return _internal_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CandidateEntry::set_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.id)
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_id();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.id)
+  return _s;
+}
+inline const ::std::string& CandidateEntry::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_.Get();
+}
+inline void CandidateEntry::_internal_set_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::_internal_mutable_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.CandidateEntry.id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CandidateEntry::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.CandidateEntry.id)
+}
+
+// string input_code = 4;
+inline void CandidateEntry::clear_input_code() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.input_code_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline const ::std::string& CandidateEntry::input_code() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.input_code)
+  return _internal_input_code();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CandidateEntry::set_input_code(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  _impl_.input_code_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.input_code)
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_input_code()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::std::string* _s = _internal_mutable_input_code();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.input_code)
+  return _s;
+}
+inline const ::std::string& CandidateEntry::_internal_input_code() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.input_code_.Get();
+}
+inline void CandidateEntry::_internal_set_input_code(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.input_code_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::_internal_mutable_input_code() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.input_code_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_input_code() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.CandidateEntry.input_code)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  auto* released = _impl_.input_code_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.input_code_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CandidateEntry::set_allocated_input_code(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  _impl_.input_code_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.input_code_.IsDefault()) {
+    _impl_.input_code_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.CandidateEntry.input_code)
+}
+
+// string jyutping = 5;
+inline void CandidateEntry::clear_jyutping() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.jyutping_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline const ::std::string& CandidateEntry::jyutping() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.jyutping)
+  return _internal_jyutping();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CandidateEntry::set_jyutping(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  _impl_.jyutping_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.jyutping)
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_jyutping()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ::std::string* _s = _internal_mutable_jyutping();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.jyutping)
+  return _s;
+}
+inline const ::std::string& CandidateEntry::_internal_jyutping() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.jyutping_.Get();
+}
+inline void CandidateEntry::_internal_set_jyutping(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.jyutping_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::_internal_mutable_jyutping() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.jyutping_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_jyutping() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.CandidateEntry.jyutping)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  auto* released = _impl_.jyutping_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.jyutping_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CandidateEntry::set_allocated_jyutping(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  }
+  _impl_.jyutping_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.jyutping_.IsDefault()) {
+    _impl_.jyutping_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.CandidateEntry.jyutping)
+}
+
+// string raw_lookup_comment = 6;
+inline void CandidateEntry::clear_raw_lookup_comment() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.raw_lookup_comment_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline const ::std::string& CandidateEntry::raw_lookup_comment() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.raw_lookup_comment)
+  return _internal_raw_lookup_comment();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CandidateEntry::set_raw_lookup_comment(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  _impl_.raw_lookup_comment_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.raw_lookup_comment)
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_raw_lookup_comment()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ::std::string* _s = _internal_mutable_raw_lookup_comment();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.raw_lookup_comment)
+  return _s;
+}
+inline const ::std::string& CandidateEntry::_internal_raw_lookup_comment() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.raw_lookup_comment_.Get();
+}
+inline void CandidateEntry::_internal_set_raw_lookup_comment(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.raw_lookup_comment_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::_internal_mutable_raw_lookup_comment() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.raw_lookup_comment_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CandidateEntry::release_raw_lookup_comment() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.CandidateEntry.raw_lookup_comment)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  auto* released = _impl_.raw_lookup_comment_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.raw_lookup_comment_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CandidateEntry::set_allocated_raw_lookup_comment(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  }
+  _impl_.raw_lookup_comment_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.raw_lookup_comment_.IsDefault()) {
+    _impl_.raw_lookup_comment_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.CandidateEntry.raw_lookup_comment)
+}
+
+// repeated string translations = 7;
+inline int CandidateEntry::_internal_translations_size() const {
+  return _internal_translations().size();
+}
+inline int CandidateEntry::translations_size() const {
+  return _internal_translations_size();
+}
+inline void CandidateEntry::clear_translations() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.translations_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::add_translations()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_translations()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:moqi.protocol.CandidateEntry.translations)
+  return _s;
+}
+inline const ::std::string& CandidateEntry::translations(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.translations)
+  return _internal_translations().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_translations(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.translations)
+  return _internal_mutable_translations()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void CandidateEntry::set_translations(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_translations()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.translations)
+}
+template <typename Arg_, typename... Args_>
+inline void CandidateEntry::add_translations(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_translations(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:moqi.protocol.CandidateEntry.translations)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& CandidateEntry::translations()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moqi.protocol.CandidateEntry.translations)
+  return _internal_translations();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CandidateEntry::mutable_translations() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:moqi.protocol.CandidateEntry.translations)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_translations();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+CandidateEntry::_internal_translations() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.translations_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CandidateEntry::_internal_mutable_translations() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.translations_;
+}
+
+// repeated string prompts = 8;
+inline int CandidateEntry::_internal_prompts_size() const {
+  return _internal_prompts().size();
+}
+inline int CandidateEntry::prompts_size() const {
+  return _internal_prompts_size();
+}
+inline void CandidateEntry::clear_prompts() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.prompts_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::add_prompts()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_prompts()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add_mutable:moqi.protocol.CandidateEntry.prompts)
+  return _s;
+}
+inline const ::std::string& CandidateEntry::prompts(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.prompts)
+  return _internal_prompts().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL CandidateEntry::mutable_prompts(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.CandidateEntry.prompts)
+  return _internal_mutable_prompts()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void CandidateEntry::set_prompts(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_prompts()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.prompts)
+}
+template <typename Arg_, typename... Args_>
+inline void CandidateEntry::add_prompts(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_prompts(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:moqi.protocol.CandidateEntry.prompts)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& CandidateEntry::prompts()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moqi.protocol.CandidateEntry.prompts)
+  return _internal_prompts();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CandidateEntry::mutable_prompts() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:moqi.protocol.CandidateEntry.prompts)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_prompts();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+CandidateEntry::_internal_prompts() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.prompts_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CandidateEntry::_internal_mutable_prompts() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.prompts_;
+}
+
+// optional uint32 source_index = 9;
+inline bool CandidateEntry::has_source_index() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
+  return value;
+}
+inline void CandidateEntry::clear_source_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_index_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline ::uint32_t CandidateEntry::source_index() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.source_index)
+  return _internal_source_index();
+}
+inline void CandidateEntry::set_source_index(::uint32_t value) {
+  _internal_set_source_index(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.source_index)
+}
+inline ::uint32_t CandidateEntry::_internal_source_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_index_;
+}
+inline void CandidateEntry::_internal_set_source_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_index_ = value;
+}
+
+// optional bool selectable = 10;
+inline bool CandidateEntry::has_selectable() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000200U);
+  return value;
+}
+inline void CandidateEntry::clear_selectable() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selectable_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline bool CandidateEntry::selectable() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.CandidateEntry.selectable)
+  return _internal_selectable();
+}
+inline void CandidateEntry::set_selectable(bool value) {
+  _internal_set_selectable(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.CandidateEntry.selectable)
+}
+inline bool CandidateEntry::_internal_selectable() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.selectable_;
+}
+inline void CandidateEntry::_internal_set_selectable(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selectable_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckCandidatePage
+
+// uint32 page_index = 1;
+inline void TypeDuckCandidatePage::clear_page_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::uint32_t TypeDuckCandidatePage::page_index() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckCandidatePage.page_index)
+  return _internal_page_index();
+}
+inline void TypeDuckCandidatePage::set_page_index(::uint32_t value) {
+  _internal_set_page_index(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckCandidatePage.page_index)
+}
+inline ::uint32_t TypeDuckCandidatePage::_internal_page_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_index_;
+}
+inline void TypeDuckCandidatePage::_internal_set_page_index(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_index_ = value;
+}
+
+// uint32 page_size = 2;
+inline void TypeDuckCandidatePage::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::uint32_t TypeDuckCandidatePage::page_size() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckCandidatePage.page_size)
+  return _internal_page_size();
+}
+inline void TypeDuckCandidatePage::set_page_size(::uint32_t value) {
+  _internal_set_page_size(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckCandidatePage.page_size)
+}
+inline ::uint32_t TypeDuckCandidatePage::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void TypeDuckCandidatePage::_internal_set_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
+}
+
+// uint32 total_count = 3;
+inline void TypeDuckCandidatePage::clear_total_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_count_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::uint32_t TypeDuckCandidatePage::total_count() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckCandidatePage.total_count)
+  return _internal_total_count();
+}
+inline void TypeDuckCandidatePage::set_total_count(::uint32_t value) {
+  _internal_set_total_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckCandidatePage.total_count)
+}
+inline ::uint32_t TypeDuckCandidatePage::_internal_total_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_count_;
+}
+inline void TypeDuckCandidatePage::_internal_set_total_count(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_count_ = value;
+}
+
+// bool has_previous = 4;
+inline void TypeDuckCandidatePage::clear_has_previous() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_previous_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline bool TypeDuckCandidatePage::has_previous() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckCandidatePage.has_previous)
+  return _internal_has_previous();
+}
+inline void TypeDuckCandidatePage::set_has_previous(bool value) {
+  _internal_set_has_previous(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckCandidatePage.has_previous)
+}
+inline bool TypeDuckCandidatePage::_internal_has_previous() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.has_previous_;
+}
+inline void TypeDuckCandidatePage::_internal_set_has_previous(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_previous_ = value;
+}
+
+// bool has_next = 5;
+inline void TypeDuckCandidatePage::clear_has_next() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_next_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline bool TypeDuckCandidatePage::has_next() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckCandidatePage.has_next)
+  return _internal_has_next();
+}
+inline void TypeDuckCandidatePage::set_has_next(bool value) {
+  _internal_set_has_next(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckCandidatePage.has_next)
+}
+inline bool TypeDuckCandidatePage::_internal_has_next() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.has_next_;
+}
+inline void TypeDuckCandidatePage::_internal_set_has_next(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_next_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckProtocolInfo
+
+// uint32 version = 1;
+inline void TypeDuckProtocolInfo::clear_version() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.version_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::uint32_t TypeDuckProtocolInfo::version() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckProtocolInfo.version)
+  return _internal_version();
+}
+inline void TypeDuckProtocolInfo::set_version(::uint32_t value) {
+  _internal_set_version(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckProtocolInfo.version)
+}
+inline ::uint32_t TypeDuckProtocolInfo::_internal_version() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.version_;
+}
+inline void TypeDuckProtocolInfo::_internal_set_version(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.version_ = value;
+}
+
+// string product = 2;
+inline void TypeDuckProtocolInfo::clear_product() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.product_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckProtocolInfo::product() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckProtocolInfo.product)
+  return _internal_product();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckProtocolInfo::set_product(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.product_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckProtocolInfo.product)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckProtocolInfo::mutable_product()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_product();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckProtocolInfo.product)
+  return _s;
+}
+inline const ::std::string& TypeDuckProtocolInfo::_internal_product() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.product_.Get();
+}
+inline void TypeDuckProtocolInfo::_internal_set_product(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.product_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckProtocolInfo::_internal_mutable_product() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.product_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckProtocolInfo::release_product() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckProtocolInfo.product)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.product_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.product_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckProtocolInfo::set_allocated_product(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.product_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.product_.IsDefault()) {
+    _impl_.product_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckProtocolInfo.product)
+}
+
+// string compatibility_bridge = 3;
+inline void TypeDuckProtocolInfo::clear_compatibility_bridge() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.compatibility_bridge_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckProtocolInfo::compatibility_bridge() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckProtocolInfo.compatibility_bridge)
+  return _internal_compatibility_bridge();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckProtocolInfo::set_compatibility_bridge(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.compatibility_bridge_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckProtocolInfo.compatibility_bridge)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckProtocolInfo::mutable_compatibility_bridge()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_compatibility_bridge();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckProtocolInfo.compatibility_bridge)
+  return _s;
+}
+inline const ::std::string& TypeDuckProtocolInfo::_internal_compatibility_bridge() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.compatibility_bridge_.Get();
+}
+inline void TypeDuckProtocolInfo::_internal_set_compatibility_bridge(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.compatibility_bridge_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckProtocolInfo::_internal_mutable_compatibility_bridge() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.compatibility_bridge_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckProtocolInfo::release_compatibility_bridge() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckProtocolInfo.compatibility_bridge)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.compatibility_bridge_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.compatibility_bridge_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckProtocolInfo::set_allocated_compatibility_bridge(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.compatibility_bridge_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.compatibility_bridge_.IsDefault()) {
+    _impl_.compatibility_bridge_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckProtocolInfo.compatibility_bridge)
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckSettingsSnapshot
+
+// string language = 1;
+inline void TypeDuckSettingsSnapshot::clear_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.language_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::language() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.language)
+  return _internal_language();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_language(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.language_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.language)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_language()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_language();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.language)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_language() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.language_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_language(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.language_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.language_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.language)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.language_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.language_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_language(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.language_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.language_.IsDefault()) {
+    _impl_.language_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.language)
+}
+
+// string schema_id = 2;
+inline void TypeDuckSettingsSnapshot::clear_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::schema_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.schema_id)
+  return _internal_schema_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_schema_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.schema_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.schema_id)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_schema_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_schema_id();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.schema_id)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_schema_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.schema_id_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_schema_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.schema_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.schema_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.schema_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.schema_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.schema_id_.IsDefault()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.schema_id)
+}
+
+// string display_language = 3;
+inline void TypeDuckSettingsSnapshot::clear_display_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.display_language_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::display_language() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.display_language)
+  return _internal_display_language();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_display_language(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.display_language_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.display_language)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_display_language()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_display_language();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.display_language)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_display_language() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.display_language_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_display_language(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.display_language_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_display_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.display_language_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_display_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.display_language)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.display_language_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.display_language_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_display_language(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.display_language_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.display_language_.IsDefault()) {
+    _impl_.display_language_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.display_language)
+}
+
+// bool ascii_mode = 4;
+inline void TypeDuckSettingsSnapshot::clear_ascii_mode() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.ascii_mode_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline bool TypeDuckSettingsSnapshot::ascii_mode() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.ascii_mode)
+  return _internal_ascii_mode();
+}
+inline void TypeDuckSettingsSnapshot::set_ascii_mode(bool value) {
+  _internal_set_ascii_mode(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.ascii_mode)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_ascii_mode() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.ascii_mode_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_ascii_mode(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.ascii_mode_ = value;
+}
+
+// bool traditional_hong_kong = 5;
+inline void TypeDuckSettingsSnapshot::clear_traditional_hong_kong() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.traditional_hong_kong_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000400U);
+}
+inline bool TypeDuckSettingsSnapshot::traditional_hong_kong() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.traditional_hong_kong)
+  return _internal_traditional_hong_kong();
+}
+inline void TypeDuckSettingsSnapshot::set_traditional_hong_kong(bool value) {
+  _internal_set_traditional_hong_kong(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.traditional_hong_kong)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_traditional_hong_kong() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.traditional_hong_kong_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_traditional_hong_kong(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.traditional_hong_kong_ = value;
+}
+
+// uint32 candidate_page_size = 6;
+inline void TypeDuckSettingsSnapshot::clear_candidate_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.candidate_page_size_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline ::uint32_t TypeDuckSettingsSnapshot::candidate_page_size() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.candidate_page_size)
+  return _internal_candidate_page_size();
+}
+inline void TypeDuckSettingsSnapshot::set_candidate_page_size(::uint32_t value) {
+  _internal_set_candidate_page_size(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.candidate_page_size)
+}
+inline ::uint32_t TypeDuckSettingsSnapshot::_internal_candidate_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.candidate_page_size_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_candidate_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.candidate_page_size_ = value;
+}
+
+// repeated string display_languages = 20;
+inline int TypeDuckSettingsSnapshot::_internal_display_languages_size() const {
+  return _internal_display_languages().size();
+}
+inline int TypeDuckSettingsSnapshot::display_languages_size() const {
+  return _internal_display_languages_size();
+}
+inline void TypeDuckSettingsSnapshot::clear_display_languages() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.display_languages_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::add_display_languages()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_display_languages()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::display_languages(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+  return _internal_display_languages().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_display_languages(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+  return _internal_mutable_display_languages()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void TypeDuckSettingsSnapshot::set_display_languages(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_display_languages()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+}
+template <typename Arg_, typename... Args_>
+inline void TypeDuckSettingsSnapshot::add_display_languages(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_display_languages(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& TypeDuckSettingsSnapshot::display_languages()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+  return _internal_display_languages();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+TypeDuckSettingsSnapshot::mutable_display_languages() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:moqi.protocol.TypeDuckSettingsSnapshot.display_languages)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_display_languages();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+TypeDuckSettingsSnapshot::_internal_display_languages() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.display_languages_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+TypeDuckSettingsSnapshot::_internal_mutable_display_languages() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.display_languages_;
+}
+
+// string main_language = 21;
+inline void TypeDuckSettingsSnapshot::clear_main_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.main_language_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::main_language() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.main_language)
+  return _internal_main_language();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_main_language(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.main_language_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.main_language)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_main_language()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_main_language();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.main_language)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_main_language() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.main_language_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_main_language(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.main_language_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_main_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.main_language_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_main_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.main_language)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.main_language_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.main_language_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_main_language(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.main_language_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.main_language_.IsDefault()) {
+    _impl_.main_language_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.main_language)
+}
+
+// uint32 page_size = 22;
+inline void TypeDuckSettingsSnapshot::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00002000U);
+}
+inline ::uint32_t TypeDuckSettingsSnapshot::page_size() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.page_size)
+  return _internal_page_size();
+}
+inline void TypeDuckSettingsSnapshot::set_page_size(::uint32_t value) {
+  _internal_set_page_size(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.page_size)
+}
+inline ::uint32_t TypeDuckSettingsSnapshot::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
+}
+
+// bool is_hei_typeface = 23;
+inline void TypeDuckSettingsSnapshot::clear_is_hei_typeface() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_hei_typeface_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000800U);
+}
+inline bool TypeDuckSettingsSnapshot::is_hei_typeface() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.is_hei_typeface)
+  return _internal_is_hei_typeface();
+}
+inline void TypeDuckSettingsSnapshot::set_is_hei_typeface(bool value) {
+  _internal_set_is_hei_typeface(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.is_hei_typeface)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_is_hei_typeface() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_hei_typeface_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_is_hei_typeface(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_hei_typeface_ = value;
+}
+
+// string show_romanization = 24;
+inline void TypeDuckSettingsSnapshot::clear_show_romanization() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_romanization_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::show_romanization() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.show_romanization)
+  return _internal_show_romanization();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_show_romanization(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  _impl_.show_romanization_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.show_romanization)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_show_romanization()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::std::string* _s = _internal_mutable_show_romanization();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.show_romanization)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_show_romanization() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.show_romanization_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_show_romanization(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_romanization_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_show_romanization() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.show_romanization_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_show_romanization() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.show_romanization)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  auto* released = _impl_.show_romanization_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.show_romanization_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_show_romanization(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  _impl_.show_romanization_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.show_romanization_.IsDefault()) {
+    _impl_.show_romanization_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.show_romanization)
+}
+
+// bool enable_completion = 25;
+inline void TypeDuckSettingsSnapshot::clear_enable_completion() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_completion_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00001000U);
+}
+inline bool TypeDuckSettingsSnapshot::enable_completion() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.enable_completion)
+  return _internal_enable_completion();
+}
+inline void TypeDuckSettingsSnapshot::set_enable_completion(bool value) {
+  _internal_set_enable_completion(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.enable_completion)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_enable_completion() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_completion_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_enable_completion(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_completion_ = value;
+}
+
+// bool enable_correction = 26;
+inline void TypeDuckSettingsSnapshot::clear_enable_correction() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_correction_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00004000U);
+}
+inline bool TypeDuckSettingsSnapshot::enable_correction() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.enable_correction)
+  return _internal_enable_correction();
+}
+inline void TypeDuckSettingsSnapshot::set_enable_correction(bool value) {
+  _internal_set_enable_correction(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.enable_correction)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_enable_correction() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_correction_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_enable_correction(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_correction_ = value;
+}
+
+// bool enable_sentence = 27;
+inline void TypeDuckSettingsSnapshot::clear_enable_sentence() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_sentence_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00008000U);
+}
+inline bool TypeDuckSettingsSnapshot::enable_sentence() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.enable_sentence)
+  return _internal_enable_sentence();
+}
+inline void TypeDuckSettingsSnapshot::set_enable_sentence(bool value) {
+  _internal_set_enable_sentence(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.enable_sentence)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_enable_sentence() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_sentence_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_enable_sentence(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_sentence_ = value;
+}
+
+// bool enable_learning = 28;
+inline void TypeDuckSettingsSnapshot::clear_enable_learning() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_learning_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00010000U);
+}
+inline bool TypeDuckSettingsSnapshot::enable_learning() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.enable_learning)
+  return _internal_enable_learning();
+}
+inline void TypeDuckSettingsSnapshot::set_enable_learning(bool value) {
+  _internal_set_enable_learning(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.enable_learning)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_enable_learning() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_learning_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_enable_learning(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_learning_ = value;
+}
+
+// bool show_reverse_code = 29;
+inline void TypeDuckSettingsSnapshot::clear_show_reverse_code() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_reverse_code_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00020000U);
+}
+inline bool TypeDuckSettingsSnapshot::show_reverse_code() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.show_reverse_code)
+  return _internal_show_reverse_code();
+}
+inline void TypeDuckSettingsSnapshot::set_show_reverse_code(bool value) {
+  _internal_set_show_reverse_code(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.show_reverse_code)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_show_reverse_code() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.show_reverse_code_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_show_reverse_code(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_reverse_code_ = value;
+}
+
+// bool is_cangjie5 = 30;
+inline void TypeDuckSettingsSnapshot::clear_is_cangjie5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_cangjie5_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00040000U);
+}
+inline bool TypeDuckSettingsSnapshot::is_cangjie5() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.is_cangjie5)
+  return _internal_is_cangjie5();
+}
+inline void TypeDuckSettingsSnapshot::set_is_cangjie5(bool value) {
+  _internal_set_is_cangjie5(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00040000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.is_cangjie5)
+}
+inline bool TypeDuckSettingsSnapshot::_internal_is_cangjie5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_cangjie5_;
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_is_cangjie5(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_cangjie5_ = value;
+}
+
+// string source = 31;
+inline void TypeDuckSettingsSnapshot::clear_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::source() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.source)
+  return _internal_source();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_source(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  _impl_.source_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.source)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_source()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ::std::string* _s = _internal_mutable_source();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.source)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_source() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_source(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.source)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  auto* released = _impl_.source_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_source(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  }
+  _impl_.source_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_.IsDefault()) {
+    _impl_.source_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.source)
+}
+
+// string status_message = 32;
+inline void TypeDuckSettingsSnapshot::clear_status_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_message_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::status_message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsSnapshot.status_message)
+  return _internal_status_message();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsSnapshot::set_status_message(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  _impl_.status_message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsSnapshot.status_message)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::mutable_status_message()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ::std::string* _s = _internal_mutable_status_message();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsSnapshot.status_message)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsSnapshot::_internal_status_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.status_message_.Get();
+}
+inline void TypeDuckSettingsSnapshot::_internal_set_status_message(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_message_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsSnapshot::_internal_mutable_status_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.status_message_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsSnapshot::release_status_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsSnapshot.status_message)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  auto* released = _impl_.status_message_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.status_message_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsSnapshot::set_allocated_status_message(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  }
+  _impl_.status_message_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.status_message_.IsDefault()) {
+    _impl_.status_message_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsSnapshot.status_message)
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckSettingsUpdate
+
+// optional string language = 1;
+inline bool TypeDuckSettingsUpdate::has_language() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.language_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckSettingsUpdate::language() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.language)
+  return _internal_language();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsUpdate::set_language(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.language_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.language)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::mutable_language()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_language();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsUpdate.language)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsUpdate::_internal_language() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.language_.Get();
+}
+inline void TypeDuckSettingsUpdate::_internal_set_language(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.language_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::_internal_mutable_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.language_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsUpdate::release_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsUpdate.language)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.language_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.language_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsUpdate::set_allocated_language(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.language_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.language_.IsDefault()) {
+    _impl_.language_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsUpdate.language)
+}
+
+// optional string schema_id = 2;
+inline bool TypeDuckSettingsUpdate::has_schema_id() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& TypeDuckSettingsUpdate::schema_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.schema_id)
+  return _internal_schema_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsUpdate::set_schema_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.schema_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.schema_id)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::mutable_schema_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_schema_id();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsUpdate.schema_id)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsUpdate::_internal_schema_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.schema_id_.Get();
+}
+inline void TypeDuckSettingsUpdate::_internal_set_schema_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::_internal_mutable_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.schema_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsUpdate::release_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsUpdate.schema_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.schema_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsUpdate::set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.schema_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.schema_id_.IsDefault()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsUpdate.schema_id)
+}
+
+// optional string display_language = 3;
+inline bool TypeDuckSettingsUpdate::has_display_language() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000008U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_display_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.display_language_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& TypeDuckSettingsUpdate::display_language() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.display_language)
+  return _internal_display_language();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsUpdate::set_display_language(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.display_language_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.display_language)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::mutable_display_language()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_display_language();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsUpdate.display_language)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsUpdate::_internal_display_language() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.display_language_.Get();
+}
+inline void TypeDuckSettingsUpdate::_internal_set_display_language(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.display_language_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::_internal_mutable_display_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.display_language_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsUpdate::release_display_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsUpdate.display_language)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.display_language_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.display_language_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsUpdate::set_allocated_display_language(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.display_language_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.display_language_.IsDefault()) {
+    _impl_.display_language_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsUpdate.display_language)
+}
+
+// optional bool ascii_mode = 4;
+inline bool TypeDuckSettingsUpdate::has_ascii_mode() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000080U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_ascii_mode() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.ascii_mode_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline bool TypeDuckSettingsUpdate::ascii_mode() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.ascii_mode)
+  return _internal_ascii_mode();
+}
+inline void TypeDuckSettingsUpdate::set_ascii_mode(bool value) {
+  _internal_set_ascii_mode(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.ascii_mode)
+}
+inline bool TypeDuckSettingsUpdate::_internal_ascii_mode() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.ascii_mode_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_ascii_mode(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.ascii_mode_ = value;
+}
+
+// optional bool traditional_hong_kong = 5;
+inline bool TypeDuckSettingsUpdate::has_traditional_hong_kong() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_traditional_hong_kong() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.traditional_hong_kong_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline bool TypeDuckSettingsUpdate::traditional_hong_kong() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.traditional_hong_kong)
+  return _internal_traditional_hong_kong();
+}
+inline void TypeDuckSettingsUpdate::set_traditional_hong_kong(bool value) {
+  _internal_set_traditional_hong_kong(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.traditional_hong_kong)
+}
+inline bool TypeDuckSettingsUpdate::_internal_traditional_hong_kong() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.traditional_hong_kong_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_traditional_hong_kong(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.traditional_hong_kong_ = value;
+}
+
+// optional uint32 candidate_page_size = 6;
+inline bool TypeDuckSettingsUpdate::has_candidate_page_size() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000040U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_candidate_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.candidate_page_size_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline ::uint32_t TypeDuckSettingsUpdate::candidate_page_size() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.candidate_page_size)
+  return _internal_candidate_page_size();
+}
+inline void TypeDuckSettingsUpdate::set_candidate_page_size(::uint32_t value) {
+  _internal_set_candidate_page_size(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.candidate_page_size)
+}
+inline ::uint32_t TypeDuckSettingsUpdate::_internal_candidate_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.candidate_page_size_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_candidate_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.candidate_page_size_ = value;
+}
+
+// repeated string display_languages = 20;
+inline int TypeDuckSettingsUpdate::_internal_display_languages_size() const {
+  return _internal_display_languages().size();
+}
+inline int TypeDuckSettingsUpdate::display_languages_size() const {
+  return _internal_display_languages_size();
+}
+inline void TypeDuckSettingsUpdate::clear_display_languages() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.display_languages_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::add_display_languages()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_display_languages()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsUpdate::display_languages(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+  return _internal_display_languages().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::mutable_display_languages(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+  return _internal_mutable_display_languages()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void TypeDuckSettingsUpdate::set_display_languages(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_display_languages()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+}
+template <typename Arg_, typename... Args_>
+inline void TypeDuckSettingsUpdate::add_display_languages(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_display_languages(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& TypeDuckSettingsUpdate::display_languages()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+  return _internal_display_languages();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+TypeDuckSettingsUpdate::mutable_display_languages() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:moqi.protocol.TypeDuckSettingsUpdate.display_languages)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_display_languages();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+TypeDuckSettingsUpdate::_internal_display_languages() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.display_languages_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+TypeDuckSettingsUpdate::_internal_mutable_display_languages() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.display_languages_;
+}
+
+// optional string main_language = 21;
+inline bool TypeDuckSettingsUpdate::has_main_language() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_main_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.main_language_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& TypeDuckSettingsUpdate::main_language() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.main_language)
+  return _internal_main_language();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsUpdate::set_main_language(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.main_language_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.main_language)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::mutable_main_language()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_main_language();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsUpdate.main_language)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsUpdate::_internal_main_language() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.main_language_.Get();
+}
+inline void TypeDuckSettingsUpdate::_internal_set_main_language(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.main_language_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::_internal_mutable_main_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.main_language_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsUpdate::release_main_language() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsUpdate.main_language)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.main_language_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.main_language_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsUpdate::set_allocated_main_language(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.main_language_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.main_language_.IsDefault()) {
+    _impl_.main_language_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsUpdate.main_language)
+}
+
+// optional uint32 page_size = 22;
+inline bool TypeDuckSettingsUpdate::has_page_size() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000800U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000800U);
+}
+inline ::uint32_t TypeDuckSettingsUpdate::page_size() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.page_size)
+  return _internal_page_size();
+}
+inline void TypeDuckSettingsUpdate::set_page_size(::uint32_t value) {
+  _internal_set_page_size(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.page_size)
+}
+inline ::uint32_t TypeDuckSettingsUpdate::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_page_size(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
+}
+
+// optional bool is_hei_typeface = 23;
+inline bool TypeDuckSettingsUpdate::has_is_hei_typeface() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000200U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_is_hei_typeface() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_hei_typeface_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline bool TypeDuckSettingsUpdate::is_hei_typeface() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.is_hei_typeface)
+  return _internal_is_hei_typeface();
+}
+inline void TypeDuckSettingsUpdate::set_is_hei_typeface(bool value) {
+  _internal_set_is_hei_typeface(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.is_hei_typeface)
+}
+inline bool TypeDuckSettingsUpdate::_internal_is_hei_typeface() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_hei_typeface_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_is_hei_typeface(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_hei_typeface_ = value;
+}
+
+// optional string show_romanization = 24;
+inline bool TypeDuckSettingsUpdate::has_show_romanization() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_show_romanization() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_romanization_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline const ::std::string& TypeDuckSettingsUpdate::show_romanization() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.show_romanization)
+  return _internal_show_romanization();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckSettingsUpdate::set_show_romanization(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  _impl_.show_romanization_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.show_romanization)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::mutable_show_romanization()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::std::string* _s = _internal_mutable_show_romanization();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckSettingsUpdate.show_romanization)
+  return _s;
+}
+inline const ::std::string& TypeDuckSettingsUpdate::_internal_show_romanization() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.show_romanization_.Get();
+}
+inline void TypeDuckSettingsUpdate::_internal_set_show_romanization(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_romanization_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckSettingsUpdate::_internal_mutable_show_romanization() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.show_romanization_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckSettingsUpdate::release_show_romanization() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckSettingsUpdate.show_romanization)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  auto* released = _impl_.show_romanization_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.show_romanization_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckSettingsUpdate::set_allocated_show_romanization(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  _impl_.show_romanization_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.show_romanization_.IsDefault()) {
+    _impl_.show_romanization_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckSettingsUpdate.show_romanization)
+}
+
+// optional bool enable_completion = 25;
+inline bool TypeDuckSettingsUpdate::has_enable_completion() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000400U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_enable_completion() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_completion_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000400U);
+}
+inline bool TypeDuckSettingsUpdate::enable_completion() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.enable_completion)
+  return _internal_enable_completion();
+}
+inline void TypeDuckSettingsUpdate::set_enable_completion(bool value) {
+  _internal_set_enable_completion(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.enable_completion)
+}
+inline bool TypeDuckSettingsUpdate::_internal_enable_completion() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_completion_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_enable_completion(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_completion_ = value;
+}
+
+// optional bool enable_correction = 26;
+inline bool TypeDuckSettingsUpdate::has_enable_correction() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00001000U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_enable_correction() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_correction_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00001000U);
+}
+inline bool TypeDuckSettingsUpdate::enable_correction() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.enable_correction)
+  return _internal_enable_correction();
+}
+inline void TypeDuckSettingsUpdate::set_enable_correction(bool value) {
+  _internal_set_enable_correction(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.enable_correction)
+}
+inline bool TypeDuckSettingsUpdate::_internal_enable_correction() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_correction_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_enable_correction(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_correction_ = value;
+}
+
+// optional bool enable_sentence = 27;
+inline bool TypeDuckSettingsUpdate::has_enable_sentence() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00002000U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_enable_sentence() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_sentence_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00002000U);
+}
+inline bool TypeDuckSettingsUpdate::enable_sentence() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.enable_sentence)
+  return _internal_enable_sentence();
+}
+inline void TypeDuckSettingsUpdate::set_enable_sentence(bool value) {
+  _internal_set_enable_sentence(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.enable_sentence)
+}
+inline bool TypeDuckSettingsUpdate::_internal_enable_sentence() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_sentence_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_enable_sentence(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_sentence_ = value;
+}
+
+// optional bool enable_learning = 28;
+inline bool TypeDuckSettingsUpdate::has_enable_learning() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00004000U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_enable_learning() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_learning_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00004000U);
+}
+inline bool TypeDuckSettingsUpdate::enable_learning() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.enable_learning)
+  return _internal_enable_learning();
+}
+inline void TypeDuckSettingsUpdate::set_enable_learning(bool value) {
+  _internal_set_enable_learning(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.enable_learning)
+}
+inline bool TypeDuckSettingsUpdate::_internal_enable_learning() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_learning_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_enable_learning(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_learning_ = value;
+}
+
+// optional bool show_reverse_code = 29;
+inline bool TypeDuckSettingsUpdate::has_show_reverse_code() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00008000U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_show_reverse_code() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_reverse_code_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00008000U);
+}
+inline bool TypeDuckSettingsUpdate::show_reverse_code() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.show_reverse_code)
+  return _internal_show_reverse_code();
+}
+inline void TypeDuckSettingsUpdate::set_show_reverse_code(bool value) {
+  _internal_set_show_reverse_code(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.show_reverse_code)
+}
+inline bool TypeDuckSettingsUpdate::_internal_show_reverse_code() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.show_reverse_code_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_show_reverse_code(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.show_reverse_code_ = value;
+}
+
+// optional bool is_cangjie5 = 30;
+inline bool TypeDuckSettingsUpdate::has_is_cangjie5() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00010000U);
+  return value;
+}
+inline void TypeDuckSettingsUpdate::clear_is_cangjie5() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_cangjie5_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00010000U);
+}
+inline bool TypeDuckSettingsUpdate::is_cangjie5() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckSettingsUpdate.is_cangjie5)
+  return _internal_is_cangjie5();
+}
+inline void TypeDuckSettingsUpdate::set_is_cangjie5(bool value) {
+  _internal_set_is_cangjie5(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckSettingsUpdate.is_cangjie5)
+}
+inline bool TypeDuckSettingsUpdate::_internal_is_cangjie5() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_cangjie5_;
+}
+inline void TypeDuckSettingsUpdate::_internal_set_is_cangjie5(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_cangjie5_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckEngineCapability
+
+// string name = 1;
+inline void TypeDuckEngineCapability::clear_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.name_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckEngineCapability::name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineCapability.name)
+  return _internal_name();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckEngineCapability::set_name(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineCapability.name)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineCapability::mutable_name()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckEngineCapability.name)
+  return _s;
+}
+inline const ::std::string& TypeDuckEngineCapability::_internal_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.name_.Get();
+}
+inline void TypeDuckEngineCapability::_internal_set_name(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.name_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineCapability::_internal_mutable_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.name_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckEngineCapability::release_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckEngineCapability.name)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.name_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.name_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckEngineCapability::set_allocated_name(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckEngineCapability.name)
+}
+
+// bool supported = 2;
+inline void TypeDuckEngineCapability::clear_supported() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.supported_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline bool TypeDuckEngineCapability::supported() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineCapability.supported)
+  return _internal_supported();
+}
+inline void TypeDuckEngineCapability::set_supported(bool value) {
+  _internal_set_supported(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineCapability.supported)
+}
+inline bool TypeDuckEngineCapability::_internal_supported() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.supported_;
+}
+inline void TypeDuckEngineCapability::_internal_set_supported(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.supported_ = value;
+}
+
+// string version = 3;
+inline void TypeDuckEngineCapability::clear_version() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.version_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckEngineCapability::version() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineCapability.version)
+  return _internal_version();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckEngineCapability::set_version(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.version_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineCapability.version)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineCapability::mutable_version()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_version();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckEngineCapability.version)
+  return _s;
+}
+inline const ::std::string& TypeDuckEngineCapability::_internal_version() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.version_.Get();
+}
+inline void TypeDuckEngineCapability::_internal_set_version(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.version_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineCapability::_internal_mutable_version() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.version_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckEngineCapability::release_version() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckEngineCapability.version)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.version_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.version_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckEngineCapability::set_allocated_version(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.version_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.version_.IsDefault()) {
+    _impl_.version_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckEngineCapability.version)
+}
+
+// string detail = 4;
+inline void TypeDuckEngineCapability::clear_detail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.detail_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& TypeDuckEngineCapability::detail() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineCapability.detail)
+  return _internal_detail();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckEngineCapability::set_detail(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.detail_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineCapability.detail)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineCapability::mutable_detail()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_detail();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckEngineCapability.detail)
+  return _s;
+}
+inline const ::std::string& TypeDuckEngineCapability::_internal_detail() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.detail_.Get();
+}
+inline void TypeDuckEngineCapability::_internal_set_detail(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.detail_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineCapability::_internal_mutable_detail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.detail_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckEngineCapability::release_detail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckEngineCapability.detail)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.detail_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.detail_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckEngineCapability::set_allocated_detail(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.detail_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.detail_.IsDefault()) {
+    _impl_.detail_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckEngineCapability.detail)
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckDeployRequest
+
+// string runtime_path = 1;
+inline void TypeDuckDeployRequest::clear_runtime_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.runtime_path_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckDeployRequest::runtime_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckDeployRequest.runtime_path)
+  return _internal_runtime_path();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckDeployRequest::set_runtime_path(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.runtime_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckDeployRequest.runtime_path)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckDeployRequest::mutable_runtime_path()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_runtime_path();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckDeployRequest.runtime_path)
+  return _s;
+}
+inline const ::std::string& TypeDuckDeployRequest::_internal_runtime_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.runtime_path_.Get();
+}
+inline void TypeDuckDeployRequest::_internal_set_runtime_path(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.runtime_path_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckDeployRequest::_internal_mutable_runtime_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.runtime_path_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckDeployRequest::release_runtime_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckDeployRequest.runtime_path)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.runtime_path_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.runtime_path_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckDeployRequest::set_allocated_runtime_path(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.runtime_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.runtime_path_.IsDefault()) {
+    _impl_.runtime_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckDeployRequest.runtime_path)
+}
+
+// string schema_id = 2;
+inline void TypeDuckDeployRequest::clear_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckDeployRequest::schema_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckDeployRequest.schema_id)
+  return _internal_schema_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckDeployRequest::set_schema_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.schema_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckDeployRequest.schema_id)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckDeployRequest::mutable_schema_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_schema_id();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckDeployRequest.schema_id)
+  return _s;
+}
+inline const ::std::string& TypeDuckDeployRequest::_internal_schema_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.schema_id_.Get();
+}
+inline void TypeDuckDeployRequest::_internal_set_schema_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckDeployRequest::_internal_mutable_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.schema_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckDeployRequest::release_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckDeployRequest.schema_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.schema_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckDeployRequest::set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.schema_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.schema_id_.IsDefault()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckDeployRequest.schema_id)
+}
+
+// bool force = 3;
+inline void TypeDuckDeployRequest::clear_force() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.force_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline bool TypeDuckDeployRequest::force() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckDeployRequest.force)
+  return _internal_force();
+}
+inline void TypeDuckDeployRequest::set_force(bool value) {
+  _internal_set_force(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckDeployRequest.force)
+}
+inline bool TypeDuckDeployRequest::_internal_force() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.force_;
+}
+inline void TypeDuckDeployRequest::_internal_set_force(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.force_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckReconfigureRequest
+
+// string schema_id = 1;
+inline void TypeDuckReconfigureRequest::clear_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckReconfigureRequest::schema_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckReconfigureRequest.schema_id)
+  return _internal_schema_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckReconfigureRequest::set_schema_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.schema_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckReconfigureRequest.schema_id)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckReconfigureRequest::mutable_schema_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_schema_id();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckReconfigureRequest.schema_id)
+  return _s;
+}
+inline const ::std::string& TypeDuckReconfigureRequest::_internal_schema_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.schema_id_.Get();
+}
+inline void TypeDuckReconfigureRequest::_internal_set_schema_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.schema_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckReconfigureRequest::_internal_mutable_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.schema_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckReconfigureRequest::release_schema_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckReconfigureRequest.schema_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.schema_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckReconfigureRequest::set_allocated_schema_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.schema_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.schema_id_.IsDefault()) {
+    _impl_.schema_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckReconfigureRequest.schema_id)
+}
+
+// bool reload_user_dict = 2;
+inline void TypeDuckReconfigureRequest::clear_reload_user_dict() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reload_user_dict_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline bool TypeDuckReconfigureRequest::reload_user_dict() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckReconfigureRequest.reload_user_dict)
+  return _internal_reload_user_dict();
+}
+inline void TypeDuckReconfigureRequest::set_reload_user_dict(bool value) {
+  _internal_set_reload_user_dict(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckReconfigureRequest.reload_user_dict)
+}
+inline bool TypeDuckReconfigureRequest::_internal_reload_user_dict() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reload_user_dict_;
+}
+inline void TypeDuckReconfigureRequest::_internal_set_reload_user_dict(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reload_user_dict_ = value;
+}
+
+// bool restart_backend = 3;
+inline void TypeDuckReconfigureRequest::clear_restart_backend() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.restart_backend_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline bool TypeDuckReconfigureRequest::restart_backend() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckReconfigureRequest.restart_backend)
+  return _internal_restart_backend();
+}
+inline void TypeDuckReconfigureRequest::set_restart_backend(bool value) {
+  _internal_set_restart_backend(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckReconfigureRequest.restart_backend)
+}
+inline bool TypeDuckReconfigureRequest::_internal_restart_backend() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.restart_backend_;
+}
+inline void TypeDuckReconfigureRequest::_internal_set_restart_backend(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.restart_backend_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckEngineHealth
+
+// .moqi.protocol.TypeDuckHealthStatus status = 1;
+inline void TypeDuckEngineHealth::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::moqi::protocol::TypeDuckHealthStatus TypeDuckEngineHealth::status() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineHealth.status)
+  return _internal_status();
+}
+inline void TypeDuckEngineHealth::set_status(::moqi::protocol::TypeDuckHealthStatus value) {
+  _internal_set_status(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineHealth.status)
+}
+inline ::moqi::protocol::TypeDuckHealthStatus TypeDuckEngineHealth::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::moqi::protocol::TypeDuckHealthStatus>(_impl_.status_);
+}
+inline void TypeDuckEngineHealth::_internal_set_status(::moqi::protocol::TypeDuckHealthStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
+}
+
+// string backend_name = 2;
+inline void TypeDuckEngineHealth::clear_backend_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.backend_name_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckEngineHealth::backend_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineHealth.backend_name)
+  return _internal_backend_name();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckEngineHealth::set_backend_name(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.backend_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineHealth.backend_name)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineHealth::mutable_backend_name()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_backend_name();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckEngineHealth.backend_name)
+  return _s;
+}
+inline const ::std::string& TypeDuckEngineHealth::_internal_backend_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.backend_name_.Get();
+}
+inline void TypeDuckEngineHealth::_internal_set_backend_name(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.backend_name_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineHealth::_internal_mutable_backend_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.backend_name_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckEngineHealth::release_backend_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckEngineHealth.backend_name)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.backend_name_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.backend_name_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckEngineHealth::set_allocated_backend_name(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.backend_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.backend_name_.IsDefault()) {
+    _impl_.backend_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckEngineHealth.backend_name)
+}
+
+// string message = 3;
+inline void TypeDuckEngineHealth::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckEngineHealth::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineHealth.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckEngineHealth::set_message(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineHealth.message)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineHealth::mutable_message()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckEngineHealth.message)
+  return _s;
+}
+inline const ::std::string& TypeDuckEngineHealth::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void TypeDuckEngineHealth::_internal_set_message(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckEngineHealth::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckEngineHealth::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckEngineHealth.message)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.message_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckEngineHealth::set_allocated_message(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.message_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.message_.IsDefault()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckEngineHealth.message)
+}
+
+// bool recoverable = 4;
+inline void TypeDuckEngineHealth::clear_recoverable() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.recoverable_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline bool TypeDuckEngineHealth::recoverable() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineHealth.recoverable)
+  return _internal_recoverable();
+}
+inline void TypeDuckEngineHealth::set_recoverable(bool value) {
+  _internal_set_recoverable(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineHealth.recoverable)
+}
+inline bool TypeDuckEngineHealth::_internal_recoverable() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.recoverable_;
+}
+inline void TypeDuckEngineHealth::_internal_set_recoverable(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.recoverable_ = value;
+}
+
+// uint32 restart_count = 5;
+inline void TypeDuckEngineHealth::clear_restart_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.restart_count_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline ::uint32_t TypeDuckEngineHealth::restart_count() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckEngineHealth.restart_count)
+  return _internal_restart_count();
+}
+inline void TypeDuckEngineHealth::set_restart_count(::uint32_t value) {
+  _internal_set_restart_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckEngineHealth.restart_count)
+}
+inline ::uint32_t TypeDuckEngineHealth::_internal_restart_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.restart_count_;
+}
+inline void TypeDuckEngineHealth::_internal_set_restart_count(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.restart_count_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckError
+
+// .moqi.protocol.TypeDuckErrorCode code = 1;
+inline void TypeDuckError::clear_code() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.code_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::moqi::protocol::TypeDuckErrorCode TypeDuckError::code() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckError.code)
+  return _internal_code();
+}
+inline void TypeDuckError::set_code(::moqi::protocol::TypeDuckErrorCode value) {
+  _internal_set_code(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckError.code)
+}
+inline ::moqi::protocol::TypeDuckErrorCode TypeDuckError::_internal_code() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::moqi::protocol::TypeDuckErrorCode>(_impl_.code_);
+}
+inline void TypeDuckError::_internal_set_code(::moqi::protocol::TypeDuckErrorCode value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.code_ = value;
+}
+
+// string message = 2;
+inline void TypeDuckError::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckError::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckError.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckError::set_message(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckError.message)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckError::mutable_message()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckError.message)
+  return _s;
+}
+inline const ::std::string& TypeDuckError::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void TypeDuckError::_internal_set_message(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckError::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckError::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckError.message)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.message_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckError::set_allocated_message(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.message_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.message_.IsDefault()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckError.message)
+}
+
+// bool recoverable = 3;
+inline void TypeDuckError::clear_recoverable() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.recoverable_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline bool TypeDuckError::recoverable() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckError.recoverable)
+  return _internal_recoverable();
+}
+inline void TypeDuckError::set_recoverable(bool value) {
+  _internal_set_recoverable(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckError.recoverable)
+}
+inline bool TypeDuckError::_internal_recoverable() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.recoverable_;
+}
+inline void TypeDuckError::_internal_set_recoverable(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.recoverable_ = value;
+}
+
+// string detail = 4;
+inline void TypeDuckError::clear_detail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.detail_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& TypeDuckError::detail() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckError.detail)
+  return _internal_detail();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckError::set_detail(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.detail_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckError.detail)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckError::mutable_detail()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_detail();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckError.detail)
+  return _s;
+}
+inline const ::std::string& TypeDuckError::_internal_detail() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.detail_.Get();
+}
+inline void TypeDuckError::_internal_set_detail(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.detail_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckError::_internal_mutable_detail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.detail_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckError::release_detail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckError.detail)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.detail_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.detail_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckError::set_allocated_detail(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.detail_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.detail_.IsDefault()) {
+    _impl_.detail_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckError.detail)
 }
 
 // -------------------------------------------------------------------
@@ -6073,7 +12238,7 @@ inline void ClientRequest::clear_seq_num() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.seq_num_ = 0u;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000200U);
+                  0x00002000U);
 }
 inline ::uint32_t ClientRequest::seq_num() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.seq_num)
@@ -6081,7 +12246,7 @@ inline ::uint32_t ClientRequest::seq_num() const {
 }
 inline void ClientRequest::set_seq_num(::uint32_t value) {
   _internal_set_seq_num(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.seq_num)
 }
 inline ::uint32_t ClientRequest::_internal_seq_num() const {
@@ -6098,7 +12263,7 @@ inline void ClientRequest::clear_method() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.method_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000400U);
+                  0x00004000U);
 }
 inline ::moqi::protocol::Method ClientRequest::method() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.method)
@@ -6106,7 +12271,7 @@ inline ::moqi::protocol::Method ClientRequest::method() const {
 }
 inline void ClientRequest::set_method(::moqi::protocol::Method value) {
   _internal_set_method(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.method)
 }
 inline ::moqi::protocol::Method ClientRequest::_internal_method() const {
@@ -6192,7 +12357,7 @@ inline void ClientRequest::clear_is_windows8_above() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_windows8_above_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000800U);
+                  0x00008000U);
 }
 inline bool ClientRequest::is_windows8_above() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.is_windows8_above)
@@ -6200,7 +12365,7 @@ inline bool ClientRequest::is_windows8_above() const {
 }
 inline void ClientRequest::set_is_windows8_above(bool value) {
   _internal_set_is_windows8_above(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.is_windows8_above)
 }
 inline bool ClientRequest::_internal_is_windows8_above() const {
@@ -6217,7 +12382,7 @@ inline void ClientRequest::clear_is_metro_app() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_metro_app_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00001000U);
+                  0x00010000U);
 }
 inline bool ClientRequest::is_metro_app() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.is_metro_app)
@@ -6225,7 +12390,7 @@ inline bool ClientRequest::is_metro_app() const {
 }
 inline void ClientRequest::set_is_metro_app(bool value) {
   _internal_set_is_metro_app(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.is_metro_app)
 }
 inline bool ClientRequest::_internal_is_metro_app() const {
@@ -6242,7 +12407,7 @@ inline void ClientRequest::clear_is_ui_less() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_ui_less_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00002000U);
+                  0x00020000U);
 }
 inline bool ClientRequest::is_ui_less() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.is_ui_less)
@@ -6250,7 +12415,7 @@ inline bool ClientRequest::is_ui_less() const {
 }
 inline void ClientRequest::set_is_ui_less(bool value) {
   _internal_set_is_ui_less(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00020000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.is_ui_less)
 }
 inline bool ClientRequest::_internal_is_ui_less() const {
@@ -6267,7 +12432,7 @@ inline void ClientRequest::clear_is_console() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_console_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00004000U);
+                  0x00040000U);
 }
 inline bool ClientRequest::is_console() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.is_console)
@@ -6275,7 +12440,7 @@ inline bool ClientRequest::is_console() const {
 }
 inline void ClientRequest::set_is_console(bool value) {
   _internal_set_is_console(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00040000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.is_console)
 }
 inline bool ClientRequest::_internal_is_console() const {
@@ -6292,7 +12457,7 @@ inline void ClientRequest::clear_opened() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.opened_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00010000U);
+                  0x00100000U);
 }
 inline bool ClientRequest::opened() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.opened)
@@ -6300,7 +12465,7 @@ inline bool ClientRequest::opened() const {
 }
 inline void ClientRequest::set_opened(bool value) {
   _internal_set_opened(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00100000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.opened)
 }
 inline bool ClientRequest::_internal_opened() const {
@@ -6317,7 +12482,7 @@ inline void ClientRequest::clear_forced() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.forced_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00020000U);
+                  0x00200000U);
 }
 inline bool ClientRequest::forced() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.forced)
@@ -6325,7 +12490,7 @@ inline bool ClientRequest::forced() const {
 }
 inline void ClientRequest::set_forced(bool value) {
   _internal_set_forced(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00200000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.forced)
 }
 inline bool ClientRequest::_internal_forced() const {
@@ -6342,7 +12507,7 @@ inline void ClientRequest::clear_command_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.command_type_ = 0u;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00008000U);
+                  0x00080000U);
 }
 inline ::uint32_t ClientRequest::command_type() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.command_type)
@@ -6350,7 +12515,7 @@ inline ::uint32_t ClientRequest::command_type() const {
 }
 inline void ClientRequest::set_command_type(::uint32_t value) {
   _internal_set_command_type(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00080000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.command_type)
 }
 inline ::uint32_t ClientRequest::_internal_command_type() const {
@@ -6364,7 +12529,7 @@ inline void ClientRequest::_internal_set_command_type(::uint32_t value) {
 
 // .moqi.protocol.KeyEvent key_event = 11;
 inline bool ClientRequest::has_key_event() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000080U);
   PROTOBUF_ASSUME(!value || _impl_.key_event_ != nullptr);
   return value;
 }
@@ -6372,7 +12537,7 @@ inline void ClientRequest::clear_key_event() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.key_event_ != nullptr) _impl_.key_event_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000100U);
+                  0x00000080U);
 }
 inline const ::moqi::protocol::KeyEvent& ClientRequest::_internal_key_event() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -6391,16 +12556,16 @@ inline void ClientRequest::unsafe_arena_set_allocated_key_event(
   }
   _impl_.key_event_ = reinterpret_cast<::moqi::protocol::KeyEvent*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ClientRequest.key_event)
 }
 inline ::moqi::protocol::KeyEvent* PROTOBUF_NULLABLE ClientRequest::release_key_event() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::moqi::protocol::KeyEvent* released = _impl_.key_event_;
   _impl_.key_event_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -6420,7 +12585,7 @@ inline ::moqi::protocol::KeyEvent* PROTOBUF_NULLABLE ClientRequest::unsafe_arena
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.key_event)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::moqi::protocol::KeyEvent* temp = _impl_.key_event_;
   _impl_.key_event_ = nullptr;
   return temp;
@@ -6435,7 +12600,7 @@ inline ::moqi::protocol::KeyEvent* PROTOBUF_NONNULL ClientRequest::_internal_mut
 }
 inline ::moqi::protocol::KeyEvent* PROTOBUF_NONNULL ClientRequest::mutable_key_event()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::moqi::protocol::KeyEvent* _msg = _internal_mutable_key_event();
   // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.key_event)
   return _msg;
@@ -6452,9 +12617,9 @@ inline void ClientRequest::set_allocated_key_event(::moqi::protocol::KeyEvent* P
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   }
 
   _impl_.key_event_ = reinterpret_cast<::moqi::protocol::KeyEvent*>(value);
@@ -6603,7 +12768,7 @@ inline void ClientRequest::clear_show_candidates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.show_candidates_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00040000U);
+                  0x00400000U);
 }
 inline bool ClientRequest::show_candidates() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.show_candidates)
@@ -6611,7 +12776,7 @@ inline bool ClientRequest::show_candidates() const {
 }
 inline void ClientRequest::set_show_candidates(bool value) {
   _internal_set_show_candidates(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00040000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00400000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.show_candidates)
 }
 inline bool ClientRequest::_internal_show_candidates() const {
@@ -6628,7 +12793,7 @@ inline void ClientRequest::clear_cursor_pos() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.cursor_pos_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00100000U);
+                  0x01000000U);
 }
 inline ::int32_t ClientRequest::cursor_pos() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.cursor_pos)
@@ -6636,7 +12801,7 @@ inline ::int32_t ClientRequest::cursor_pos() const {
 }
 inline void ClientRequest::set_cursor_pos(::int32_t value) {
   _internal_set_cursor_pos(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00100000U);
+  SetHasBit(_impl_._has_bits_[0], 0x01000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.cursor_pos)
 }
 inline ::int32_t ClientRequest::_internal_cursor_pos() const {
@@ -6653,7 +12818,7 @@ inline void ClientRequest::clear_sel_start() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sel_start_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00200000U);
+                  0x02000000U);
 }
 inline ::int32_t ClientRequest::sel_start() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.sel_start)
@@ -6661,7 +12826,7 @@ inline ::int32_t ClientRequest::sel_start() const {
 }
 inline void ClientRequest::set_sel_start(::int32_t value) {
   _internal_set_sel_start(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00200000U);
+  SetHasBit(_impl_._has_bits_[0], 0x02000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.sel_start)
 }
 inline ::int32_t ClientRequest::_internal_sel_start() const {
@@ -6678,7 +12843,7 @@ inline void ClientRequest::clear_sel_end() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sel_end_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00400000U);
+                  0x04000000U);
 }
 inline ::int32_t ClientRequest::sel_end() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.sel_end)
@@ -6686,7 +12851,7 @@ inline ::int32_t ClientRequest::sel_end() const {
 }
 inline void ClientRequest::set_sel_end(::int32_t value) {
   _internal_set_sel_end(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00400000U);
+  SetHasBit(_impl_._has_bits_[0], 0x04000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.sel_end)
 }
 inline ::int32_t ClientRequest::_internal_sel_end() const {
@@ -6769,14 +12934,14 @@ inline void ClientRequest::set_allocated_button_id(::std::string* PROTOBUF_NULLA
 
 // optional uint32 command_id = 19;
 inline bool ClientRequest::has_command_id() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00800000U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x08000000U);
   return value;
 }
 inline void ClientRequest::clear_command_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.command_id_ = 0u;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00800000U);
+                  0x08000000U);
 }
 inline ::uint32_t ClientRequest::command_id() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.command_id)
@@ -6784,7 +12949,7 @@ inline ::uint32_t ClientRequest::command_id() const {
 }
 inline void ClientRequest::set_command_id(::uint32_t value) {
   _internal_set_command_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00800000U);
+  SetHasBit(_impl_._has_bits_[0], 0x08000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.command_id)
 }
 inline ::uint32_t ClientRequest::_internal_command_id() const {
@@ -6939,7 +13104,7 @@ inline void ClientRequest::clear_is_keyboard_open() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_keyboard_open_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00080000U);
+                  0x00800000U);
 }
 inline bool ClientRequest::is_keyboard_open() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.is_keyboard_open)
@@ -6947,7 +13112,7 @@ inline bool ClientRequest::is_keyboard_open() const {
 }
 inline void ClientRequest::set_is_keyboard_open(bool value) {
   _internal_set_is_keyboard_open(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00080000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00800000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.is_keyboard_open)
 }
 inline bool ClientRequest::_internal_is_keyboard_open() const {
@@ -7030,14 +13195,14 @@ inline void ClientRequest::set_allocated_client_id(::std::string* PROTOBUF_NULLA
 
 // optional int32 candidate_index = 24;
 inline bool ClientRequest::has_candidate_index() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x01000000U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x10000000U);
   return value;
 }
 inline void ClientRequest::clear_candidate_index() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.candidate_index_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x01000000U);
+                  0x10000000U);
 }
 inline ::int32_t ClientRequest::candidate_index() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.candidate_index)
@@ -7045,7 +13210,7 @@ inline ::int32_t ClientRequest::candidate_index() const {
 }
 inline void ClientRequest::set_candidate_index(::int32_t value) {
   _internal_set_candidate_index(value);
-  SetHasBit(_impl_._has_bits_[0], 0x01000000U);
+  SetHasBit(_impl_._has_bits_[0], 0x10000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.candidate_index)
 }
 inline ::int32_t ClientRequest::_internal_candidate_index() const {
@@ -7059,14 +13224,14 @@ inline void ClientRequest::_internal_set_candidate_index(::int32_t value) {
 
 // optional bool page_backward = 25;
 inline bool ClientRequest::has_page_backward() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x02000000U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x20000000U);
   return value;
 }
 inline void ClientRequest::clear_page_backward() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.page_backward_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x02000000U);
+                  0x20000000U);
 }
 inline bool ClientRequest::page_backward() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.page_backward)
@@ -7074,7 +13239,7 @@ inline bool ClientRequest::page_backward() const {
 }
 inline void ClientRequest::set_page_backward(bool value) {
   _internal_set_page_backward(value);
-  SetHasBit(_impl_._has_bits_[0], 0x02000000U);
+  SetHasBit(_impl_._has_bits_[0], 0x20000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.page_backward)
 }
 inline bool ClientRequest::_internal_page_backward() const {
@@ -7086,73 +13251,499 @@ inline void ClientRequest::_internal_set_page_backward(bool value) {
   _impl_.page_backward_ = value;
 }
 
-// optional string cloud_clipboard_text = 26;
-inline bool ClientRequest::has_cloud_clipboard_text() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000080U);
+// optional .moqi.protocol.TypeDuckProtocolInfo typeduck_protocol = 27;
+inline bool ClientRequest::has_typeduck_protocol() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_protocol_ != nullptr);
   return value;
 }
-inline void ClientRequest::clear_cloud_clipboard_text() {
+inline void ClientRequest::clear_typeduck_protocol() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.cloud_clipboard_text_.ClearToEmpty();
+  if (_impl_.typeduck_protocol_ != nullptr) _impl_.typeduck_protocol_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
-inline const ::std::string& ClientRequest::cloud_clipboard_text() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.cloud_clipboard_text)
-  return _internal_cloud_clipboard_text();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void ClientRequest::set_cloud_clipboard_text(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
-  _impl_.cloud_clipboard_text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.cloud_clipboard_text)
-}
-inline ::std::string* PROTOBUF_NONNULL ClientRequest::mutable_cloud_clipboard_text()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
-  ::std::string* _s = _internal_mutable_cloud_clipboard_text();
-  // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.cloud_clipboard_text)
-  return _s;
-}
-inline const ::std::string& ClientRequest::_internal_cloud_clipboard_text() const {
+inline const ::moqi::protocol::TypeDuckProtocolInfo& ClientRequest::_internal_typeduck_protocol() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.cloud_clipboard_text_.Get();
+  const ::moqi::protocol::TypeDuckProtocolInfo* p = _impl_.typeduck_protocol_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckProtocolInfo&>(::moqi::protocol::_TypeDuckProtocolInfo_default_instance_);
 }
-inline void ClientRequest::_internal_set_cloud_clipboard_text(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.cloud_clipboard_text_.Set(value, GetArena());
+inline const ::moqi::protocol::TypeDuckProtocolInfo& ClientRequest::typeduck_protocol() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.typeduck_protocol)
+  return _internal_typeduck_protocol();
 }
-inline ::std::string* PROTOBUF_NONNULL ClientRequest::_internal_mutable_cloud_clipboard_text() {
+inline void ClientRequest::unsafe_arena_set_allocated_typeduck_protocol(
+    ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.cloud_clipboard_text_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE ClientRequest::release_cloud_clipboard_text() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.cloud_clipboard_text)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
-    return nullptr;
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_protocol_);
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
-  auto* released = _impl_.cloud_clipboard_text_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.cloud_clipboard_text_.Set("", GetArena());
+  _impl_.typeduck_protocol_ = reinterpret_cast<::moqi::protocol::TypeDuckProtocolInfo*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ClientRequest.typeduck_protocol)
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE ClientRequest::release_typeduck_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ::moqi::protocol::TypeDuckProtocolInfo* released = _impl_.typeduck_protocol_;
+  _impl_.typeduck_protocol_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
   }
   return released;
 }
-inline void ClientRequest::set_allocated_cloud_clipboard_text(::std::string* PROTOBUF_NULLABLE value) {
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE ClientRequest::unsafe_arena_release_typeduck_protocol() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.typeduck_protocol)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ::moqi::protocol::TypeDuckProtocolInfo* temp = _impl_.typeduck_protocol_;
+  _impl_.typeduck_protocol_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL ClientRequest::_internal_mutable_typeduck_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_protocol_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckProtocolInfo>(GetArena());
+    _impl_.typeduck_protocol_ = reinterpret_cast<::moqi::protocol::TypeDuckProtocolInfo*>(p);
+  }
+  return _impl_.typeduck_protocol_;
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL ClientRequest::mutable_typeduck_protocol()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ::moqi::protocol::TypeDuckProtocolInfo* _msg = _internal_mutable_typeduck_protocol();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.typeduck_protocol)
+  return _msg;
+}
+inline void ClientRequest::set_allocated_typeduck_protocol(::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_protocol_);
+  }
+
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   }
-  _impl_.cloud_clipboard_text_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.cloud_clipboard_text_.IsDefault()) {
-    _impl_.cloud_clipboard_text_.Set("", GetArena());
+
+  _impl_.typeduck_protocol_ = reinterpret_cast<::moqi::protocol::TypeDuckProtocolInfo*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.typeduck_protocol)
+}
+
+// optional .moqi.protocol.TypeDuckSettingsSnapshot typeduck_settings_snapshot = 28;
+inline bool ClientRequest::has_typeduck_settings_snapshot() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000200U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_settings_snapshot_ != nullptr);
+  return value;
+}
+inline void ClientRequest::clear_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_snapshot_ != nullptr) _impl_.typeduck_settings_snapshot_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline const ::moqi::protocol::TypeDuckSettingsSnapshot& ClientRequest::_internal_typeduck_settings_snapshot() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckSettingsSnapshot* p = _impl_.typeduck_settings_snapshot_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckSettingsSnapshot&>(::moqi::protocol::_TypeDuckSettingsSnapshot_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckSettingsSnapshot& ClientRequest::typeduck_settings_snapshot() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.typeduck_settings_snapshot)
+  return _internal_typeduck_settings_snapshot();
+}
+inline void ClientRequest::unsafe_arena_set_allocated_typeduck_settings_snapshot(
+    ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_snapshot_);
   }
-  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.cloud_clipboard_text)
+  _impl_.typeduck_settings_snapshot_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsSnapshot*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ClientRequest.typeduck_settings_snapshot)
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE ClientRequest::release_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* released = _impl_.typeduck_settings_snapshot_;
+  _impl_.typeduck_settings_snapshot_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE ClientRequest::unsafe_arena_release_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.typeduck_settings_snapshot)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* temp = _impl_.typeduck_settings_snapshot_;
+  _impl_.typeduck_settings_snapshot_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL ClientRequest::_internal_mutable_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_snapshot_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckSettingsSnapshot>(GetArena());
+    _impl_.typeduck_settings_snapshot_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsSnapshot*>(p);
+  }
+  return _impl_.typeduck_settings_snapshot_;
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL ClientRequest::mutable_typeduck_settings_snapshot()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* _msg = _internal_mutable_typeduck_settings_snapshot();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.typeduck_settings_snapshot)
+  return _msg;
+}
+inline void ClientRequest::set_allocated_typeduck_settings_snapshot(::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_snapshot_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+  }
+
+  _impl_.typeduck_settings_snapshot_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsSnapshot*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.typeduck_settings_snapshot)
+}
+
+// optional .moqi.protocol.TypeDuckSettingsUpdate typeduck_settings_update = 29;
+inline bool ClientRequest::has_typeduck_settings_update() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000400U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_settings_update_ != nullptr);
+  return value;
+}
+inline void ClientRequest::clear_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_update_ != nullptr) _impl_.typeduck_settings_update_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000400U);
+}
+inline const ::moqi::protocol::TypeDuckSettingsUpdate& ClientRequest::_internal_typeduck_settings_update() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckSettingsUpdate* p = _impl_.typeduck_settings_update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckSettingsUpdate&>(::moqi::protocol::_TypeDuckSettingsUpdate_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckSettingsUpdate& ClientRequest::typeduck_settings_update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.typeduck_settings_update)
+  return _internal_typeduck_settings_update();
+}
+inline void ClientRequest::unsafe_arena_set_allocated_typeduck_settings_update(
+    ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_update_);
+  }
+  _impl_.typeduck_settings_update_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsUpdate*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ClientRequest.typeduck_settings_update)
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE ClientRequest::release_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
+  ::moqi::protocol::TypeDuckSettingsUpdate* released = _impl_.typeduck_settings_update_;
+  _impl_.typeduck_settings_update_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE ClientRequest::unsafe_arena_release_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.typeduck_settings_update)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
+  ::moqi::protocol::TypeDuckSettingsUpdate* temp = _impl_.typeduck_settings_update_;
+  _impl_.typeduck_settings_update_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL ClientRequest::_internal_mutable_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_update_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckSettingsUpdate>(GetArena());
+    _impl_.typeduck_settings_update_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsUpdate*>(p);
+  }
+  return _impl_.typeduck_settings_update_;
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL ClientRequest::mutable_typeduck_settings_update()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  ::moqi::protocol::TypeDuckSettingsUpdate* _msg = _internal_mutable_typeduck_settings_update();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.typeduck_settings_update)
+  return _msg;
+}
+inline void ClientRequest::set_allocated_typeduck_settings_update(::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
+  }
+
+  _impl_.typeduck_settings_update_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.typeduck_settings_update)
+}
+
+// optional .moqi.protocol.TypeDuckDeployRequest typeduck_deploy_request = 30;
+inline bool ClientRequest::has_typeduck_deploy_request() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000800U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_deploy_request_ != nullptr);
+  return value;
+}
+inline void ClientRequest::clear_typeduck_deploy_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_deploy_request_ != nullptr) _impl_.typeduck_deploy_request_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000800U);
+}
+inline const ::moqi::protocol::TypeDuckDeployRequest& ClientRequest::_internal_typeduck_deploy_request() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckDeployRequest* p = _impl_.typeduck_deploy_request_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckDeployRequest&>(::moqi::protocol::_TypeDuckDeployRequest_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckDeployRequest& ClientRequest::typeduck_deploy_request() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.typeduck_deploy_request)
+  return _internal_typeduck_deploy_request();
+}
+inline void ClientRequest::unsafe_arena_set_allocated_typeduck_deploy_request(
+    ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_deploy_request_);
+  }
+  _impl_.typeduck_deploy_request_ = reinterpret_cast<::moqi::protocol::TypeDuckDeployRequest*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000800U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ClientRequest.typeduck_deploy_request)
+}
+inline ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE ClientRequest::release_typeduck_deploy_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000800U);
+  ::moqi::protocol::TypeDuckDeployRequest* released = _impl_.typeduck_deploy_request_;
+  _impl_.typeduck_deploy_request_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE ClientRequest::unsafe_arena_release_typeduck_deploy_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.typeduck_deploy_request)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000800U);
+  ::moqi::protocol::TypeDuckDeployRequest* temp = _impl_.typeduck_deploy_request_;
+  _impl_.typeduck_deploy_request_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NONNULL ClientRequest::_internal_mutable_typeduck_deploy_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_deploy_request_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckDeployRequest>(GetArena());
+    _impl_.typeduck_deploy_request_ = reinterpret_cast<::moqi::protocol::TypeDuckDeployRequest*>(p);
+  }
+  return _impl_.typeduck_deploy_request_;
+}
+inline ::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NONNULL ClientRequest::mutable_typeduck_deploy_request()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  ::moqi::protocol::TypeDuckDeployRequest* _msg = _internal_mutable_typeduck_deploy_request();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.typeduck_deploy_request)
+  return _msg;
+}
+inline void ClientRequest::set_allocated_typeduck_deploy_request(::moqi::protocol::TypeDuckDeployRequest* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_deploy_request_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000800U);
+  }
+
+  _impl_.typeduck_deploy_request_ = reinterpret_cast<::moqi::protocol::TypeDuckDeployRequest*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.typeduck_deploy_request)
+}
+
+// optional .moqi.protocol.TypeDuckReconfigureRequest typeduck_reconfigure_request = 31;
+inline bool ClientRequest::has_typeduck_reconfigure_request() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00001000U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_reconfigure_request_ != nullptr);
+  return value;
+}
+inline void ClientRequest::clear_typeduck_reconfigure_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_reconfigure_request_ != nullptr) _impl_.typeduck_reconfigure_request_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00001000U);
+}
+inline const ::moqi::protocol::TypeDuckReconfigureRequest& ClientRequest::_internal_typeduck_reconfigure_request() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckReconfigureRequest* p = _impl_.typeduck_reconfigure_request_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckReconfigureRequest&>(::moqi::protocol::_TypeDuckReconfigureRequest_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckReconfigureRequest& ClientRequest::typeduck_reconfigure_request() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.typeduck_reconfigure_request)
+  return _internal_typeduck_reconfigure_request();
+}
+inline void ClientRequest::unsafe_arena_set_allocated_typeduck_reconfigure_request(
+    ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_reconfigure_request_);
+  }
+  _impl_.typeduck_reconfigure_request_ = reinterpret_cast<::moqi::protocol::TypeDuckReconfigureRequest*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00001000U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ClientRequest.typeduck_reconfigure_request)
+}
+inline ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE ClientRequest::release_typeduck_reconfigure_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00001000U);
+  ::moqi::protocol::TypeDuckReconfigureRequest* released = _impl_.typeduck_reconfigure_request_;
+  _impl_.typeduck_reconfigure_request_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE ClientRequest::unsafe_arena_release_typeduck_reconfigure_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ClientRequest.typeduck_reconfigure_request)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00001000U);
+  ::moqi::protocol::TypeDuckReconfigureRequest* temp = _impl_.typeduck_reconfigure_request_;
+  _impl_.typeduck_reconfigure_request_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NONNULL ClientRequest::_internal_mutable_typeduck_reconfigure_request() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_reconfigure_request_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckReconfigureRequest>(GetArena());
+    _impl_.typeduck_reconfigure_request_ = reinterpret_cast<::moqi::protocol::TypeDuckReconfigureRequest*>(p);
+  }
+  return _impl_.typeduck_reconfigure_request_;
+}
+inline ::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NONNULL ClientRequest::mutable_typeduck_reconfigure_request()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  ::moqi::protocol::TypeDuckReconfigureRequest* _msg = _internal_mutable_typeduck_reconfigure_request();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ClientRequest.typeduck_reconfigure_request)
+  return _msg;
+}
+inline void ClientRequest::set_allocated_typeduck_reconfigure_request(::moqi::protocol::TypeDuckReconfigureRequest* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_reconfigure_request_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00001000U);
+  }
+
+  _impl_.typeduck_reconfigure_request_ = reinterpret_cast<::moqi::protocol::TypeDuckReconfigureRequest*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.typeduck_reconfigure_request)
 }
 
 // -------------------------------------------------------------------
@@ -7233,7 +13824,7 @@ inline void ServerResponse::clear_seq_num() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.seq_num_ = 0u;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00010000U);
+                  0x00100000U);
 }
 inline ::uint32_t ServerResponse::seq_num() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.seq_num)
@@ -7241,7 +13832,7 @@ inline ::uint32_t ServerResponse::seq_num() const {
 }
 inline void ServerResponse::set_seq_num(::uint32_t value) {
   _internal_set_seq_num(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00100000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.seq_num)
 }
 inline ::uint32_t ServerResponse::_internal_seq_num() const {
@@ -7258,7 +13849,7 @@ inline void ServerResponse::clear_success() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.success_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00400000U);
+                  0x04000000U);
 }
 inline bool ServerResponse::success() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.success)
@@ -7266,7 +13857,7 @@ inline bool ServerResponse::success() const {
 }
 inline void ServerResponse::set_success(bool value) {
   _internal_set_success(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00400000U);
+  SetHasBit(_impl_._has_bits_[0], 0x04000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.success)
 }
 inline bool ServerResponse::_internal_success() const {
@@ -7283,7 +13874,7 @@ inline void ServerResponse::clear_return_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.return_value_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00020000U);
+                  0x00200000U);
 }
 inline ::int32_t ServerResponse::return_value() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.return_value)
@@ -7291,7 +13882,7 @@ inline ::int32_t ServerResponse::return_value() const {
 }
 inline void ServerResponse::set_return_value(::int32_t value) {
   _internal_set_return_value(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00200000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.return_value)
 }
 inline ::int32_t ServerResponse::_internal_return_value() const {
@@ -7566,7 +14157,7 @@ inline void ServerResponse::clear_show_candidates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.show_candidates_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00800000U);
+                  0x08000000U);
 }
 inline bool ServerResponse::show_candidates() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.show_candidates)
@@ -7574,7 +14165,7 @@ inline bool ServerResponse::show_candidates() const {
 }
 inline void ServerResponse::set_show_candidates(bool value) {
   _internal_set_show_candidates(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00800000U);
+  SetHasBit(_impl_._has_bits_[0], 0x08000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.show_candidates)
 }
 inline bool ServerResponse::_internal_show_candidates() const {
@@ -7591,7 +14182,7 @@ inline void ServerResponse::clear_cursor_pos() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.cursor_pos_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00040000U);
+                  0x00400000U);
 }
 inline ::int32_t ServerResponse::cursor_pos() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.cursor_pos)
@@ -7599,7 +14190,7 @@ inline ::int32_t ServerResponse::cursor_pos() const {
 }
 inline void ServerResponse::set_cursor_pos(::int32_t value) {
   _internal_set_cursor_pos(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00040000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00400000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.cursor_pos)
 }
 inline ::int32_t ServerResponse::_internal_cursor_pos() const {
@@ -7616,7 +14207,7 @@ inline void ServerResponse::clear_composition_cursor() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.composition_cursor_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00080000U);
+                  0x00800000U);
 }
 inline ::int32_t ServerResponse::composition_cursor() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.composition_cursor)
@@ -7624,7 +14215,7 @@ inline ::int32_t ServerResponse::composition_cursor() const {
 }
 inline void ServerResponse::set_composition_cursor(::int32_t value) {
   _internal_set_composition_cursor(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00080000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00800000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.composition_cursor)
 }
 inline ::int32_t ServerResponse::_internal_composition_cursor() const {
@@ -7638,14 +14229,14 @@ inline void ServerResponse::_internal_set_composition_cursor(::int32_t value) {
 
 // optional int32 candidate_cursor = 12;
 inline bool ServerResponse::has_candidate_cursor() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00100000U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x01000000U);
   return value;
 }
 inline void ServerResponse::clear_candidate_cursor() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.candidate_cursor_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00100000U);
+                  0x01000000U);
 }
 inline ::int32_t ServerResponse::candidate_cursor() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.candidate_cursor)
@@ -7653,7 +14244,7 @@ inline ::int32_t ServerResponse::candidate_cursor() const {
 }
 inline void ServerResponse::set_candidate_cursor(::int32_t value) {
   _internal_set_candidate_cursor(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00100000U);
+  SetHasBit(_impl_._has_bits_[0], 0x01000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.candidate_cursor)
 }
 inline ::int32_t ServerResponse::_internal_candidate_cursor() const {
@@ -7670,7 +14261,7 @@ inline void ServerResponse::clear_sel_start() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sel_start_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00200000U);
+                  0x02000000U);
 }
 inline ::int32_t ServerResponse::sel_start() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.sel_start)
@@ -7678,7 +14269,7 @@ inline ::int32_t ServerResponse::sel_start() const {
 }
 inline void ServerResponse::set_sel_start(::int32_t value) {
   _internal_set_sel_start(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00200000U);
+  SetHasBit(_impl_._has_bits_[0], 0x02000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.sel_start)
 }
 inline ::int32_t ServerResponse::_internal_sel_start() const {
@@ -7695,7 +14286,7 @@ inline void ServerResponse::clear_sel_end() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sel_end_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x04000000U);
+                  0x40000000U);
 }
 inline ::int32_t ServerResponse::sel_end() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.sel_end)
@@ -7703,7 +14294,7 @@ inline ::int32_t ServerResponse::sel_end() const {
 }
 inline void ServerResponse::set_sel_end(::int32_t value) {
   _internal_set_sel_end(value);
-  SetHasBit(_impl_._has_bits_[0], 0x04000000U);
+  SetHasBit(_impl_._has_bits_[0], 0x40000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.sel_end)
 }
 inline ::int32_t ServerResponse::_internal_sel_end() const {
@@ -8167,7 +14758,7 @@ inline void ServerResponse::clear_hide_message() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.hide_message_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x01000000U);
+                  0x10000000U);
 }
 inline bool ServerResponse::hide_message() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.hide_message)
@@ -8175,7 +14766,7 @@ inline bool ServerResponse::hide_message() const {
 }
 inline void ServerResponse::set_hide_message(bool value) {
   _internal_set_hide_message(value);
-  SetHasBit(_impl_._has_bits_[0], 0x01000000U);
+  SetHasBit(_impl_._has_bits_[0], 0x10000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.hide_message)
 }
 inline bool ServerResponse::_internal_hide_message() const {
@@ -8192,7 +14783,7 @@ inline void ServerResponse::clear_open_keyboard() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.open_keyboard_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x02000000U);
+                  0x20000000U);
 }
 inline bool ServerResponse::open_keyboard() const {
   // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.open_keyboard)
@@ -8200,7 +14791,7 @@ inline bool ServerResponse::open_keyboard() const {
 }
 inline void ServerResponse::set_open_keyboard(bool value) {
   _internal_set_open_keyboard(value);
-  SetHasBit(_impl_._has_bits_[0], 0x02000000U);
+  SetHasBit(_impl_._has_bits_[0], 0x20000000U);
   // @@protoc_insertion_point(field_set:moqi.protocol.ServerResponse.open_keyboard)
 }
 inline bool ServerResponse::_internal_open_keyboard() const {
@@ -8560,6 +15151,656 @@ ServerResponse::_internal_mutable_candidate_entries() {
   return &_impl_.candidate_entries_;
 }
 
+// optional .moqi.protocol.TypeDuckProtocolInfo typeduck_protocol = 28;
+inline bool ServerResponse::has_typeduck_protocol() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00010000U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_protocol_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_protocol_ != nullptr) _impl_.typeduck_protocol_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00010000U);
+}
+inline const ::moqi::protocol::TypeDuckProtocolInfo& ServerResponse::_internal_typeduck_protocol() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckProtocolInfo* p = _impl_.typeduck_protocol_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckProtocolInfo&>(::moqi::protocol::_TypeDuckProtocolInfo_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckProtocolInfo& ServerResponse::typeduck_protocol() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_protocol)
+  return _internal_typeduck_protocol();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_protocol(
+    ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_protocol_);
+  }
+  _impl_.typeduck_protocol_ = reinterpret_cast<::moqi::protocol::TypeDuckProtocolInfo*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00010000U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_protocol)
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE ServerResponse::release_typeduck_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00010000U);
+  ::moqi::protocol::TypeDuckProtocolInfo* released = _impl_.typeduck_protocol_;
+  _impl_.typeduck_protocol_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_protocol)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00010000U);
+  ::moqi::protocol::TypeDuckProtocolInfo* temp = _impl_.typeduck_protocol_;
+  _impl_.typeduck_protocol_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_protocol_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckProtocolInfo>(GetArena());
+    _impl_.typeduck_protocol_ = reinterpret_cast<::moqi::protocol::TypeDuckProtocolInfo*>(p);
+  }
+  return _impl_.typeduck_protocol_;
+}
+inline ::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_protocol()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  ::moqi::protocol::TypeDuckProtocolInfo* _msg = _internal_mutable_typeduck_protocol();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_protocol)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_protocol(::moqi::protocol::TypeDuckProtocolInfo* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_protocol_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00010000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00010000U);
+  }
+
+  _impl_.typeduck_protocol_ = reinterpret_cast<::moqi::protocol::TypeDuckProtocolInfo*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_protocol)
+}
+
+// optional .moqi.protocol.TypeDuckCandidatePage typeduck_candidate_page = 29;
+inline bool ServerResponse::has_typeduck_candidate_page() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00020000U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_candidate_page_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_candidate_page() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_candidate_page_ != nullptr) _impl_.typeduck_candidate_page_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00020000U);
+}
+inline const ::moqi::protocol::TypeDuckCandidatePage& ServerResponse::_internal_typeduck_candidate_page() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckCandidatePage* p = _impl_.typeduck_candidate_page_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckCandidatePage&>(::moqi::protocol::_TypeDuckCandidatePage_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckCandidatePage& ServerResponse::typeduck_candidate_page() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_candidate_page)
+  return _internal_typeduck_candidate_page();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_candidate_page(
+    ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_candidate_page_);
+  }
+  _impl_.typeduck_candidate_page_ = reinterpret_cast<::moqi::protocol::TypeDuckCandidatePage*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00020000U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_candidate_page)
+}
+inline ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE ServerResponse::release_typeduck_candidate_page() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00020000U);
+  ::moqi::protocol::TypeDuckCandidatePage* released = _impl_.typeduck_candidate_page_;
+  _impl_.typeduck_candidate_page_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_candidate_page() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_candidate_page)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00020000U);
+  ::moqi::protocol::TypeDuckCandidatePage* temp = _impl_.typeduck_candidate_page_;
+  _impl_.typeduck_candidate_page_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_candidate_page() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_candidate_page_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckCandidatePage>(GetArena());
+    _impl_.typeduck_candidate_page_ = reinterpret_cast<::moqi::protocol::TypeDuckCandidatePage*>(p);
+  }
+  return _impl_.typeduck_candidate_page_;
+}
+inline ::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_candidate_page()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  ::moqi::protocol::TypeDuckCandidatePage* _msg = _internal_mutable_typeduck_candidate_page();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_candidate_page)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_candidate_page(::moqi::protocol::TypeDuckCandidatePage* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_candidate_page_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00020000U);
+  }
+
+  _impl_.typeduck_candidate_page_ = reinterpret_cast<::moqi::protocol::TypeDuckCandidatePage*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_candidate_page)
+}
+
+// optional .moqi.protocol.TypeDuckSettingsSnapshot typeduck_settings_snapshot = 30;
+inline bool ServerResponse::has_typeduck_settings_snapshot() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00040000U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_settings_snapshot_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_snapshot_ != nullptr) _impl_.typeduck_settings_snapshot_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00040000U);
+}
+inline const ::moqi::protocol::TypeDuckSettingsSnapshot& ServerResponse::_internal_typeduck_settings_snapshot() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckSettingsSnapshot* p = _impl_.typeduck_settings_snapshot_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckSettingsSnapshot&>(::moqi::protocol::_TypeDuckSettingsSnapshot_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckSettingsSnapshot& ServerResponse::typeduck_settings_snapshot() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_settings_snapshot)
+  return _internal_typeduck_settings_snapshot();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_settings_snapshot(
+    ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_snapshot_);
+  }
+  _impl_.typeduck_settings_snapshot_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsSnapshot*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00040000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00040000U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_settings_snapshot)
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE ServerResponse::release_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00040000U);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* released = _impl_.typeduck_settings_snapshot_;
+  _impl_.typeduck_settings_snapshot_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_settings_snapshot)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00040000U);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* temp = _impl_.typeduck_settings_snapshot_;
+  _impl_.typeduck_settings_snapshot_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_settings_snapshot() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_snapshot_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckSettingsSnapshot>(GetArena());
+    _impl_.typeduck_settings_snapshot_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsSnapshot*>(p);
+  }
+  return _impl_.typeduck_settings_snapshot_;
+}
+inline ::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_settings_snapshot()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00040000U);
+  ::moqi::protocol::TypeDuckSettingsSnapshot* _msg = _internal_mutable_typeduck_settings_snapshot();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_settings_snapshot)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_settings_snapshot(::moqi::protocol::TypeDuckSettingsSnapshot* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_snapshot_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00040000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00040000U);
+  }
+
+  _impl_.typeduck_settings_snapshot_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsSnapshot*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_settings_snapshot)
+}
+
+// optional .moqi.protocol.TypeDuckSettingsUpdate typeduck_settings_update = 31;
+inline bool ServerResponse::has_typeduck_settings_update() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00080000U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_settings_update_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_update_ != nullptr) _impl_.typeduck_settings_update_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00080000U);
+}
+inline const ::moqi::protocol::TypeDuckSettingsUpdate& ServerResponse::_internal_typeduck_settings_update() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckSettingsUpdate* p = _impl_.typeduck_settings_update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckSettingsUpdate&>(::moqi::protocol::_TypeDuckSettingsUpdate_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckSettingsUpdate& ServerResponse::typeduck_settings_update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_settings_update)
+  return _internal_typeduck_settings_update();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_settings_update(
+    ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_update_);
+  }
+  _impl_.typeduck_settings_update_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsUpdate*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00080000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00080000U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_settings_update)
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE ServerResponse::release_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00080000U);
+  ::moqi::protocol::TypeDuckSettingsUpdate* released = _impl_.typeduck_settings_update_;
+  _impl_.typeduck_settings_update_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_settings_update)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00080000U);
+  ::moqi::protocol::TypeDuckSettingsUpdate* temp = _impl_.typeduck_settings_update_;
+  _impl_.typeduck_settings_update_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_settings_update() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_settings_update_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckSettingsUpdate>(GetArena());
+    _impl_.typeduck_settings_update_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsUpdate*>(p);
+  }
+  return _impl_.typeduck_settings_update_;
+}
+inline ::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_settings_update()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00080000U);
+  ::moqi::protocol::TypeDuckSettingsUpdate* _msg = _internal_mutable_typeduck_settings_update();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_settings_update)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_settings_update(::moqi::protocol::TypeDuckSettingsUpdate* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_settings_update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00080000U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00080000U);
+  }
+
+  _impl_.typeduck_settings_update_ = reinterpret_cast<::moqi::protocol::TypeDuckSettingsUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_settings_update)
+}
+
+// repeated .moqi.protocol.TypeDuckEngineCapability typeduck_capabilities = 32;
+inline int ServerResponse::_internal_typeduck_capabilities_size() const {
+  return _internal_typeduck_capabilities().size();
+}
+inline int ServerResponse::typeduck_capabilities_size() const {
+  return _internal_typeduck_capabilities_size();
+}
+inline void ServerResponse::clear_typeduck_capabilities() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.typeduck_capabilities_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x80000000U);
+}
+inline ::moqi::protocol::TypeDuckEngineCapability* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_capabilities(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_capabilities)
+  return _internal_mutable_typeduck_capabilities()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_capabilities()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x80000000U);
+  // @@protoc_insertion_point(field_mutable_list:moqi.protocol.ServerResponse.typeduck_capabilities)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_typeduck_capabilities();
+}
+inline const ::moqi::protocol::TypeDuckEngineCapability& ServerResponse::typeduck_capabilities(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_capabilities)
+  return _internal_typeduck_capabilities().Get(index);
+}
+inline ::moqi::protocol::TypeDuckEngineCapability* PROTOBUF_NONNULL ServerResponse::add_typeduck_capabilities()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::moqi::protocol::TypeDuckEngineCapability* _add =
+      _internal_mutable_typeduck_capabilities()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x80000000U);
+  // @@protoc_insertion_point(field_add:moqi.protocol.ServerResponse.typeduck_capabilities)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>& ServerResponse::typeduck_capabilities() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moqi.protocol.ServerResponse.typeduck_capabilities)
+  return _internal_typeduck_capabilities();
+}
+inline const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>&
+ServerResponse::_internal_typeduck_capabilities() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.typeduck_capabilities_;
+}
+inline ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckEngineCapability>* PROTOBUF_NONNULL
+ServerResponse::_internal_mutable_typeduck_capabilities() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.typeduck_capabilities_;
+}
+
+// optional .moqi.protocol.TypeDuckEngineHealth typeduck_engine_health = 33;
+inline bool ServerResponse::has_typeduck_engine_health() const {
+  bool value = CheckHasBit(_impl_._has_bits_[1], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_engine_health_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_engine_health() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_engine_health_ != nullptr) _impl_.typeduck_engine_health_->Clear();
+  ClearHasBit(_impl_._has_bits_[1],
+                  0x00000001U);
+}
+inline const ::moqi::protocol::TypeDuckEngineHealth& ServerResponse::_internal_typeduck_engine_health() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckEngineHealth* p = _impl_.typeduck_engine_health_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckEngineHealth&>(::moqi::protocol::_TypeDuckEngineHealth_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckEngineHealth& ServerResponse::typeduck_engine_health() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_engine_health)
+  return _internal_typeduck_engine_health();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_engine_health(
+    ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_engine_health_);
+  }
+  _impl_.typeduck_engine_health_ = reinterpret_cast<::moqi::protocol::TypeDuckEngineHealth*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[1], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[1], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_engine_health)
+}
+inline ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE ServerResponse::release_typeduck_engine_health() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[1], 0x00000001U);
+  ::moqi::protocol::TypeDuckEngineHealth* released = _impl_.typeduck_engine_health_;
+  _impl_.typeduck_engine_health_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_engine_health() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_engine_health)
+
+  ClearHasBit(_impl_._has_bits_[1], 0x00000001U);
+  ::moqi::protocol::TypeDuckEngineHealth* temp = _impl_.typeduck_engine_health_;
+  _impl_.typeduck_engine_health_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_engine_health() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_engine_health_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckEngineHealth>(GetArena());
+    _impl_.typeduck_engine_health_ = reinterpret_cast<::moqi::protocol::TypeDuckEngineHealth*>(p);
+  }
+  return _impl_.typeduck_engine_health_;
+}
+inline ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_engine_health()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[1], 0x00000001U);
+  ::moqi::protocol::TypeDuckEngineHealth* _msg = _internal_mutable_typeduck_engine_health();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_engine_health)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_engine_health(::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_engine_health_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[1], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[1], 0x00000001U);
+  }
+
+  _impl_.typeduck_engine_health_ = reinterpret_cast<::moqi::protocol::TypeDuckEngineHealth*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_engine_health)
+}
+
+// optional .moqi.protocol.TypeDuckError typeduck_error = 34;
+inline bool ServerResponse::has_typeduck_error() const {
+  bool value = CheckHasBit(_impl_._has_bits_[1], 0x00000002U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_error_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_error_ != nullptr) _impl_.typeduck_error_->Clear();
+  ClearHasBit(_impl_._has_bits_[1],
+                  0x00000002U);
+}
+inline const ::moqi::protocol::TypeDuckError& ServerResponse::_internal_typeduck_error() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckError* p = _impl_.typeduck_error_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckError&>(::moqi::protocol::_TypeDuckError_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckError& ServerResponse::typeduck_error() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_error)
+  return _internal_typeduck_error();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_error(
+    ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_error_);
+  }
+  _impl_.typeduck_error_ = reinterpret_cast<::moqi::protocol::TypeDuckError*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[1], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[1], 0x00000002U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_error)
+}
+inline ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE ServerResponse::release_typeduck_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[1], 0x00000002U);
+  ::moqi::protocol::TypeDuckError* released = _impl_.typeduck_error_;
+  _impl_.typeduck_error_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_error)
+
+  ClearHasBit(_impl_._has_bits_[1], 0x00000002U);
+  ::moqi::protocol::TypeDuckError* temp = _impl_.typeduck_error_;
+  _impl_.typeduck_error_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckError* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_error_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckError>(GetArena());
+    _impl_.typeduck_error_ = reinterpret_cast<::moqi::protocol::TypeDuckError*>(p);
+  }
+  return _impl_.typeduck_error_;
+}
+inline ::moqi::protocol::TypeDuckError* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_error()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[1], 0x00000002U);
+  ::moqi::protocol::TypeDuckError* _msg = _internal_mutable_typeduck_error();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_error)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_error(::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_error_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[1], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[1], 0x00000002U);
+  }
+
+  _impl_.typeduck_error_ = reinterpret_cast<::moqi::protocol::TypeDuckError*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_error)
+}
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -8583,6 +15824,18 @@ struct is_proto_enum<::moqi::protocol::ButtonType> : std::true_type {};
 template <>
 inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::moqi::protocol::ButtonType>() {
   return ::moqi::protocol::ButtonType_descriptor();
+}
+template <>
+struct is_proto_enum<::moqi::protocol::TypeDuckHealthStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::moqi::protocol::TypeDuckHealthStatus>() {
+  return ::moqi::protocol::TypeDuckHealthStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::moqi::protocol::TypeDuckErrorCode> : std::true_type {};
+template <>
+inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::moqi::protocol::TypeDuckErrorCode>() {
+  return ::moqi::protocol::TypeDuckErrorCode_descriptor();
 }
 template <>
 struct is_proto_enum<::moqi::protocol::TrayNotificationIcon> : std::true_type {};

@@ -72,14 +72,51 @@ static std::string getUtf8CurrentDir() {
   return dirPath;
 }
 
-static std::vector<std::string> getUtf8EnvironmentVariables() {
-  // build our own new environments
+static bool isAllowedTypeDuckRuntimeEnvKey(const std::wstring &key) {
+  static const wchar_t *const kAllowed[] = {
+      L"ALLUSERSPROFILE", L"APPDATA",       L"COMMONPROGRAMFILES",
+      L"COMMONPROGRAMFILES(X86)",           L"COMPUTERNAME",
+      L"COMSPEC",                           L"HOMEDRIVE",
+      L"HOMEPATH",                          L"LOCALAPPDATA",
+      L"LOGONSERVER",                       L"NUMBER_OF_PROCESSORS",
+      L"OS",                                L"PATHEXT",
+      L"PROCESSOR_ARCHITECTURE",            L"PROCESSOR_IDENTIFIER",
+      L"PROCESSOR_LEVEL",                   L"PROCESSOR_REVISION",
+      L"PROGRAMDATA",                       L"PROGRAMFILES",
+      L"PROGRAMFILES(X86)",                 L"PUBLIC",
+      L"SYSTEMDRIVE",                       L"SYSTEMROOT",
+      L"TEMP",                              L"TMP",
+      L"USERDOMAIN",                        L"USERNAME",
+      L"USERPROFILE",                       L"WINDIR",
+      L"PYTHONIOENCODING",
+  };
+  for (const wchar_t *allowed : kAllowed) {
+    if (_wcsicmp(key.c_str(), allowed) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+static std::vector<std::string> getTypeDuckRuntimeEnvironmentVariables() {
   auto env_strs = GetEnvironmentStringsW();
   vector<string> utf8Environ;
   for (auto penv = env_strs; *penv; penv += wcslen(penv) + 1) {
-    utf8Environ.emplace_back(utf8Codec.to_bytes(penv));
+    const wchar_t *eq = wcschr(penv, L'=');
+    const size_t keyLen = eq ? static_cast<size_t>(eq - penv) : wcslen(penv);
+    const std::wstring key(penv, keyLen);
+    if (isAllowedTypeDuckRuntimeEnvKey(key)) {
+      utf8Environ.emplace_back(utf8Codec.to_bytes(penv));
+    }
   }
   FreeEnvironmentStringsW(env_strs);
+  const bool hasPythonIoEncoding = std::any_of(
+      utf8Environ.begin(), utf8Environ.end(), [](const std::string &entry) {
+        return entry.rfind("PYTHONIOENCODING=", 0) == 0;
+      });
+  if (!hasPythonIoEncoding) {
+    utf8Environ.emplace_back("PYTHONIOENCODING=utf-8");
+  }
   return utf8Environ;
 }
 
@@ -253,7 +290,7 @@ bool BackendServer::startProcess() {
   options.cwd = backendWorkingDirPath.c_str();
 
   // build our own new environments
-  auto utf8EnvVars = getUtf8EnvironmentVariables();
+  auto utf8EnvVars = getTypeDuckRuntimeEnvironmentVariables();
   // add our own environment variables
   // NOTE: Force python to output UTF-8 encoded strings
   // Reference:
