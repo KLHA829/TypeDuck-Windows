@@ -11,6 +11,8 @@ using Moqi::TypeDuck::ChineseTypeface;
 using Moqi::TypeDuck::DisplayLanguage;
 using Moqi::TypeDuck::DisplayPreferences;
 using Moqi::TypeDuck::JyutpingVisibility;
+using Moqi::TypeDuck::kMaxCsvFieldLength;
+using Moqi::TypeDuck::kMaxRawCommentLength;
 
 namespace {
 
@@ -163,6 +165,20 @@ TEST(TypeDuckCandidateInfoTest, CarriesReverseLookupInputBufferAndMultilingualRo
   EXPECT_EQ(otherLanguages[1].name, L"Hindi");
   EXPECT_EQ(otherLanguages[2].name, L"Nepali");
   EXPECT_EQ(otherLanguages[3].name, L"Urdu");
+}
+
+TEST(TypeDuckCandidateInfoTest, BoundsUntrustedCommentAndCsvFieldLengths) {
+  std::wstring oversizedField(kMaxCsvFieldLength + 32, L'a');
+  const std::wstring csv = L"1,你,nei5,,,,,oth,,,,,," + oversizedField + L",,,";
+  const CandidateEntry entry = CandidateEntry::fromCsvRow(csv);
+  EXPECT_EQ(entry.definition(DisplayLanguage::English).size(), kMaxCsvFieldLength);
+
+  const std::wstring suffix = L"\f\r" + NeiRow();
+  std::wstring oversizedComment = suffix + std::wstring(kMaxRawCommentLength, L'x');
+  const CandidateInfo info(L"1.", L"你", oversizedComment);
+  EXPECT_EQ(info.rawComment.size(), kMaxRawCommentLength);
+  ASSERT_EQ(info.entries.size(), 1u);
+  EXPECT_EQ(info.entries[0].honzi, L"你");
 }
 
 TEST(TypeDuckCandidateInfoTest, CarriesJyutpingVisibilityAndTypefacePreferences) {
