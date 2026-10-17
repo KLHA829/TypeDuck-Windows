@@ -160,6 +160,8 @@ $runtimeFiles = @(
   "MoqLauncher/PipeServer.h",
   "MoqLauncher/BackendServer.cpp",
   "MoqLauncher/BackendServer.h",
+  "MoqLauncher/PipeClient.cpp",
+  "MoqLauncher/TypeDuckLatencyTrace.cpp",
   "MoqiTextService/MoqiClient.cpp",
   "MoqiTextService/MoqiCandidateWindow.cpp",
   "MoqiTextService/MoqiTextService.cpp",

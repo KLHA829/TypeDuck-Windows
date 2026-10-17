@@ -81,6 +81,12 @@ public:
 
 	void close();
 
+    void beginLatencyTrackedRequest(const moqi::protocol::ClientRequest& request);
+
+    void noteBackendForwardComplete();
+
+    void annotateLatencyResponse(moqi::protocol::ServerResponse& response);
+
 private:
     void onReadError(int error);
 
@@ -110,6 +116,14 @@ private:
     Proto::FrameBuffer readBuffer_;
     std::uint32_t pendingSeqNum_ = 0;
     moqi::protocol::Method pendingMethod_ = moqi::protocol::METHOD_UNSPECIFIED;
+
+    bool latencyTracePending_ = false;
+    LARGE_INTEGER latencyFrequency_{};
+    LARGE_INTEGER latencyRequestStart_{};
+    LARGE_INTEGER latencyBackendForward_{};
+    moqi::protocol::Method latencyMethod_ =
+        moqi::protocol::METHOD_UNSPECIFIED;
+    std::uint32_t latencySeqNum_ = 0;
 };
 
 } // namespace Moqi
