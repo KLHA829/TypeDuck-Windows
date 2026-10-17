@@ -28,6 +28,7 @@
 #include <libIME2/src/LangBarButton.h>
 #include "MoqiImeModule.h"
 #include "MoqLauncher/TypeDuckPreferences.h"
+#include "MoqLauncher/TypeDuckLatencyTrace.h"
 #include "resource.h"
 #include <Shellapi.h>
 #include <sys/stat.h>
@@ -1152,6 +1153,7 @@ void TextService::updateCandidatesWindow(Ime::EditSession* session) {
         candidateWindow_->syncOwner(session);
 		moveCandidateWindowToInputRect(session, L"updateCandidatesWindow", true);
 	}
+    ::TypeDuck::LatencyTrace::noteCandidateUiUpdate();
 }
 
 void TextService::updateCandidatesWithoutSession() {

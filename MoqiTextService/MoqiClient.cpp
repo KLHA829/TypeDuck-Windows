@@ -27,6 +27,7 @@
 
 #include "MoqiTextService.h"
 #include "MoqiImeModule.h"
+#include "../MoqLauncher/TypeDuckLatencyTrace.h"
 #include <Shellapi.h>
 #include <VersionHelpers.h> // Provided by Windows SDK >= 8.1
 #include <Winnls.h> // for IS_HIGH_SURROGATE() macro for checking UTF16 surrogate pairs
@@ -637,6 +638,10 @@ void Client::addKeyEventToRpcRequest(moqi::protocol::ClientRequest &request,
 }
 
 bool Client::handleRpcResponse(Json::Value &msg, Ime::EditSession *session) {
+  if (::TypeDuck::LatencyTrace::Session *latencySession =
+          ::TypeDuck::LatencyTrace::currentSession()) {
+    latencySession->mark("tsf_response_apply");
+  }
   bool success = msg.get("success", false).asBool();
   if (!success) {
     return handleTypeDuckFailure(msg, session);
@@ -1135,6 +1140,17 @@ void Client::onDeactivate() {
   isActivated_ = false;
 }
 
+namespace {
+
+void applyLatencyTraceRequestFlag(moqi::protocol::ClientRequest &request) {
+  if (::TypeDuck::LatencyTrace::isEnabled() &&
+      ::TypeDuck::LatencyTrace::isKeyPathMethod(request.method())) {
+    request.set_typeduck_latency_trace(true);
+  }
+}
+
+} // namespace
+
 bool Client::filterKeyDown(Ime::KeyEvent &keyEvent) {
   if (isOrdinaryPrintableKey(keyEvent) &&
       !waitForRpcIdle(FIRST_PRINTABLE_KEY_RPC_WAIT_MS)) {
@@ -1153,10 +1169,25 @@ bool Client::filterKeyDown(Ime::KeyEvent &keyEvent) {
 
   auto req = createRpcRequest("filterKeyDown");
   addKeyEventToRpcRequest(req, keyEvent);
+  applyLatencyTraceRequestFlag(req);
+
+  std::unique_ptr<::TypeDuck::LatencyTrace::Session> latencySession;
+  if (req.typeduck_latency_trace()) {
+    latencySession = std::make_unique<::TypeDuck::LatencyTrace::Session>(
+        req.method());
+  }
+  const auto finishLatencyTrace = [&]() {
+    if (latencySession) {
+      latencySession->finish(req.seq_num());
+      latencySession.reset();
+    }
+  };
 
   Json::Value ret;
   const bool rpcOk = callRpcMethod(req, ret);
-  if (rpcOk && handleRpcResponse(ret)) {
+  const bool handled = rpcOk && handleRpcResponse(ret);
+  finishLatencyTrace();
+  if (handled) {
     return ret["return"].asBool();
   }
   if (isOrdinaryPrintableKey(keyEvent)) {
@@ -1174,10 +1205,25 @@ bool Client::filterKeyDown(Ime::KeyEvent &keyEvent) {
 bool Client::onKeyDown(Ime::KeyEvent &keyEvent, Ime::EditSession *session) {
   auto req = createRpcRequest("onKeyDown");
   addKeyEventToRpcRequest(req, keyEvent);
+  applyLatencyTraceRequestFlag(req);
+
+  std::unique_ptr<::TypeDuck::LatencyTrace::Session> latencySession;
+  if (req.typeduck_latency_trace()) {
+    latencySession = std::make_unique<::TypeDuck::LatencyTrace::Session>(
+        req.method());
+  }
+  const auto finishLatencyTrace = [&]() {
+    if (latencySession) {
+      latencySession->finish(req.seq_num());
+      latencySession.reset();
+    }
+  };
 
   Json::Value ret;
   callRpcMethod(req, ret);
-  if (handleRpcResponse(ret, session)) {
+  const bool handled = handleRpcResponse(ret, session);
+  finishLatencyTrace();
+  if (handled) {
     refreshAsyncPollTimer();
     flushPendingAsyncResponses(session);
     return ret["return"].asBool();
@@ -1735,9 +1781,20 @@ bool Client::callRpcMethod(moqi::protocol::ClientRequest &request,
       return false;
     }
 
+    ::TypeDuck::LatencyTrace::Session *latencySession =
+        ::TypeDuck::LatencyTrace::currentSession();
+    if (latencySession != nullptr) {
+      latencySession->mark("tsf_pre_rpc");
+    }
+
     std::string serializedResponse;
     bool success = false;
-    if (callRpcPipe(pipe_, serializedRequest, serializedResponse)) {
+    const bool pipeOk =
+        callRpcPipe(pipe_, serializedRequest, serializedResponse);
+    if (latencySession != nullptr) {
+      latencySession->mark("tsf_named_pipe_rtt");
+    }
+    if (pipeOk) {
       while (true) {
         Proto::FrameBuffer responseBuffer{Proto::kMaxClientFramePayloadBytes};
         responseBuffer.append(serializedResponse.data(), serializedResponse.size());
@@ -1753,6 +1810,11 @@ bool Client::callRpcMethod(moqi::protocol::ClientRequest &request,
           break;
         }
         if (protoResponse.seq_num() == seqNum) {
+          if (latencySession != nullptr &&
+              protoResponse.has_typeduck_latency_report()) {
+            latencySession->mergeRemoteReport(
+                protoResponse.typeduck_latency_report());
+          }
           response = responseToJson(protoResponse);
           break;
         }

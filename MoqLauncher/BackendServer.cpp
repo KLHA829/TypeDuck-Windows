@@ -89,6 +89,7 @@ static bool isAllowedTypeDuckRuntimeEnvKey(const std::wstring &key) {
       L"USERDOMAIN",                        L"USERNAME",
       L"USERPROFILE",                       L"WINDIR",
       L"PYTHONIOENCODING",
+      L"TYPEDUCK_LATENCY_TRACE",
   };
   for (const wchar_t *allowed : kAllowed) {
     if (_wcsicmp(key.c_str(), allowed) == 0) {
@@ -464,7 +465,18 @@ void BackendServer::handleBackendReply() {
     }
 
     if (auto client = pipeServer_->clientFromId(response.client_id())) {
-      const auto framedPayload = Proto::framePayload(payload);
+      moqi::protocol::ServerResponse clientResponse = response;
+      client->annotateLatencyResponse(clientResponse);
+      std::string outboundPayload;
+      if (!Proto::serializeMessageBounded(
+              clientResponse, outboundPayload,
+              Proto::kMaxClientFramePayloadBytes)) {
+        logger()->error(
+            "Failed to serialize TypeDuck latency-annotated response for client {}",
+            response.client_id());
+        continue;
+      }
+      const auto framedPayload = Proto::framePayload(outboundPayload);
       client->writeBackendResponse(
           response.seq_num(), framedPayload.data(), framedPayload.size());
     }

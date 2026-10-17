@@ -51,6 +51,8 @@ add_executable(MoqiLauncher WIN32
     BackendServer.h
     TypeDuckPreferences.cpp
     TypeDuckPreferences.h
+    TypeDuckLatencyTrace.cpp
+    TypeDuckLatencyTrace.h
     Utils.cpp
     Utils.h
     # resources

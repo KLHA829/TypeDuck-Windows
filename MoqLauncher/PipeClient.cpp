@@ -22,6 +22,7 @@
 #include "Utils.h"
 #include "BackendServer.h"
 #include "TypeDuckPreferences.h"
+#include "TypeDuckLatencyTrace.h"
 #include "proto/moqi.pb.h"
 #include "../proto/ProtoFraming.h"
 
@@ -209,8 +210,10 @@ void PipeClient::handleClientMessage(const char* readBuf, size_t len) {
         if (backend_) {
             pendingSeqNum_ = request.seq_num();
             pendingMethod_ = request.method();
+            beginLatencyTrackedRequest(request);
             startRequestTimeoutTimer(BACKEND_REQUEST_TIMEOUT_MS);
             backend_->handleClientMessage(this, request);
+            noteBackendForwardComplete();
         }
     }
 
@@ -434,6 +437,7 @@ void PipeClient::onRequestTimeout() {
 	// We sent a message to the backend server, but haven't got any response before the timeout
 	// Assume that the backend server is dead. => Try to restart
     stopRequestTimeoutTimer();
+    latencyTracePending_ = false;
     writeTypeDuckErrorResponse(
         pendingSeqNum_,
         moqi::protocol::TYPEDUCK_ERROR_BACKEND_TIMEOUT,
@@ -444,6 +448,84 @@ void PipeClient::onRequestTimeout() {
 		logger()->critical("Backend {} seems to be dead. Try to restart!", backend_->name());
 		backend_->restartProcess();
 	}
+}
+
+namespace {
+
+std::uint64_t qpcDeltaMicros(const LARGE_INTEGER &from, const LARGE_INTEGER &to,
+                             const LARGE_INTEGER &frequency) {
+  if (frequency.QuadPart == 0) {
+    return 0;
+  }
+  const double seconds = static_cast<double>(to.QuadPart - from.QuadPart) /
+                         static_cast<double>(frequency.QuadPart);
+  return static_cast<std::uint64_t>(seconds * 1000000.0);
+}
+
+void appendLatencyHop(moqi::protocol::TypeDuckLatencyReport *report,
+                      const char *hopName, std::uint64_t durationUs) {
+  auto *hop = report->add_hops();
+  hop->set_hop(hopName);
+  hop->set_duration_us(durationUs);
+}
+
+} // namespace
+
+void PipeClient::beginLatencyTrackedRequest(
+    const moqi::protocol::ClientRequest &request) {
+  latencyTracePending_ = false;
+  if (!::TypeDuck::LatencyTrace::isEnabled() ||
+      !request.typeduck_latency_trace() ||
+      !::TypeDuck::LatencyTrace::isKeyPathMethod(request.method())) {
+    return;
+  }
+
+  ::QueryPerformanceFrequency(&latencyFrequency_);
+  ::QueryPerformanceCounter(&latencyRequestStart_);
+  latencyBackendForward_ = latencyRequestStart_;
+  latencyMethod_ = request.method();
+  latencySeqNum_ = request.seq_num();
+  latencyTracePending_ = true;
+}
+
+void PipeClient::noteBackendForwardComplete() {
+  if (!latencyTracePending_) {
+    return;
+  }
+  ::QueryPerformanceCounter(&latencyBackendForward_);
+}
+
+void PipeClient::annotateLatencyResponse(
+    moqi::protocol::ServerResponse &response) {
+  if (!latencyTracePending_ || response.seq_num() != latencySeqNum_) {
+    return;
+  }
+
+  LARGE_INTEGER now{};
+  ::QueryPerformanceCounter(&now);
+
+  moqi::protocol::TypeDuckLatencyReport report;
+  if (response.has_typeduck_latency_report()) {
+    report = response.typeduck_latency_report();
+  }
+  report.set_seq_num(latencySeqNum_);
+  report.set_method(latencyMethod_);
+
+  appendLatencyHop(&report, "launcher_client_to_backend_write",
+                   qpcDeltaMicros(latencyRequestStart_, latencyBackendForward_,
+                                  latencyFrequency_));
+  appendLatencyHop(&report, "launcher_backend_stdio_rtt",
+                   qpcDeltaMicros(latencyBackendForward_, now,
+                                  latencyFrequency_));
+
+  std::uint64_t totalUs = 0;
+  for (const auto &hop : report.hops()) {
+    totalUs += hop.duration_us();
+  }
+  report.set_total_us(totalUs);
+  *response.mutable_typeduck_latency_report() = std::move(report);
+
+  latencyTracePending_ = false;
 }
 
 } // namespace Moqi

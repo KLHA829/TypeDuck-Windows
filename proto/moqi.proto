@@ -242,6 +242,20 @@ message TrayNotification {
   TrayNotificationIcon icon = 3;
 }
 
+// Privacy-safe per-hop timings for warm keystroke diagnostics. Values are
+// durations only; never include composition, candidate, or settings payloads.
+message TypeDuckLatencyHop {
+  string hop = 1;
+  uint64 duration_us = 2;
+}
+
+message TypeDuckLatencyReport {
+  uint32 seq_num = 1;
+  Method method = 2;
+  uint64 total_us = 3;
+  repeated TypeDuckLatencyHop hops = 4;
+}
+
 message ClientRequest {
   reserved 26, 100;
   uint32 seq_num = 1;
@@ -274,6 +288,7 @@ message ClientRequest {
   optional TypeDuckSettingsUpdate typeduck_settings_update = 29;
   optional TypeDuckDeployRequest typeduck_deploy_request = 30;
   optional TypeDuckReconfigureRequest typeduck_reconfigure_request = 31;
+  optional bool typeduck_latency_trace = 32;
 }
 
 message ServerResponse {
@@ -312,4 +327,5 @@ message ServerResponse {
   repeated TypeDuckEngineCapability typeduck_capabilities = 32;
   optional TypeDuckEngineHealth typeduck_engine_health = 33;
   optional TypeDuckError typeduck_error = 34;
+  optional TypeDuckLatencyReport typeduck_latency_report = 35;
 }

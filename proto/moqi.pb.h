@@ -129,6 +129,14 @@ class TypeDuckError;
 struct TypeDuckErrorDefaultTypeInternal;
 extern TypeDuckErrorDefaultTypeInternal _TypeDuckError_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull TypeDuckError_class_data_;
+class TypeDuckLatencyHop;
+struct TypeDuckLatencyHopDefaultTypeInternal;
+extern TypeDuckLatencyHopDefaultTypeInternal _TypeDuckLatencyHop_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckLatencyHop_class_data_;
+class TypeDuckLatencyReport;
+struct TypeDuckLatencyReportDefaultTypeInternal;
+extern TypeDuckLatencyReportDefaultTypeInternal _TypeDuckLatencyReport_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckLatencyReport_class_data_;
 class TypeDuckProtocolInfo;
 struct TypeDuckProtocolInfoDefaultTypeInternal;
 extern TypeDuckProtocolInfoDefaultTypeInternal _TypeDuckProtocolInfo_default_instance_;
@@ -1714,6 +1722,213 @@ class TypeDuckProtocolInfo final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull TypeDuckProtocolInfo_class_data_;
+// -------------------------------------------------------------------
+
+class TypeDuckLatencyHop final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckLatencyHop) */ {
+ public:
+  inline TypeDuckLatencyHop() : TypeDuckLatencyHop(nullptr) {}
+  ~TypeDuckLatencyHop() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckLatencyHop* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckLatencyHop));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckLatencyHop(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckLatencyHop(const TypeDuckLatencyHop& from) : TypeDuckLatencyHop(nullptr, from) {}
+  inline TypeDuckLatencyHop(TypeDuckLatencyHop&& from) noexcept
+      : TypeDuckLatencyHop(nullptr, ::std::move(from)) {}
+  inline TypeDuckLatencyHop& operator=(const TypeDuckLatencyHop& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckLatencyHop& operator=(TypeDuckLatencyHop&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckLatencyHop& default_instance() {
+    return *reinterpret_cast<const TypeDuckLatencyHop*>(
+        &_TypeDuckLatencyHop_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 18;
+  friend void swap(TypeDuckLatencyHop& a, TypeDuckLatencyHop& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckLatencyHop* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckLatencyHop* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckLatencyHop* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckLatencyHop>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckLatencyHop& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckLatencyHop& from) { TypeDuckLatencyHop::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckLatencyHop* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckLatencyHop"; }
+
+  explicit TypeDuckLatencyHop(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckLatencyHop(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckLatencyHop& from);
+  TypeDuckLatencyHop(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckLatencyHop&& from) noexcept
+      : TypeDuckLatencyHop(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kHopFieldNumber = 1,
+    kDurationUsFieldNumber = 2,
+  };
+  // string hop = 1;
+  void clear_hop() ;
+  const ::std::string& hop() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_hop(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_hop();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_hop();
+  void set_allocated_hop(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_hop() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_hop(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_hop();
+
+  public:
+  // uint64 duration_us = 2;
+  void clear_duration_us() ;
+  ::uint64_t duration_us() const;
+  void set_duration_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_duration_us() const;
+  void _internal_set_duration_us(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckLatencyHop)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 44,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckLatencyHop& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr hop_;
+    ::uint64_t duration_us_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckLatencyHop_class_data_;
 // -------------------------------------------------------------------
 
 class TypeDuckError final : public ::google::protobuf::Message
@@ -4947,6 +5162,239 @@ class AutoPairRule final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull AutoPairRule_class_data_;
 // -------------------------------------------------------------------
 
+class TypeDuckLatencyReport final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:moqi.protocol.TypeDuckLatencyReport) */ {
+ public:
+  inline TypeDuckLatencyReport() : TypeDuckLatencyReport(nullptr) {}
+  ~TypeDuckLatencyReport() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TypeDuckLatencyReport* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TypeDuckLatencyReport));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TypeDuckLatencyReport(::google::protobuf::internal::ConstantInitialized);
+
+  inline TypeDuckLatencyReport(const TypeDuckLatencyReport& from) : TypeDuckLatencyReport(nullptr, from) {}
+  inline TypeDuckLatencyReport(TypeDuckLatencyReport&& from) noexcept
+      : TypeDuckLatencyReport(nullptr, ::std::move(from)) {}
+  inline TypeDuckLatencyReport& operator=(const TypeDuckLatencyReport& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TypeDuckLatencyReport& operator=(TypeDuckLatencyReport&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TypeDuckLatencyReport& default_instance() {
+    return *reinterpret_cast<const TypeDuckLatencyReport*>(
+        &_TypeDuckLatencyReport_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 19;
+  friend void swap(TypeDuckLatencyReport& a, TypeDuckLatencyReport& b) { a.Swap(&b); }
+  inline void Swap(TypeDuckLatencyReport* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TypeDuckLatencyReport* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TypeDuckLatencyReport* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TypeDuckLatencyReport>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TypeDuckLatencyReport& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TypeDuckLatencyReport& from) { TypeDuckLatencyReport::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TypeDuckLatencyReport* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "moqi.protocol.TypeDuckLatencyReport"; }
+
+  explicit TypeDuckLatencyReport(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TypeDuckLatencyReport(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TypeDuckLatencyReport& from);
+  TypeDuckLatencyReport(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TypeDuckLatencyReport&& from) noexcept
+      : TypeDuckLatencyReport(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kHopsFieldNumber = 4,
+    kSeqNumFieldNumber = 1,
+    kMethodFieldNumber = 2,
+    kTotalUsFieldNumber = 3,
+  };
+  // repeated .moqi.protocol.TypeDuckLatencyHop hops = 4;
+  int hops_size() const;
+  private:
+  int _internal_hops_size() const;
+
+  public:
+  void clear_hops() ;
+  ::moqi::protocol::TypeDuckLatencyHop* PROTOBUF_NONNULL mutable_hops(int index);
+  ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>* PROTOBUF_NONNULL mutable_hops();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>& _internal_hops() const;
+  ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>* PROTOBUF_NONNULL _internal_mutable_hops();
+  public:
+  const ::moqi::protocol::TypeDuckLatencyHop& hops(int index) const;
+  ::moqi::protocol::TypeDuckLatencyHop* PROTOBUF_NONNULL add_hops();
+  const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>& hops() const;
+  // uint32 seq_num = 1;
+  void clear_seq_num() ;
+  ::uint32_t seq_num() const;
+  void set_seq_num(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_seq_num() const;
+  void _internal_set_seq_num(::uint32_t value);
+
+  public:
+  // .moqi.protocol.Method method = 2;
+  void clear_method() ;
+  ::moqi::protocol::Method method() const;
+  void set_method(::moqi::protocol::Method value);
+
+  private:
+  ::moqi::protocol::Method _internal_method() const;
+  void _internal_set_method(::moqi::protocol::Method value);
+
+  public:
+  // uint64 total_us = 3;
+  void clear_total_us() ;
+  ::uint64_t total_us() const;
+  void set_total_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_total_us() const;
+  void _internal_set_total_us(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:moqi.protocol.TypeDuckLatencyReport)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TypeDuckLatencyReport& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::moqi::protocol::TypeDuckLatencyHop > hops_;
+    ::uint32_t seq_num_;
+    int method_;
+    ::uint64_t total_us_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fmoqi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TypeDuckLatencyReport_class_data_;
+// -------------------------------------------------------------------
+
 class CustomizeUi final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:moqi.protocol.CustomizeUi) */ {
  public:
@@ -5447,7 +5895,7 @@ class ClientRequest final : public ::google::protobuf::Message
     return *reinterpret_cast<const ClientRequest*>(
         &_ClientRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 18;
+  static constexpr int kIndexInFileMessages = 20;
   friend void swap(ClientRequest& a, ClientRequest& b) { a.Swap(&b); }
   inline void Swap(ClientRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5564,6 +6012,7 @@ class ClientRequest final : public ::google::protobuf::Message
     kCommandIdFieldNumber = 19,
     kCandidateIndexFieldNumber = 24,
     kPageBackwardFieldNumber = 25,
+    kTypeduckLatencyTraceFieldNumber = 32,
   };
   // repeated string candidate_list = 13;
   int candidate_list_size() const;
@@ -5945,11 +6394,22 @@ class ClientRequest final : public ::google::protobuf::Message
   void _internal_set_page_backward(bool value);
 
   public:
+  // optional bool typeduck_latency_trace = 32;
+  bool has_typeduck_latency_trace() const;
+  void clear_typeduck_latency_trace() ;
+  bool typeduck_latency_trace() const;
+  void set_typeduck_latency_trace(bool value);
+
+  private:
+  bool _internal_typeduck_latency_trace() const;
+  void _internal_set_typeduck_latency_trace(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:moqi.protocol.ClientRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<5, 30,
+  static const ::google::protobuf::internal::TcParseTable<5, 31,
                                    6, 148,
                                    2>
       _table_;
@@ -6001,6 +6461,7 @@ class ClientRequest final : public ::google::protobuf::Message
     ::uint32_t command_id_;
     ::int32_t candidate_index_;
     bool page_backward_;
+    bool typeduck_latency_trace_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6065,7 +6526,7 @@ class ServerResponse final : public ::google::protobuf::Message
     return *reinterpret_cast<const ServerResponse*>(
         &_ServerResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 19;
+  static constexpr int kIndexInFileMessages = 21;
   friend void swap(ServerResponse& a, ServerResponse& b) { a.Swap(&b); }
   inline void Swap(ServerResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -6186,6 +6647,7 @@ class ServerResponse final : public ::google::protobuf::Message
     kTypeduckCapabilitiesFieldNumber = 32,
     kTypeduckEngineHealthFieldNumber = 33,
     kTypeduckErrorFieldNumber = 34,
+    kTypeduckLatencyReportFieldNumber = 35,
   };
   // repeated .moqi.protocol.MenuItem menu_items = 5;
   int menu_items_size() const;
@@ -6677,12 +7139,27 @@ class ServerResponse final : public ::google::protobuf::Message
   ::moqi::protocol::TypeDuckError* PROTOBUF_NONNULL _internal_mutable_typeduck_error();
 
   public:
+  // optional .moqi.protocol.TypeDuckLatencyReport typeduck_latency_report = 35;
+  bool has_typeduck_latency_report() const;
+  void clear_typeduck_latency_report() ;
+  const ::moqi::protocol::TypeDuckLatencyReport& typeduck_latency_report() const;
+  [[nodiscard]] ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE release_typeduck_latency_report();
+  ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NONNULL mutable_typeduck_latency_report();
+  void set_allocated_typeduck_latency_report(::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_typeduck_latency_report(::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE value);
+  ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE unsafe_arena_release_typeduck_latency_report();
+
+  private:
+  const ::moqi::protocol::TypeDuckLatencyReport& _internal_typeduck_latency_report() const;
+  ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NONNULL _internal_mutable_typeduck_latency_report();
+
+  public:
   // @@protoc_insertion_point(class_scope:moqi.protocol.ServerResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<5, 34,
-                                   15, 173,
+  static const ::google::protobuf::internal::TcParseTable<5, 35,
+                                   16, 173,
                                    7>
       _table_;
 
@@ -6737,6 +7214,7 @@ class ServerResponse final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField< ::moqi::protocol::TypeDuckEngineCapability > typeduck_capabilities_;
     ::moqi::protocol::TypeDuckEngineHealth* PROTOBUF_NULLABLE typeduck_engine_health_;
     ::moqi::protocol::TypeDuckError* PROTOBUF_NULLABLE typeduck_error_;
+    ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE typeduck_latency_report_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -12231,6 +12709,235 @@ inline void TrayNotification::_internal_set_icon(::moqi::protocol::TrayNotificat
 
 // -------------------------------------------------------------------
 
+// TypeDuckLatencyHop
+
+// string hop = 1;
+inline void TypeDuckLatencyHop::clear_hop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.hop_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& TypeDuckLatencyHop::hop() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckLatencyHop.hop)
+  return _internal_hop();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TypeDuckLatencyHop::set_hop(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.hop_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckLatencyHop.hop)
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckLatencyHop::mutable_hop()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_hop();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckLatencyHop.hop)
+  return _s;
+}
+inline const ::std::string& TypeDuckLatencyHop::_internal_hop() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.hop_.Get();
+}
+inline void TypeDuckLatencyHop::_internal_set_hop(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.hop_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TypeDuckLatencyHop::_internal_mutable_hop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.hop_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TypeDuckLatencyHop::release_hop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.TypeDuckLatencyHop.hop)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.hop_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.hop_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TypeDuckLatencyHop::set_allocated_hop(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.hop_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.hop_.IsDefault()) {
+    _impl_.hop_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.TypeDuckLatencyHop.hop)
+}
+
+// uint64 duration_us = 2;
+inline void TypeDuckLatencyHop::clear_duration_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.duration_us_ = ::uint64_t{0u};
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::uint64_t TypeDuckLatencyHop::duration_us() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckLatencyHop.duration_us)
+  return _internal_duration_us();
+}
+inline void TypeDuckLatencyHop::set_duration_us(::uint64_t value) {
+  _internal_set_duration_us(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckLatencyHop.duration_us)
+}
+inline ::uint64_t TypeDuckLatencyHop::_internal_duration_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.duration_us_;
+}
+inline void TypeDuckLatencyHop::_internal_set_duration_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.duration_us_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TypeDuckLatencyReport
+
+// uint32 seq_num = 1;
+inline void TypeDuckLatencyReport::clear_seq_num() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.seq_num_ = 0u;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::uint32_t TypeDuckLatencyReport::seq_num() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckLatencyReport.seq_num)
+  return _internal_seq_num();
+}
+inline void TypeDuckLatencyReport::set_seq_num(::uint32_t value) {
+  _internal_set_seq_num(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckLatencyReport.seq_num)
+}
+inline ::uint32_t TypeDuckLatencyReport::_internal_seq_num() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.seq_num_;
+}
+inline void TypeDuckLatencyReport::_internal_set_seq_num(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.seq_num_ = value;
+}
+
+// .moqi.protocol.Method method = 2;
+inline void TypeDuckLatencyReport::clear_method() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::moqi::protocol::Method TypeDuckLatencyReport::method() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckLatencyReport.method)
+  return _internal_method();
+}
+inline void TypeDuckLatencyReport::set_method(::moqi::protocol::Method value) {
+  _internal_set_method(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckLatencyReport.method)
+}
+inline ::moqi::protocol::Method TypeDuckLatencyReport::_internal_method() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::moqi::protocol::Method>(_impl_.method_);
+}
+inline void TypeDuckLatencyReport::_internal_set_method(::moqi::protocol::Method value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.method_ = value;
+}
+
+// uint64 total_us = 3;
+inline void TypeDuckLatencyReport::clear_total_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_us_ = ::uint64_t{0u};
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline ::uint64_t TypeDuckLatencyReport::total_us() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckLatencyReport.total_us)
+  return _internal_total_us();
+}
+inline void TypeDuckLatencyReport::set_total_us(::uint64_t value) {
+  _internal_set_total_us(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.TypeDuckLatencyReport.total_us)
+}
+inline ::uint64_t TypeDuckLatencyReport::_internal_total_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_us_;
+}
+inline void TypeDuckLatencyReport::_internal_set_total_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_us_ = value;
+}
+
+// repeated .moqi.protocol.TypeDuckLatencyHop hops = 4;
+inline int TypeDuckLatencyReport::_internal_hops_size() const {
+  return _internal_hops().size();
+}
+inline int TypeDuckLatencyReport::hops_size() const {
+  return _internal_hops_size();
+}
+inline void TypeDuckLatencyReport::clear_hops() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.hops_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::moqi::protocol::TypeDuckLatencyHop* PROTOBUF_NONNULL TypeDuckLatencyReport::mutable_hops(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.TypeDuckLatencyReport.hops)
+  return _internal_mutable_hops()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>* PROTOBUF_NONNULL TypeDuckLatencyReport::mutable_hops()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:moqi.protocol.TypeDuckLatencyReport.hops)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_hops();
+}
+inline const ::moqi::protocol::TypeDuckLatencyHop& TypeDuckLatencyReport::hops(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.TypeDuckLatencyReport.hops)
+  return _internal_hops().Get(index);
+}
+inline ::moqi::protocol::TypeDuckLatencyHop* PROTOBUF_NONNULL TypeDuckLatencyReport::add_hops()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::moqi::protocol::TypeDuckLatencyHop* _add =
+      _internal_mutable_hops()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:moqi.protocol.TypeDuckLatencyReport.hops)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>& TypeDuckLatencyReport::hops() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moqi.protocol.TypeDuckLatencyReport.hops)
+  return _internal_hops();
+}
+inline const ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>&
+TypeDuckLatencyReport::_internal_hops() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.hops_;
+}
+inline ::google::protobuf::RepeatedPtrField<::moqi::protocol::TypeDuckLatencyHop>* PROTOBUF_NONNULL
+TypeDuckLatencyReport::_internal_mutable_hops() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.hops_;
+}
+
+// -------------------------------------------------------------------
+
 // ClientRequest
 
 // uint32 seq_num = 1;
@@ -13744,6 +14451,35 @@ inline void ClientRequest::set_allocated_typeduck_reconfigure_request(::moqi::pr
 
   _impl_.typeduck_reconfigure_request_ = reinterpret_cast<::moqi::protocol::TypeDuckReconfigureRequest*>(value);
   // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ClientRequest.typeduck_reconfigure_request)
+}
+
+// optional bool typeduck_latency_trace = 32;
+inline bool ClientRequest::has_typeduck_latency_trace() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x40000000U);
+  return value;
+}
+inline void ClientRequest::clear_typeduck_latency_trace() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.typeduck_latency_trace_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x40000000U);
+}
+inline bool ClientRequest::typeduck_latency_trace() const {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ClientRequest.typeduck_latency_trace)
+  return _internal_typeduck_latency_trace();
+}
+inline void ClientRequest::set_typeduck_latency_trace(bool value) {
+  _internal_set_typeduck_latency_trace(value);
+  SetHasBit(_impl_._has_bits_[0], 0x40000000U);
+  // @@protoc_insertion_point(field_set:moqi.protocol.ClientRequest.typeduck_latency_trace)
+}
+inline bool ClientRequest::_internal_typeduck_latency_trace() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.typeduck_latency_trace_;
+}
+inline void ClientRequest::_internal_set_typeduck_latency_trace(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.typeduck_latency_trace_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -15799,6 +16535,105 @@ inline void ServerResponse::set_allocated_typeduck_error(::moqi::protocol::TypeD
 
   _impl_.typeduck_error_ = reinterpret_cast<::moqi::protocol::TypeDuckError*>(value);
   // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_error)
+}
+
+// optional .moqi.protocol.TypeDuckLatencyReport typeduck_latency_report = 35;
+inline bool ServerResponse::has_typeduck_latency_report() const {
+  bool value = CheckHasBit(_impl_._has_bits_[1], 0x00000004U);
+  PROTOBUF_ASSUME(!value || _impl_.typeduck_latency_report_ != nullptr);
+  return value;
+}
+inline void ServerResponse::clear_typeduck_latency_report() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_latency_report_ != nullptr) _impl_.typeduck_latency_report_->Clear();
+  ClearHasBit(_impl_._has_bits_[1],
+                  0x00000004U);
+}
+inline const ::moqi::protocol::TypeDuckLatencyReport& ServerResponse::_internal_typeduck_latency_report() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moqi::protocol::TypeDuckLatencyReport* p = _impl_.typeduck_latency_report_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moqi::protocol::TypeDuckLatencyReport&>(::moqi::protocol::_TypeDuckLatencyReport_default_instance_);
+}
+inline const ::moqi::protocol::TypeDuckLatencyReport& ServerResponse::typeduck_latency_report() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moqi.protocol.ServerResponse.typeduck_latency_report)
+  return _internal_typeduck_latency_report();
+}
+inline void ServerResponse::unsafe_arena_set_allocated_typeduck_latency_report(
+    ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_latency_report_);
+  }
+  _impl_.typeduck_latency_report_ = reinterpret_cast<::moqi::protocol::TypeDuckLatencyReport*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[1], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[1], 0x00000004U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moqi.protocol.ServerResponse.typeduck_latency_report)
+}
+inline ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE ServerResponse::release_typeduck_latency_report() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[1], 0x00000004U);
+  ::moqi::protocol::TypeDuckLatencyReport* released = _impl_.typeduck_latency_report_;
+  _impl_.typeduck_latency_report_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE ServerResponse::unsafe_arena_release_typeduck_latency_report() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moqi.protocol.ServerResponse.typeduck_latency_report)
+
+  ClearHasBit(_impl_._has_bits_[1], 0x00000004U);
+  ::moqi::protocol::TypeDuckLatencyReport* temp = _impl_.typeduck_latency_report_;
+  _impl_.typeduck_latency_report_ = nullptr;
+  return temp;
+}
+inline ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NONNULL ServerResponse::_internal_mutable_typeduck_latency_report() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.typeduck_latency_report_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moqi::protocol::TypeDuckLatencyReport>(GetArena());
+    _impl_.typeduck_latency_report_ = reinterpret_cast<::moqi::protocol::TypeDuckLatencyReport*>(p);
+  }
+  return _impl_.typeduck_latency_report_;
+}
+inline ::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NONNULL ServerResponse::mutable_typeduck_latency_report()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[1], 0x00000004U);
+  ::moqi::protocol::TypeDuckLatencyReport* _msg = _internal_mutable_typeduck_latency_report();
+  // @@protoc_insertion_point(field_mutable:moqi.protocol.ServerResponse.typeduck_latency_report)
+  return _msg;
+}
+inline void ServerResponse::set_allocated_typeduck_latency_report(::moqi::protocol::TypeDuckLatencyReport* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.typeduck_latency_report_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[1], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[1], 0x00000004U);
+  }
+
+  _impl_.typeduck_latency_report_ = reinterpret_cast<::moqi::protocol::TypeDuckLatencyReport*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moqi.protocol.ServerResponse.typeduck_latency_report)
 }
 
 #ifdef __GNUC__
