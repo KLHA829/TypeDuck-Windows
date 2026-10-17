@@ -12,6 +12,7 @@ using Moqi::TypeDuck::DisplayLanguage;
 using Moqi::TypeDuck::DisplayPreferences;
 using Moqi::TypeDuck::JyutpingVisibility;
 using Moqi::TypeDuck::kMaxCsvFieldLength;
+using Moqi::TypeDuck::kMaxCsvRowLength;
 using Moqi::TypeDuck::kMaxRawCommentLength;
 
 namespace {
@@ -173,10 +174,16 @@ TEST(TypeDuckCandidateInfoTest, BoundsUntrustedCommentAndCsvFieldLengths) {
   const CandidateEntry entry = CandidateEntry::fromCsvRow(csv);
   EXPECT_EQ(entry.definition(DisplayLanguage::English).size(), kMaxCsvFieldLength);
 
-  const std::wstring suffix = L"\f\r" + NeiRow();
-  std::wstring oversizedComment = suffix + std::wstring(kMaxRawCommentLength, L'x');
-  const CandidateInfo info(L"1.", L"你", oversizedComment);
-  EXPECT_EQ(info.rawComment.size(), kMaxRawCommentLength);
+  std::wstring oversizedComment(kMaxRawCommentLength + 512, L'z');
+  const CandidateInfo truncated(L"1.", L"你", oversizedComment);
+  EXPECT_EQ(truncated.rawComment.size(), kMaxRawCommentLength);
+
+  const std::wstring oversizedRow =
+      L"1," + std::wstring(kMaxCsvRowLength + 64, L'a') + L",nei5";
+  const CandidateInfo skippedRow(L"1.", L"你", L"\f\r" + oversizedRow);
+  EXPECT_TRUE(skippedRow.entries.empty());
+
+  const CandidateInfo info(L"1.", L"你", L"\f\r" + NeiRow());
   ASSERT_EQ(info.entries.size(), 1u);
   EXPECT_EQ(info.entries[0].honzi, L"你");
 }
