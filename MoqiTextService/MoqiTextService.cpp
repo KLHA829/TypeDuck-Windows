@@ -1153,7 +1153,7 @@ void TextService::updateCandidatesWindow(Ime::EditSession* session) {
         candidateWindow_->syncOwner(session);
 		moveCandidateWindowToInputRect(session, L"updateCandidatesWindow", true);
 	}
-    TypeDuck::LatencyTrace::noteCandidateUiUpdate();
+    ::TypeDuck::LatencyTrace::noteCandidateUiUpdate();
 }
 
 void TextService::updateCandidatesWithoutSession() {

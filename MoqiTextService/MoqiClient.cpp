@@ -638,8 +638,8 @@ void Client::addKeyEventToRpcRequest(moqi::protocol::ClientRequest &request,
 }
 
 bool Client::handleRpcResponse(Json::Value &msg, Ime::EditSession *session) {
-  if (TypeDuck::LatencyTrace::Session *latencySession =
-          TypeDuck::LatencyTrace::currentSession()) {
+  if (::TypeDuck::LatencyTrace::Session *latencySession =
+          ::TypeDuck::LatencyTrace::currentSession()) {
     latencySession->mark("tsf_response_apply");
   }
   bool success = msg.get("success", false).asBool();
@@ -1143,8 +1143,8 @@ void Client::onDeactivate() {
 namespace {
 
 void applyLatencyTraceRequestFlag(moqi::protocol::ClientRequest &request) {
-  if (TypeDuck::LatencyTrace::isEnabled() &&
-      TypeDuck::LatencyTrace::isKeyPathMethod(request.method())) {
+  if (::TypeDuck::LatencyTrace::isEnabled() &&
+      ::TypeDuck::LatencyTrace::isKeyPathMethod(request.method())) {
     request.set_typeduck_latency_trace(true);
   }
 }
@@ -1171,9 +1171,9 @@ bool Client::filterKeyDown(Ime::KeyEvent &keyEvent) {
   addKeyEventToRpcRequest(req, keyEvent);
   applyLatencyTraceRequestFlag(req);
 
-  std::unique_ptr<TypeDuck::LatencyTrace::Session> latencySession;
+  std::unique_ptr<::TypeDuck::LatencyTrace::Session> latencySession;
   if (req.typeduck_latency_trace()) {
-    latencySession = std::make_unique<TypeDuck::LatencyTrace::Session>(
+    latencySession = std::make_unique<::TypeDuck::LatencyTrace::Session>(
         req.method());
   }
   const auto finishLatencyTrace = [&]() {
@@ -1207,9 +1207,9 @@ bool Client::onKeyDown(Ime::KeyEvent &keyEvent, Ime::EditSession *session) {
   addKeyEventToRpcRequest(req, keyEvent);
   applyLatencyTraceRequestFlag(req);
 
-  std::unique_ptr<TypeDuck::LatencyTrace::Session> latencySession;
+  std::unique_ptr<::TypeDuck::LatencyTrace::Session> latencySession;
   if (req.typeduck_latency_trace()) {
-    latencySession = std::make_unique<TypeDuck::LatencyTrace::Session>(
+    latencySession = std::make_unique<::TypeDuck::LatencyTrace::Session>(
         req.method());
   }
   const auto finishLatencyTrace = [&]() {
@@ -1781,8 +1781,8 @@ bool Client::callRpcMethod(moqi::protocol::ClientRequest &request,
       return false;
     }
 
-    TypeDuck::LatencyTrace::Session *latencySession =
-        TypeDuck::LatencyTrace::currentSession();
+    ::TypeDuck::LatencyTrace::Session *latencySession =
+        ::TypeDuck::LatencyTrace::currentSession();
     if (latencySession != nullptr) {
       latencySession->mark("tsf_pre_rpc");
     }

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cwctype>
 #include <fstream>
 #include <sstream>
 
@@ -18,7 +19,7 @@ bool envFlagEnabled(const wchar_t *name) {
   std::wstring normalized(value);
   std::transform(normalized.begin(), normalized.end(), normalized.begin(),
                  [](wchar_t ch) {
-                   return static_cast<wchar_t>(std::towlower(ch));
+                   return static_cast<wchar_t>(::towlower(ch));
                  });
   return normalized == L"1" || normalized == L"true" || normalized == L"yes" ||
          normalized == L"on";

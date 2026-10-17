@@ -474,9 +474,9 @@ void appendLatencyHop(moqi::protocol::TypeDuckLatencyReport *report,
 void PipeClient::beginLatencyTrackedRequest(
     const moqi::protocol::ClientRequest &request) {
   latencyTracePending_ = false;
-  if (!TypeDuck::LatencyTrace::isEnabled() ||
+  if (!::TypeDuck::LatencyTrace::isEnabled() ||
       !request.typeduck_latency_trace() ||
-      !TypeDuck::LatencyTrace::isKeyPathMethod(request.method())) {
+      !::TypeDuck::LatencyTrace::isKeyPathMethod(request.method())) {
     return;
   }
 
