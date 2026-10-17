@@ -82,3 +82,4 @@ jobs:
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckTsfIdentity.ps1 @strict
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckInstallerSkeleton.ps1 @strict
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckPrivacySecurityCleanup.ps1 -RepoRoot $env:GITHUB_WORKSPACE -BackendRoot $env:BACKEND_ROOT
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckCandidateData.ps1 @strict

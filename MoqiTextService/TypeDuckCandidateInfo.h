@@ -4,11 +4,17 @@
 
 #pragma once
 
+#include <cstddef>
 #include <map>
 #include <string>
 #include <vector>
 
 namespace Moqi::TypeDuck {
+
+// Untrusted lookup-filter comment bounds (aligned with launcher frame payload limits).
+inline constexpr std::size_t kMaxRawCommentLength = 1024 * 1024;
+inline constexpr std::size_t kMaxCsvRowLength = 256 * 1024;
+inline constexpr std::size_t kMaxCsvFieldLength = 64 * 1024;
 
 enum class DisplayLanguage {
   English,

@@ -66,21 +66,28 @@ std::vector<std::wstring> split(const std::wstring& value, wchar_t delimiter) {
   return parts;
 }
 
+void appendCsvFieldChar(std::wstring& field, wchar_t ch) {
+  if (field.size() < kMaxCsvFieldLength) {
+    field.push_back(ch);
+  }
+}
+
 std::vector<std::wstring> parseCsv(const std::wstring& csv) {
   std::vector<std::wstring> fields;
   bool isQuoted = false;
   std::wstring value;
-  for (size_t i = 0; i < csv.size(); ++i) {
+  const size_t rowLimit = std::min(csv.size(), kMaxCsvRowLength);
+  for (size_t i = 0; i < rowLimit; ++i) {
     const wchar_t ch = csv[i];
     if (isQuoted) {
       if (ch == L'"') {
-        if (i + 1 < csv.size() && csv[i + 1] == L'"') {
-          value.push_back(csv[++i]);
+        if (i + 1 < rowLimit && csv[i + 1] == L'"') {
+          appendCsvFieldChar(value, csv[++i]);
         } else {
           isQuoted = false;
         }
       } else {
-        value.push_back(ch);
+        appendCsvFieldChar(value, ch);
       }
     } else if (value.empty() && ch == L'"') {
       isQuoted = true;
@@ -88,11 +95,21 @@ std::vector<std::wstring> parseCsv(const std::wstring& csv) {
       fields.push_back(value);
       value.clear();
     } else {
-      value.push_back(ch);
+      appendCsvFieldChar(value, ch);
     }
   }
   fields.push_back(value);
   return fields;
+}
+
+bool isWithinCsvRowLimit(const std::wstring& row) {
+  return row.size() <= kMaxCsvRowLength;
+}
+
+void boundRawComment(std::wstring& comment) {
+  if (comment.size() > kMaxRawCommentLength) {
+    comment.resize(kMaxRawCommentLength);
+  }
 }
 
 const std::wstring& fieldOrEmpty(
@@ -311,6 +328,9 @@ std::vector<std::wstring> OtherDataRow::values() const {
 
 CandidateEntry CandidateEntry::fromCsvRow(const std::wstring& csv) {
   CandidateEntry entry;
+  if (!isWithinCsvRowLimit(csv)) {
+    return entry;
+  }
   const std::vector<std::wstring> fields = parseCsv(csv);
 
   // D-10 lookup-filter header:
@@ -492,6 +512,7 @@ CandidateInfo::CandidateInfo(
     : label(std::move(candidateLabel)),
       text(std::move(candidateText)),
       rawComment(std::move(commentString)) {
+  boundRawComment(rawComment);
   ConsumedString comment(rawComment);
   isReverseLookup = comment.consume(L'\v');
   note = comment.consumeUntil(L'\f');
@@ -504,7 +525,7 @@ CandidateInfo::CandidateInfo(
 
   if (comment.consume(L'\r')) {
     for (const auto& row : split(comment.remaining(), L'\r')) {
-      if (!row.empty()) {
+      if (!row.empty() && isWithinCsvRowLimit(row)) {
         entries.push_back(CandidateEntry::fromCsvRow(row));
       }
     }
@@ -514,6 +535,9 @@ CandidateInfo::CandidateInfo(
       constexpr const wchar_t* kTrailingSemicolon = L"; ";
       if (pron.size() >= 2 && pron.compare(pron.size() - 2, 2, kTrailingSemicolon) == 0) {
         pron.erase(pron.size() - 2);
+      }
+      if (pron.size() > kMaxCsvFieldLength) {
+        pron.resize(kMaxCsvFieldLength);
       }
       if (!pron.empty()) {
         entries.push_back(CandidateEntry::jyutpingOnly(text, std::move(pron)));

@@ -9,6 +9,22 @@ TypeDuck Windows is a v1 Windows Cantonese IME product made from two equivalent 
 
 Do not reference local checkout paths in documentation, plans, commits, or review comments. Use public repo names plus repo-relative paths, for example `TypeDuck-Windows:MoqiTextService/TypeDuckProfile.cpp` or `TypeDuck-Windows-backend:server.go`.
 
+## Coding agents
+
+Hard non-goals (do not do these in drive-by changes):
+
+- Single-file product identity renames (`Moqi`/`moqi` → TypeDuck). TSF CLSIDs, profile GUIDs, installer keys, COM registration, executable names, scripts, tests, and backend profile metadata must change together.
+- Hand-editing generated protobuf: `proto/moqi.pb.h`, `proto/moqi.pb.cc` (regenerate from `proto/moqi.proto`; CI verifies with `scripts/Verify-TypeDuckProtobufCodegen.ps1`).
+- Editing `proto/moqi.proto` without aligning `TypeDuck-Windows-backend:proto/moqi.proto` and regenerating bindings on both sides.
+- Dictionary / lookup-filter parsing in transport or schema files (`MoqiTextService/MoqiClient.cpp`, `MoqLauncher/PipeServer.cpp`, `MoqLauncher/BackendServer.cpp`, `proto/moqi.proto`). Keep parsing in `MoqiTextService/TypeDuckCandidateInfo.*` and UI in `MoqiCandidateWindow.*` (enforced by `scripts/Test-TypeDuckCandidateData.ps1`).
+- Broad reformatting or feature work inside vendor trees: `libIME2/`, `libuv/`, `jsoncpp/`, vendored GoogleTest. TypeDuck-owned edits belong in `patches/` for submodules, applied via `scripts/Apply-TypeDuckSubmodulePatches.ps1`.
+- Blocking IO, native engine work, network calls, or long operations inside the TSF DLL (`MoqiTextService/`).
+- Logging typed content, clipboard content, candidate payload bodies, secrets, or raw settings in diagnostics (see `scripts/Test-TypeDuckPrivacySecurityCleanup.ps1`).
+
+Where to change things: use **Repository Responsibilities** and **High-Risk Areas** below; cross-repo protocol or runtime packaging always touches both public repositories.
+
+CI guard scripts (PR `CI` workflow, `-Strict` where supported): protobuf codegen verify, `Test-TypeDuckProtocolContract`, `Test-TypeDuckTsfIdentity`, `Test-TypeDuckInstallerSkeleton`, `Test-TypeDuckPrivacySecurityCleanup`, `Test-TypeDuckCandidateData` (after CTest build).
+
 ## Current Product Truth
 
 - TypeDuck Windows is a separate v1 product.
