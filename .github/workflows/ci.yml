@@ -84,3 +84,21 @@ jobs:
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckInstallerSkeleton.ps1 @strict
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckPrivacySecurityCleanup.ps1 -RepoRoot $env:GITHUB_WORKSPACE -BackendRoot $env:BACKEND_ROOT
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-TypeDuckCandidateData.ps1 @strict
+
+      - name: verify-typeduck jyutping-pipe-nei smoke (optional)
+        shell: pwsh
+        env:
+          BACKEND_ROOT: ${{ github.workspace }}/TypeDuck-Windows-backend
+        run: |
+          $require = $env:VERIFY_TYPEDUCK_REQUIRE_PIPE_NEI -eq '1'
+          $launcher = Get-Process -Name 'TypeDuckLauncher' -ErrorAction SilentlyContinue
+          if (-not $launcher) {
+            if ($require) {
+              Write-Error 'jyutping-pipe-nei required but TypeDuckLauncher is not running on this runner.'
+              exit 1
+            }
+            Write-Host '::notice title=verify-typeduck::jyutping-pipe-nei skipped (TypeDuckLauncher not running on GitHub-hosted runner)'
+            exit 0
+          }
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\.cursor\skills\verify-typeduck\bin\pipe-nei-smoke.ps1 -FrontendRoot $env:GITHUB_WORKSPACE -BackendRoot $env:BACKEND_ROOT
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

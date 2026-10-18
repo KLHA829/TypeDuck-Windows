@@ -34,7 +34,7 @@ TEST(TypeDuckProtocolRecovery, ValidCantoneseFrameRoundTripsWithCandidates) {
   key->set_char_code('n');
   key->set_repeat_count(1);
 
-  std::string framedRequest;
+  Moqi::Proto::FramedMessage framedRequest;
   ASSERT_TRUE(Moqi::Proto::serializeMessageBounded(
       request, framedRequest, Moqi::Proto::kMaxClientFramePayloadBytes));
 
@@ -60,7 +60,7 @@ TEST(TypeDuckProtocolRecovery, ValidCantoneseFrameRoundTripsWithCandidates) {
   candidate->set_jyutping("nei5");
   candidate->set_comment("nei5");
 
-  std::string framedResponse;
+  Moqi::Proto::FramedMessage framedResponse;
   ASSERT_TRUE(Moqi::Proto::serializeMessageBounded(
       response, framedResponse, Moqi::Proto::kMaxBackendFramePayloadBytes));
   Moqi::Proto::FrameBuffer responseBuffer(Moqi::Proto::kMaxBackendFramePayloadBytes);
@@ -95,7 +95,7 @@ TEST(TypeDuckProtocolRecovery, RawLookupSeparatorsSurviveServerResponseCandidate
   candidate->set_raw_lookup_comment(rawComment);
   candidate->set_comment(rawComment);
 
-  std::string framed;
+  Moqi::Proto::FramedMessage framed;
   ASSERT_TRUE(Moqi::Proto::serializeMessageBounded(
       response, framed, Moqi::Proto::kMaxBackendFramePayloadBytes));
   Moqi::Proto::FrameBuffer buffer(Moqi::Proto::kMaxBackendFramePayloadBytes);

@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <Lmcons.h>
 
 #include <algorithm>
 #include <chrono>
@@ -204,6 +205,14 @@ Options readOptions(int argc, wchar_t **argv) {
   if (modeIt != args.end()) {
     options.mode = toUtf8(modeIt->second);
   }
+  if (options.mode == "pipe-nei") {
+    const auto timeoutIt = args.find(L"timeout-ms");
+    if (timeoutIt != args.end()) {
+      options.timeoutMs = std::max<DWORD>(1000, std::stoul(timeoutIt->second));
+    }
+    return options;
+  }
+
   if (options.mode == "protocol-recovery") {
     options.outputPath = requiredArg(args, L"output");
     const auto recoveryLogIt = args.find(L"recovery-log");
@@ -421,12 +430,13 @@ void writeFrameLog(std::ofstream &log, const char *direction, std::uint32_t seq,
 moqi::protocol::ServerResponse sendRequest(AdapterProcess &adapter, std::ofstream &frameLog,
                                            moqi::protocol::ClientRequest &request,
                                            DWORD timeoutMs) {
-  std::string framed;
+  Moqi::Proto::FramedMessage framed;
   if (!Moqi::Proto::serializeMessage(request, framed)) {
     throw std::runtime_error("Failed to serialize ClientRequest.");
   }
-  writeFrameLog(frameLog, "request", request.seq_num(), request.method(), framed);
-  adapter.writeAll(framed);
+  const std::string frameBytes(framed.data(), framed.size());
+  writeFrameLog(frameLog, "request", request.seq_num(), request.method(), frameBytes);
+  adapter.writeAll(frameBytes);
 
   const auto payload = adapter.readFrame(timeoutMs);
   moqi::protocol::ServerResponse response;
@@ -748,7 +758,7 @@ moqi::protocol::ServerResponse roundTripRecoveryFrame(
     std::ofstream &log,
     const std::string &caseId,
     const moqi::protocol::ClientRequest &request) {
-  std::string framedRequest;
+  Moqi::Proto::FramedMessage framedRequest;
   if (!Moqi::Proto::serializeMessageBounded(
           request, framedRequest, Moqi::Proto::kMaxClientFramePayloadBytes)) {
     throw std::runtime_error("Failed to serialize recovery request.");
@@ -767,7 +777,7 @@ moqi::protocol::ServerResponse roundTripRecoveryFrame(
   writeRecoveryLog(log, caseId, "request", &parsedRequest, nullptr);
 
   auto response = backend.handle(parsedRequest);
-  std::string framedResponse;
+  Moqi::Proto::FramedMessage framedResponse;
   if (!Moqi::Proto::serializeMessageBounded(
           response, framedResponse, Moqi::Proto::kMaxBackendFramePayloadBytes)) {
     throw std::runtime_error("Failed to serialize recovery response.");
@@ -948,6 +958,154 @@ void writeRecoveryEvidence(const Options &options, const std::vector<RecoveryRes
   out << "}\n";
 }
 
+namespace {
+
+constexpr wchar_t kTypeDuckLauncherPipeBase[] = L"Launcher";
+constexpr char kTypeDuckProfileGuid[] =
+    "{c6e8f5df-6504-44f9-b7cf-17a195373a83}";
+
+std::wstring launcherPipeName() {
+  wchar_t username[UNLEN + 1];
+  DWORD usernameLen = UNLEN + 1;
+  if (!GetUserNameW(username, &usernameLen)) {
+    return L"";
+  }
+  std::wstring pipeName = L"\\\\.\\pipe\\";
+  pipeName += username;
+  pipeName += L"\\TypeDuckIME\\";
+  pipeName += kTypeDuckLauncherPipeBase;
+  return pipeName;
+}
+
+HANDLE connectLauncherPipe(DWORD timeoutMs) {
+  const std::wstring pipeName = launcherPipeName();
+  if (pipeName.empty()) {
+    return INVALID_HANDLE_VALUE;
+  }
+  if (!WaitNamedPipeW(pipeName.c_str(), timeoutMs)) {
+    return INVALID_HANDLE_VALUE;
+  }
+  HANDLE pipe = CreateFileW(pipeName.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr,
+                            OPEN_EXISTING, 0, nullptr);
+  if (pipe == INVALID_HANDLE_VALUE) {
+    return INVALID_HANDLE_VALUE;
+  }
+  DWORD mode = PIPE_READMODE_MESSAGE;
+  if (!SetNamedPipeHandleState(pipe, &mode, nullptr, nullptr)) {
+    CloseHandle(pipe);
+    return INVALID_HANDLE_VALUE;
+  }
+  return pipe;
+}
+
+bool readFramedResponse(const std::string &wireBytes,
+                        moqi::protocol::ServerResponse &response) {
+  Moqi::Proto::FrameBuffer buffer(Moqi::Proto::kMaxClientFramePayloadBytes);
+  buffer.append(wireBytes.data(), wireBytes.size());
+  if (buffer.hasViolation()) {
+    return false;
+  }
+  std::string payload;
+  if (!buffer.nextFrame(payload)) {
+    return false;
+  }
+  return Moqi::Proto::parsePayload(payload, response);
+}
+
+bool transactLauncherPipe(HANDLE pipe, const moqi::protocol::ClientRequest &request,
+                          moqi::protocol::ServerResponse &response) {
+  Moqi::Proto::FramedMessage framedRequest;
+  if (!Moqi::Proto::serializeMessageBounded(
+          request, framedRequest, Moqi::Proto::kMaxClientFramePayloadBytes)) {
+    return false;
+  }
+
+  std::string wireResponse;
+  char buffer[4096];
+  DWORD bytesRead = 0;
+  bool hasMoreData = false;
+  if (!TransactNamedPipe(pipe, const_cast<char *>(framedRequest.data()),
+                         static_cast<DWORD>(framedRequest.size()), buffer,
+                         sizeof(buffer), &bytesRead, nullptr)) {
+    if (GetLastError() != ERROR_MORE_DATA) {
+      return false;
+    }
+    hasMoreData = true;
+  }
+  wireResponse.append(buffer, bytesRead);
+  while (hasMoreData) {
+    if (ReadFile(pipe, buffer, sizeof(buffer), &bytesRead, nullptr)) {
+      hasMoreData = false;
+    } else if (GetLastError() != ERROR_MORE_DATA) {
+      return false;
+    }
+    wireResponse.append(buffer, bytesRead);
+  }
+  return readFramedResponse(wireResponse, response);
+}
+
+moqi::protocol::ClientRequest launcherKeyRequest(std::uint32_t seq,
+                                                 moqi::protocol::Method method,
+                                                 char key) {
+  moqi::protocol::ClientRequest request;
+  request.set_seq_num(seq);
+  request.set_method(method);
+  request.set_client_id("typeduck-pipe-nei-smoke");
+  auto *keyEvent = request.mutable_key_event();
+  keyEvent->set_key_code(static_cast<std::uint32_t>(key));
+  keyEvent->set_char_code(static_cast<std::uint32_t>(key));
+  keyEvent->set_repeat_count(1);
+  return request;
+}
+
+} // namespace
+
+int runPipeNei(const Options &options) {
+  Handle pipe(connectLauncherPipe(options.timeoutMs));
+  if (pipe.get() == INVALID_HANDLE_VALUE) {
+    return 2;
+  }
+
+  std::uint32_t seq = 1;
+  moqi::protocol::ServerResponse response;
+
+  moqi::protocol::ClientRequest initRequest;
+  initRequest.set_seq_num(seq++);
+  initRequest.set_method(moqi::protocol::METHOD_INIT);
+  initRequest.set_guid(kTypeDuckProfileGuid);
+  initRequest.set_client_id("typeduck-pipe-nei-smoke");
+  if (!transactLauncherPipe(pipe.get(), initRequest, response) || !response.success()) {
+    throw std::runtime_error("pipe-nei: METHOD_INIT failed");
+  }
+
+  moqi::protocol::ClientRequest activateRequest;
+  activateRequest.set_seq_num(seq++);
+  activateRequest.set_method(moqi::protocol::METHOD_ON_ACTIVATE);
+  activateRequest.set_client_id("typeduck-pipe-nei-smoke");
+  if (!transactLauncherPipe(pipe.get(), activateRequest, response) || !response.success()) {
+    throw std::runtime_error("pipe-nei: METHOD_ON_ACTIVATE failed");
+  }
+
+  for (const char key : {'n', 'e', 'i'}) {
+    auto filter =
+        launcherKeyRequest(seq++, moqi::protocol::METHOD_FILTER_KEY_DOWN, key);
+    if (!transactLauncherPipe(pipe.get(), filter, response) || !response.success()) {
+      throw std::runtime_error("pipe-nei: FILTER_KEY_DOWN failed");
+    }
+    auto down = launcherKeyRequest(seq++, moqi::protocol::METHOD_ON_KEY_DOWN, key);
+    if (!transactLauncherPipe(pipe.get(), down, response) || !response.success()) {
+      throw std::runtime_error("pipe-nei: ON_KEY_DOWN failed");
+    }
+  }
+
+  if (!response.show_candidates() || response.candidate_entries_size() <= 0) {
+    throw std::runtime_error("pipe-nei: expected Cantonese candidates after nei");
+  }
+
+  std::cout << "pipe-nei: OK candidate_count=" << response.candidate_entries_size() << "\n";
+  return 0;
+}
+
 int runProtocolRecovery(const Options &options) {
   ensureParentDirectory(options.recoveryLogPath);
   std::ofstream log(options.recoveryLogPath, std::ios::binary | std::ios::trunc);
@@ -969,6 +1127,11 @@ int runProtocolRecovery(const Options &options) {
 int run(int argc, wchar_t **argv) {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
   const auto options = readOptions(argc, argv);
+  if (options.mode == "pipe-nei") {
+    const int result = runPipeNei(options);
+    google::protobuf::ShutdownProtobufLibrary();
+    return result;
+  }
   if (options.mode == "protocol-recovery") {
     const int result = runProtocolRecovery(options);
     google::protobuf::ShutdownProtobufLibrary();

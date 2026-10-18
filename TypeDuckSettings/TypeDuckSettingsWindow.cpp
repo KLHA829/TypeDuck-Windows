@@ -206,7 +206,7 @@ HANDLE connectLauncherPipe(DWORD timeoutMs) {
 
 bool transactLauncher(HANDLE pipe, const moqi::protocol::ClientRequest& request,
                       moqi::protocol::ServerResponse& response) {
-  std::string framedRequest;
+  Moqi::Proto::FramedMessage framedRequest;
   if (!Moqi::Proto::serializeMessageBounded(
           request, framedRequest, Moqi::Proto::kMaxClientFramePayloadBytes)) {
     return false;
@@ -216,7 +216,7 @@ bool transactLauncher(HANDLE pipe, const moqi::protocol::ClientRequest& request,
   char buffer[4096];
   DWORD bytesRead = 0;
   bool hasMoreData = false;
-  if (!TransactNamedPipe(pipe, framedRequest.data(),
+  if (!TransactNamedPipe(pipe, const_cast<char*>(framedRequest.data()),
                          static_cast<DWORD>(framedRequest.size()), buffer,
                          sizeof(buffer), &bytesRead, nullptr)) {
     if (GetLastError() != ERROR_MORE_DATA) {

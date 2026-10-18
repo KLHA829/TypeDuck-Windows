@@ -20,6 +20,30 @@ enum class FrameError {
   MalformedHeader,
 };
 
+// Opaque wire bytes: one length-prefixed protobuf frame. Not a protobuf payload.
+class FramedMessage {
+public:
+  FramedMessage() = default;
+  FramedMessage(FramedMessage &&) noexcept = default;
+  FramedMessage &operator=(FramedMessage &&) noexcept = default;
+  FramedMessage(const FramedMessage &) = delete;
+  FramedMessage &operator=(const FramedMessage &) = delete;
+
+  const char *data() const noexcept { return bytes_.data(); }
+  std::size_t size() const noexcept { return bytes_.size(); }
+  bool empty() const noexcept { return bytes_.empty(); }
+
+  std::string &&takeBytes() && { return std::move(bytes_); }
+
+private:
+  friend inline bool tryFramePayload(const std::string &payload,
+                                     FramedMessage &framedMessage,
+                                     std::size_t maxPayloadBytes);
+  explicit FramedMessage(std::string &&bytes) : bytes_(std::move(bytes)) {}
+
+  std::string bytes_;
+};
+
 class FrameBuffer {
 public:
   explicit FrameBuffer(
@@ -108,13 +132,13 @@ private:
 };
 
 inline bool tryFramePayload(const std::string &payload,
-                            std::string &framedPayload,
+                            FramedMessage &framedMessage,
                             std::size_t maxPayloadBytes =
                                 kDefaultMaxFramePayloadBytes) {
-  framedPayload.clear();
   if (payload.size() > maxPayloadBytes ||
       payload.size() >
           static_cast<std::size_t>((std::numeric_limits<std::uint32_t>::max)())) {
+    framedMessage = FramedMessage{};
     return false;
   }
 
@@ -122,40 +146,45 @@ inline bool tryFramePayload(const std::string &payload,
   const auto payloadSize = static_cast<std::uint32_t>(payload.size());
   std::memcpy(&framed[0], &payloadSize, sizeof(payloadSize));
   framed.append(payload);
-  framedPayload.swap(framed);
+  framedMessage = FramedMessage(std::move(framed));
   return true;
 }
 
 inline std::string framePayload(const std::string &payload) {
-  std::string framed;
+  FramedMessage framed;
   if (!tryFramePayload(payload, framed,
                        static_cast<std::size_t>(
                            (std::numeric_limits<std::uint32_t>::max)()))) {
     return {};
   }
-  return framed;
+  return std::move(framed).takeBytes();
 }
+
+inline std::string framePayload(const FramedMessage &) = delete;
 
 template <typename Message>
 bool serializeMessageBounded(
     const Message &message,
-    std::string &framedPayload,
+    FramedMessage &framedMessage,
     std::size_t maxPayloadBytes = kDefaultMaxFramePayloadBytes) {
   std::string payload;
   if (!message.SerializeToString(&payload)) {
+    framedMessage = FramedMessage{};
     return false;
   }
-  return tryFramePayload(payload, framedPayload, maxPayloadBytes);
+  return tryFramePayload(payload, framedMessage, maxPayloadBytes);
 }
 
 template <typename Message>
-bool serializeMessage(const Message &message, std::string &framedPayload) {
+bool serializeMessage(const Message &message, FramedMessage &framedMessage) {
   std::string payload;
   if (!message.SerializeToString(&payload)) {
+    framedMessage = FramedMessage{};
     return false;
   }
-  framedPayload = framePayload(payload);
-  return true;
+  return tryFramePayload(payload, framedMessage,
+                       static_cast<std::size_t>(
+                           (std::numeric_limits<std::uint32_t>::max)()));
 }
 
 template <typename Message>

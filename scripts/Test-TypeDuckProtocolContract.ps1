@@ -51,6 +51,8 @@ Require-Text $framing "kMax(Client|Backend)FramePayloadBytes" "D-13" "Named fram
 Require-Text $framing "FrameError" "D-13" "Frame parser error state"
 Require-Text $framing "PayloadTooLarge" "D-13" "Oversized frame rejection"
 Require-Text $framing "bufferedBytes" "D-13" "Bounded-buffer introspection"
+Require-Text $framing "class\s+FramedMessage" "D-13" "Typed framed wire bytes to prevent double-frame mistakes"
+Require-Text $framing "framePayload\(const\s+FramedMessage\s*&\)\s*=\s*delete" "D-13" "Deleted framePayload overload for already-framed messages"
 
 if ($proto -match "message\s+TypeDuckDictionary(?:Entry|Row|View|Ui)|structured_dictionary|dictionary_ui") {
   Fail-Contract "Phase 4 must preserve raw lookup comments only; native dictionary UI parsing is deferred by D-05/D-06/D-08."
