@@ -95,6 +95,18 @@ if ($rawCase.candidate.PSObject.Properties.Name -match "dictionary|parsed|rows|n
   Fail-Contract "Raw lookup fixture must not expose Phase 5 native dictionary UI fields per D-05/D-06/D-08."
 }
 
+
+# D-13 / framing: serializeMessageBounded already length-prefixes. Calling
+# framePayload on its output double-frames and breaks TSF parse (past bug in
+# MoqLauncher/BackendServer.cpp handleBackendReply).
+$backendServerPath = Join-Path $root "MoqLauncher/BackendServer.cpp"
+if (-not (Test-Path -LiteralPath $backendServerPath)) {
+  Fail-Contract "Missing MoqLauncher/BackendServer.cpp."
+}
+$backendServer = Get-Content -Raw -LiteralPath $backendServerPath
+if ($backendServer -match 'serializeMessageBounded[\s\S]{0,500}framePayload\s*\(') {
+  Fail-Contract "MoqLauncher/BackendServer.cpp must not call framePayload on serializeMessageBounded output (double length-prefix breaks TSF ServerResponse parse)."
+}
 if ($Strict) {
   if ($fixture.decisions_cited.Count -lt 10) {
     Fail-Contract "Strict mode requires D-01, D-02, D-03, D-05, D-06, D-07, D-08, D-13, D-14, and D-16 fixture citations."

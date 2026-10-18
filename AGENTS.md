@@ -151,7 +151,14 @@ Native Rime tests are environment-gated. Use `MOQI_RIME_PACKAGE_DIR`, `MOQI_RIME
 - PowerShell scripts should use `param(...)`, `$ErrorActionPreference = "Stop"`, `Test-Path -LiteralPath`, repo-root resolution through `$PSScriptRoot`, and native PowerShell filesystem operations.
 - Avoid comments that restate code. Comment TSF/COM ownership, Win32 lifecycle constraints, Rime runtime constraints, and protocol compatibility.
 
+
+## Agent mistake classes (enforced)
+
+| Mistake | Enforcement |
+|---|---|
+| Call `framePayload` on `serializeMessageBounded` output (double length-prefix; TSF INIT then CLOSE, no candidates) | `Tests/TypeDuckProtocol/ProtoFraming_test.cpp` (`SerializeMessageBoundedMustNotBeFramedAgain`); `scripts/Test-TypeDuckProtocolContract.ps1` greps `MoqLauncher/BackendServer.cpp` |
 ## Protocol Rules
+- Do not call `framePayload` on `serializeMessageBounded` output; the latter already length-prefixes. Enforced by `ProtoFraming_test` and `Test-TypeDuckProtocolContract.ps1`.
 
 - Edit `.proto` schemas first, then regenerate bindings.
 - Do not hand-edit generated protobuf files:
