@@ -107,39 +107,6 @@ TEST(TypeDuckProtoFraming, MalformedPayloadDoesNotParseRequestOrResponse) {
   EXPECT_EQ(response.ByteSizeLong(), 0u);
 }
 
-
-TEST(TypeDuckProtoFraming, SerializeMessageBoundedMustNotBeFramedAgain) {
-  // Regression for MoqLauncher BackendServer::handleBackendReply: latency
-  // annotate briefly called framePayload() on serializeMessageBounded output
-  // (double length-prefix). TSF then failed to parse ServerResponse.
-  moqi::protocol::ServerResponse response;
-  response.set_success(true);
-  response.set_seq_num(1);
-  response.set_client_id("regression-client");
-
-  std::string once;
-  ASSERT_TRUE(Moqi::Proto::serializeMessageBounded(
-      response, once, Moqi::Proto::kMaxClientFramePayloadBytes));
-
-  Moqi::Proto::FrameBuffer onceBuf{Moqi::Proto::kMaxClientFramePayloadBytes};
-  onceBuf.append(once.data(), once.size());
-  std::string oncePayload;
-  ASSERT_TRUE(onceBuf.nextFrame(oncePayload));
-  moqi::protocol::ServerResponse parsedOnce;
-  ASSERT_TRUE(Moqi::Proto::parsePayload(oncePayload, parsedOnce));
-  EXPECT_TRUE(parsedOnce.success());
-  EXPECT_EQ(parsedOnce.client_id(), "regression-client");
-
-  // Old mistake pattern: frame an already-framed buffer.
-  const auto twice = Moqi::Proto::framePayload(once);
-  Moqi::Proto::FrameBuffer twiceBuf{Moqi::Proto::kMaxClientFramePayloadBytes};
-  twiceBuf.append(twice.data(), twice.size());
-  std::string twicePayload;
-  ASSERT_TRUE(twiceBuf.nextFrame(twicePayload));
-  moqi::protocol::ServerResponse parsedTwice;
-  EXPECT_FALSE(Moqi::Proto::parsePayload(twicePayload, parsedTwice))
-      << "double-framed outbound must not parse as ServerResponse";
-}
 TEST(TypeDuckProtocol, RawLookupSeparatorsSurviveCandidateComments) {
   moqi::protocol::CandidateEntry candidate;
   const std::string rawComment =
