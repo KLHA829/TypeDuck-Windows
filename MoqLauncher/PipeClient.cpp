@@ -258,6 +258,22 @@ bool PipeClient::writeBackendResponse(std::uint32_t seqNum, const char* data, si
     return true;
 }
 
+bool PipeClient::writeBackendResponse(std::uint32_t seqNum, Proto::FramedMessage&& framed) {
+    if (pendingSeqNum_ != 0 && seqNum != pendingSeqNum_) {
+        logger()->warn(
+            "Dropping stale backend response for client {}: response seq {}, pending seq {}",
+            clientId_,
+            seqNum,
+            pendingSeqNum_);
+        return false;
+    }
+
+    const char* data = framed.data();
+    const size_t len = framed.size();
+    writePipe(data, len);
+    return true;
+}
+
 void PipeClient::writeTypeDuckErrorResponse(
     std::uint32_t seqNum,
     moqi::protocol::TypeDuckErrorCode errorCode,
@@ -290,13 +306,13 @@ void PipeClient::writeTypeDuckErrorResponse(
     error->set_recoverable(recoverable);
     error->set_detail(detail);
 
-    std::string framedMessage;
+    Proto::FramedMessage framedMessage;
     if (!Proto::serializeMessageBounded(
             response, framedMessage, Proto::kMaxClientFramePayloadBytes)) {
         logger()->error("Failed to serialize TypeDuck error response for client {}", clientId_);
         return;
     }
-    pipe_.write(std::move(framedMessage));
+    pipe_.write(std::move(framedMessage).takeBytes());
 }
 
 void PipeClient::handleClientFrameViolation() {
@@ -403,13 +419,13 @@ void PipeClient::writeTypeDuckSettingsResponse(
         addCapability(response, capability);
     }
 
-    std::string framedMessage;
+    Proto::FramedMessage framedMessage;
     if (!Proto::serializeMessageBounded(
             response, framedMessage, Proto::kMaxClientFramePayloadBytes)) {
         logger()->error("Failed to serialize TypeDuck settings response for client {}", clientId_);
         return;
     }
-    pipe_.write(std::move(framedMessage));
+    pipe_.write(std::move(framedMessage).takeBytes());
 }
 
 void PipeClient::disconnectFromBackend() {

@@ -66,6 +66,7 @@ public:
     }
 
     bool writeBackendResponse(std::uint32_t seqNum, const char* data, size_t len);
+    bool writeBackendResponse(std::uint32_t seqNum, Proto::FramedMessage&& framed);
 
     void writeTypeDuckErrorResponse(
         std::uint32_t seqNum,

@@ -151,7 +151,7 @@ void BackendServer::handleClientMessage(PipeClient *client,
 
   moqi::protocol::ClientRequest backendRequest = request;
   backendRequest.set_client_id(client->clientId_);
-  std::string framedMessage;
+  Proto::FramedMessage framedMessage;
   if (!Proto::serializeMessageBounded(
           backendRequest, framedMessage, Proto::kMaxBackendFramePayloadBytes)) {
     logger()->error("Failed to serialize backend request for client {}",
@@ -177,7 +177,7 @@ void BackendServer::handleClientMessage(PipeClient *client,
         name_);
     return;
   }
-  stdinPipe_->write(std::move(framedMessage));
+  stdinPipe_->write(std::move(framedMessage).takeBytes());
 }
 
 TypeDuck::ApplyResult BackendServer::applyTypeDuckPreferences(
@@ -200,13 +200,13 @@ TypeDuck::ApplyResult BackendServer::applyTypeDuckPreferences(
   update->set_enable_learning(effects.enableLearning);
   update->set_is_cangjie5(effects.isCangjie5);
 
-  std::string framedMessage;
+  Proto::FramedMessage framedMessage;
   if (!Proto::serializeMessageBounded(
           request, framedMessage, Proto::kMaxBackendFramePayloadBytes)) {
     return {false, "設定已儲存，但重新部署指令未能建立 / Settings were saved, but the redeploy request could not be created"};
   }
 
-  stdinPipe_->write(std::move(framedMessage));
+  stdinPipe_->write(std::move(framedMessage).takeBytes());
   return {true, "設定已套用 / Settings applied"};
 }
 
@@ -224,7 +224,7 @@ TypeDuck::ApplyResult BackendServer::requestTypeDuckDeploy() {
   request.set_client_id("launcher-tray");
   request.mutable_typeduck_deploy_request()->set_force(true);
 
-  std::string framedMessage;
+  Proto::FramedMessage framedMessage;
   if (!Proto::serializeMessageBounded(
           request, framedMessage, Proto::kMaxBackendFramePayloadBytes)) {
     logger()->error("Failed to serialize TypeDuck tray redeploy request");
@@ -232,7 +232,7 @@ TypeDuck::ApplyResult BackendServer::requestTypeDuckDeploy() {
             "重新部署指令未能建立 / Redeploy request could not be created"};
   }
 
-  stdinPipe_->write(std::move(framedMessage));
+  stdinPipe_->write(std::move(framedMessage).takeBytes());
   return {true, ""};
 }
 
@@ -467,18 +467,17 @@ void BackendServer::handleBackendReply() {
     if (auto client = pipeServer_->clientFromId(response.client_id())) {
       moqi::protocol::ServerResponse clientResponse = response;
       client->annotateLatencyResponse(clientResponse);
-      std::string outboundPayload;
+      Proto::FramedMessage outboundFrame;
       if (!Proto::serializeMessageBounded(
-              clientResponse, outboundPayload,
+              clientResponse, outboundFrame,
               Proto::kMaxClientFramePayloadBytes)) {
         logger()->error(
             "Failed to serialize TypeDuck latency-annotated response for client {}",
             response.client_id());
         continue;
       }
-      // serializeMessageBounded already length-prefixes; do not frame again.
-      client->writeBackendResponse(
-          response.seq_num(), outboundPayload.data(), outboundPayload.size());
+      // serializeMessageBounded returns FramedMessage; do not call framePayload again.
+      client->writeBackendResponse(response.seq_num(), std::move(outboundFrame));
     }
   }
 }

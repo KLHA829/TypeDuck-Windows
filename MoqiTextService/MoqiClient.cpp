@@ -1730,13 +1730,13 @@ bool Client::pollAsyncResponses() {
   return pipe_ != INVALID_HANDLE_VALUE;
 }
 
-bool Client::callRpcPipe(HANDLE pipe, const std::string &serializedRequest,
+bool Client::callRpcPipe(HANDLE pipe, const char *requestData, size_t requestLen,
                          std::string &serializedReply) {
   char buf[1024];
   DWORD rlen = 0;
   bool hasMoreData = false;
-  if (!TransactNamedPipe(pipe, (void *)serializedRequest.data(),
-                         serializedRequest.size(), buf, sizeof(buf), &rlen,
+  if (!TransactNamedPipe(pipe, (void *)requestData,
+                         static_cast<DWORD>(requestLen), buf, sizeof(buf), &rlen,
                          NULL)) {
     if (GetLastError() == ERROR_MORE_DATA) {
       hasMoreData = true;
@@ -1775,7 +1775,7 @@ bool Client::callRpcMethod(moqi::protocol::ClientRequest &request,
     auto seqNum = nextSeqNum_++;
     request.set_seq_num(seqNum);
 
-    std::string serializedRequest;
+    Proto::FramedMessage serializedRequest;
     if (!Proto::serializeMessageBounded(
             request, serializedRequest, Proto::kMaxClientFramePayloadBytes)) {
       return false;
@@ -1790,7 +1790,8 @@ bool Client::callRpcMethod(moqi::protocol::ClientRequest &request,
     std::string serializedResponse;
     bool success = false;
     const bool pipeOk =
-        callRpcPipe(pipe_, serializedRequest, serializedResponse);
+        callRpcPipe(pipe_, serializedRequest.data(), serializedRequest.size(),
+                    serializedResponse);
     if (latencySession != nullptr) {
       latencySession->mark("tsf_named_pipe_rtt");
     }

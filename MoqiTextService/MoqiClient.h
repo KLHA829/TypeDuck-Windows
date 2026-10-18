@@ -95,7 +95,8 @@ private:
 
     bool isPipeCreatedByMoqiServer(HANDLE pipe);
     bool waitForRpcConnection();
-    bool callRpcPipe(HANDLE pipe, const std::string& serializedRequest, std::string& serializedReply);
+    bool callRpcPipe(HANDLE pipe, const char* requestData, size_t requestLen,
+                     std::string& serializedReply);
 	bool waitForRpcIdle(int timeoutMs) const;
 	bool readPendingPipeMessage(std::string& serializedReply);
 	void refreshAsyncPollTimer();

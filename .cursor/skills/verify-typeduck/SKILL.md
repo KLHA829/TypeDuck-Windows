@@ -82,6 +82,10 @@ Pass criterion: exit code `0` and final line `doctor: OK`.
 
 `protocol-contract`, `candidate-jyutping`, `settings-persistence`, `launcher-protocol`, `tsf-identity`, `typing-latency-contract`, `jyutping-pipe-nei` — list with `-FeatureId ListFeatures`.
 
+**Debug deploy (no Program Files):** `scripts/Install-TypeDuckDebug.ps1` stages build outputs under `%LOCALAPPDATA%\TypeDuckIME-debug`; set `TYPEDUCK_PROGRAM_DIR` to that path before starting Launcher.
+
+**CI optional pipe smoke:** `.github/workflows/ci.yml` runs `pipe-nei-smoke.ps1` only when `TypeDuckLauncher` is already running on the runner; otherwise emits `::notice` and continues unless `VERIFY_TYPEDUCK_REQUIRE_PIPE_NEI=1`.
+
 ### Latency / diagnostics
 
 - Static: `typing-latency-contract` guard + `Test-TypeDuckTypingMvpProof.ps1`

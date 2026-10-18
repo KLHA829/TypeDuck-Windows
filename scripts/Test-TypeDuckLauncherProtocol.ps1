@@ -238,12 +238,12 @@ function Assert-TransportPreserved {
     )
 
     Assert-AllMatch $Failures "$PipeClientCpp`n$BackendServerCpp`n$PipeServerCpp" @(
-        "Proto::serializeMessage|Proto::serializeMessageBounded",
-        "Proto::framePayload",
+        "Proto::serializeMessageBounded",
+        "Proto::FramedMessage",
         "uv_pipe_init_windows_named_pipe",
         "stdinPipe_->write",
         "stdoutPipe_->startRead",
-        "writeBackendResponse\(\s*response\.seq_num\(\)"
+        "writeBackendResponse\(\s*response\.seq_num\(\),\s*std::move\(outboundFrame\)\)"
     ) "D-01 transport must remain named pipe plus backend stdin/stdout framed protobuf."
 }
 
