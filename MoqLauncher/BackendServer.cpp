@@ -476,9 +476,9 @@ void BackendServer::handleBackendReply() {
             response.client_id());
         continue;
       }
-      const auto framedPayload = Proto::framePayload(outboundPayload);
+      // serializeMessageBounded already length-prefixes; do not frame again.
       client->writeBackendResponse(
-          response.seq_num(), framedPayload.data(), framedPayload.size());
+          response.seq_num(), outboundPayload.data(), outboundPayload.size());
     }
   }
 }
