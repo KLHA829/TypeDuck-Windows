@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
   Run one mapped TypeDuck guard script and tee output to verification artifacts.
 
 .PARAMETER FeatureId
   Feature slug: protocol-contract, candidate-jyutping, settings-persistence,
-  launcher-protocol, tsf-identity, typing-latency-contract. Pass ListFeatures
-  to print slugs.
+  launcher-protocol, tsf-identity, typing-latency-contract, jyutping-pipe-nei.
+  Pass ListFeatures to print slugs.
 
 .PARAMETER FrontendRoot
   TypeDuck-Windows root.
 
 .PARAMETER BackendRoot
-  TypeDuck-Windows-backend root (required for settings-persistence).
+  TypeDuck-Windows-backend root (required for settings-persistence and jyutping-pipe-nei).
 
 .PARAMETER EvidenceDir
   Directory for command transcripts (default: VERIFY_TYPEDUCK_ARTIFACTS or skill artifacts/).
@@ -53,7 +53,8 @@ $known = @(
   "settings-persistence",
   "launcher-protocol",
   "tsf-identity",
-  "typing-latency-contract"
+  "typing-latency-contract",
+  "jyutping-pipe-nei"
 )
 
 if ($FeatureId -eq "ListFeatures") {
@@ -131,6 +132,19 @@ switch ($FeatureId) {
     Invoke-Guard "scripts\Test-TypeDuckTypingClient.ps1" {
       & (Join-Path $frontend "scripts\Test-TypeDuckTypingClient.ps1") -RepoRoot $frontend -Strict *>&1 |
         Tee-Object -FilePath $logPath
+    }
+  }
+  "jyutping-pipe-nei" {
+    $smoke = Join-Path $skillRoot "bin\pipe-nei-smoke.ps1"
+    if (-not (Test-Path -LiteralPath $smoke)) {
+      throw "Missing pipe-nei-smoke.ps1 at $smoke"
+    }
+    Write-Host ">> $smoke (evidence dir: $artifactRoot)"
+    & $smoke -FrontendRoot $frontend -BackendRoot $(if ($backend) { $backend } else { "" }) -EvidenceDir $artifactRoot *>&1 |
+      Tee-Object -FilePath $logPath
+    $exit = if ($null -ne $LASTEXITCODE) { $LASTEXITCODE } else { 0 }
+    if ($exit -ne 0) {
+      throw "pipe-nei-smoke failed with exit code $exit"
     }
   }
 }

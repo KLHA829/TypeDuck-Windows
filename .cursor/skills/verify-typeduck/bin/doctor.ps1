@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
   Read-only health check for TypeDuck Windows IME verification runs.
@@ -32,6 +32,13 @@ function Resolve-FullPath([string] $Path) {
     return [System.IO.Path]::GetFullPath($Path)
   }
   return [System.IO.Path]::GetFullPath((Join-Path (Get-Location) $Path))
+}
+
+function Test-IsWindowsHost {
+  if ($null -ne (Get-Variable -Name IsWindows -ErrorAction SilentlyContinue)) {
+    return [bool]$IsWindows
+  }
+  return ($env:OS -eq "Windows_NT")
 }
 
 function Resolve-DefaultFrontendRoot {
@@ -82,7 +89,7 @@ function Test-BackendLayout([string] $Root) {
 }
 
 function Get-InstalledTypeDuckSummary {
-  if (-not $IsWindows) {
+  if (-not (Test-IsWindowsHost)) {
     return @{
       platform = "non-windows"
       installDir = $null
@@ -119,11 +126,16 @@ if (-not $frontend) {
 }
 
 $backend = Resolve-FullPath $(if ($BackendRoot) { $BackendRoot } else { Resolve-DefaultBackendRoot $frontend })
+$onWindows = Test-IsWindowsHost
 
 Write-Host "verify-typeduck doctor"
 Write-Host "  frontend: $frontend"
 Write-Host "  backend:  $(if ($backend) { $backend } else { '(not found — set BACKEND_ROOT or clone TypeDuck-Windows-backend)' })"
-Write-Host "  os:       $($IsWindows ? 'Windows' : 'non-Windows (static guards only; live TSF requires Windows 10/11)')"
+if ($onWindows) {
+  Write-Host "  os:       Windows"
+} else {
+  Write-Host "  os:       non-Windows (static guards only; live TSF requires Windows 10/11)"
+}
 
 Test-FrontendLayout $frontend
 Write-Host "  layout:   frontend OK"
@@ -138,8 +150,8 @@ if ($backend) {
 $install = Get-InstalledTypeDuckSummary
 Write-Host "  install:  platform=$($install.platform) installDir=$($install.installDir) launcher=$($install.launcherRunning) runtime=$($install.runtimeRunning)"
 
-if ($IsWindows -and $install.launcherRunning) {
-  Write-Warning "TypeDuckLauncher is already running. Do not start a second launcher instance (single-instance mutex). Prefer static guards or stop only processes you started for verification."
+if ($onWindows -and $install.launcherRunning) {
+  Write-Warning "TypeDuckLauncher is already running. Do not start a second launcher instance (single-instance mutex). Prefer pipe-nei-smoke against the live session only when the operator owns it, or static guards."
 }
 
 if (-not $SkipGuards) {
