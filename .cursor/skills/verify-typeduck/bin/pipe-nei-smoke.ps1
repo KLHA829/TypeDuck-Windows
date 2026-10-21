@@ -8,7 +8,8 @@
   (catches double-frame regressions). Does not drive TSF/Notepad.
 
   Requires TypeDuckLauncher already running (non-elevated), OR starts
-  InstallDir\TypeDuckLauncher.exe when VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1.
+  ProgramDir\TypeDuckLauncher.exe when VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1
+  (ProgramDir from -ProgramDir, TYPEDUCK_PROGRAM_DIR, or HKLM InstallDir).
   Never kills a launcher it did not start.
 
 .PARAMETER FrontendRoot
@@ -19,11 +20,15 @@
 
 .PARAMETER EvidenceDir
   Artifact directory (default: artifacts/<VERIFY_TYPEDUCK_RUN_ID>/).
+
+.PARAMETER ProgramDir
+  Directory containing TypeDuckLauncher.exe (default: TYPEDUCK_PROGRAM_DIR, then HKLM InstallDir).
 #>
 param(
   [string] $FrontendRoot = "",
   [string] $BackendRoot = "",
-  [string] $EvidenceDir = ""
+  [string] $EvidenceDir = "",
+  [string] $ProgramDir = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -60,6 +65,17 @@ function Get-InstallDir {
   $keyPath = "HKLM:\Software\TypeDuckIME"
   if (-not (Test-Path -LiteralPath $keyPath)) { return $null }
   return (Get-ItemProperty -LiteralPath $keyPath -Name InstallDir -ErrorAction SilentlyContinue).InstallDir
+}
+
+function Get-LauncherProgramDir {
+  param([string] $Override)
+  if (-not [string]::IsNullOrWhiteSpace($Override)) {
+    return Resolve-FullPath $Override
+  }
+  if ($env:TYPEDUCK_PROGRAM_DIR) {
+    return Resolve-FullPath $env:TYPEDUCK_PROGRAM_DIR
+  }
+  return Get-InstallDir
 }
 
 $skillRoot = Resolve-FullPath (Join-Path $PSScriptRoot "..")
@@ -113,34 +129,37 @@ $existing = @(Get-Process -Name "TypeDuckLauncher" -ErrorAction SilentlyContinue
 if ($existing.Count -eq 0) {
   $allow = $env:VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER
   if ($allow -ne "1") {
-    throw "TypeDuckLauncher is not running. Start it from the tray/install, or set VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1 to let this script start InstallDir\TypeDuckLauncher.exe (non-elevated)."
+    throw "TypeDuckLauncher is not running. Start it from the tray/install, or set VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1 to let this script start TypeDuckLauncher.exe from ProgramDir (non-elevated)."
   }
-  $installDir = Get-InstallDir
-  if (-not $installDir) {
-    throw "HKLM\Software\TypeDuckIME\InstallDir missing; cannot start Launcher."
+  $programDir = Get-LauncherProgramDir -Override $ProgramDir
+  if (-not $programDir) {
+    throw "Launcher program directory missing. Set TYPEDUCK_PROGRAM_DIR, -ProgramDir, or HKLM\Software\TypeDuckIME\InstallDir."
   }
-  $launcherPath = Join-Path $installDir "TypeDuckLauncher.exe"
+  $launcherPath = Join-Path $programDir "TypeDuckLauncher.exe"
   if (-not (Test-Path -LiteralPath $launcherPath)) {
     throw "Launcher binary missing: $launcherPath"
   }
   Write-Host "pipe-nei-smoke: starting Launcher (VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1): $launcherPath"
-  $launcherProc = Start-Process -FilePath $launcherPath -PassThru -WindowStyle Hidden
+  $launcherProc = Start-Process -FilePath $launcherPath -WorkingDirectory $programDir -PassThru -WindowStyle Hidden
   $startedLauncher = $true
+  $pipeUser = $env:USERNAME
+  if ([string]::IsNullOrWhiteSpace($pipeUser)) { $pipeUser = "Aidan" }
+  $pipePathCheck = "\\.\pipe\$pipeUser\TypeDuckIME\Launcher"
   $ready = $false
-  for ($i = 0; $i -lt 30; $i++) {
-    Start-Sleep -Milliseconds 500
-    $pipeUser = $env:USERNAME
-    $pipePathCheck = "\\.\pipe\$pipeUser\TypeDuckIME\Launcher"
-    # Named pipes are not normal files; brief wait then probe dial via Go.
-    if (Get-Process -Name "TypeDuckLauncher" -ErrorAction SilentlyContinue) {
+  for ($i = 0; $i -lt 120; $i++) {
+    Start-Sleep -Seconds 1
+    if (-not (Get-Process -Name "TypeDuckLauncher" -ErrorAction SilentlyContinue)) {
+      throw "Launcher process exited before the named pipe was ready."
+    }
+    if (Test-Path -LiteralPath $pipePathCheck) {
       $ready = $true
       break
     }
   }
   if (-not $ready) {
-    throw "Launcher process did not stay up after start."
+    throw "Launcher pipe not ready after 120s: $pipePathCheck"
   }
-  Start-Sleep -Seconds 2
+  Start-Sleep -Seconds 5
 } else {
   Write-Host "pipe-nei-smoke: using existing TypeDuckLauncher (pid=$($existing[0].Id)); will not kill on cleanup"
 }

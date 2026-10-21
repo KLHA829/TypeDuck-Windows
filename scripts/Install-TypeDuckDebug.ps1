@@ -95,9 +95,18 @@ Copy-IfExists $launcher (Join-Path $debugRoot "TypeDuckLauncher.exe")
 $settings = Find-ConfigArtifact $win32 "TypeDuckSettings\{config}\TypeDuckSettings.exe"
 Copy-IfExists $settings (Join-Path $debugRoot "TypeDuckSettings.exe")
 
-$about = Find-ConfigArtifact $win32 "TypeDuckAbout\{config}\TypeDuckAbout.exe"
-if (Test-Path -LiteralPath $about) {
+$about = $null
+foreach ($config in @("Debug", "Release")) {
+  $aboutCandidate = Join-Path $win32 "TypeDuckAbout\$config\TypeDuckAbout.exe"
+  if (Test-Path -LiteralPath $aboutCandidate) {
+    $about = $aboutCandidate
+    break
+  }
+}
+if ($about) {
   Copy-IfExists $about (Join-Path $debugRoot "TypeDuckAbout.exe")
+} else {
+  Write-Host "Note: TypeDuckAbout.exe not built; skipping optional About staging."
 }
 
 $tsf32 = Find-ConfigArtifact $win32 "MoqiTextService\{config}\TypeDuckTextService.dll"
@@ -116,10 +125,12 @@ if (Test-Path -LiteralPath $x64) {
 if (-not $SkipRuntime) {
   $runtimeSource = Resolve-FullPath $RuntimeSource
   if (-not $runtimeSource) {
+    $backendRoot = Join-Path ([System.IO.Path]::GetDirectoryName($root)) "TypeDuck-Windows-backend"
     $candidates = @(
       (Join-Path $root "runtime\TypeDuckRuntime"),
       (Join-Path $root "installer\stage\win32\TypeDuckIME\TypeDuckRuntime"),
-      (Join-Path ([System.IO.Path]::GetDirectoryName($root)) "TypeDuck-Windows-backend\build\TypeDuckRuntime")
+      (Join-Path $backendRoot "scripts\build\TypeDuckRuntime"),
+      (Join-Path $backendRoot "build\TypeDuckRuntime")
     )
     foreach ($candidate in $candidates) {
       if (Test-Path -LiteralPath (Join-Path $candidate "server.exe")) {

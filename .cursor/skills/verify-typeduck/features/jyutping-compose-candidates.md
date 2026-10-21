@@ -19,7 +19,7 @@ A user types Cantonese Jyutping in any text field, sees a TypeDuck candidate win
 Preconditions:
 
 - For **static proof** (any OS): TypeDuck-Windows checkout with `Tests/TypeDuckCandidateData/` and fixtures under `.planning/product/candidate-fixtures/`.
-- For **pipe RPC proof** (Windows, preferred programmatic path): installed TypeDuck with `TypeDuckLauncher` running (or `VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1`), sibling **TypeDuck-Windows-backend** (protobuf Go module), Go at `Program Files\Go`, pipe `\\.\pipe\<USERNAME>\TypeDuckIME\Launcher`.
+- For **pipe RPC proof** (Windows, preferred programmatic path): `TypeDuckLauncher` running (or `VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1` with `-ProgramDir` / `TYPEDUCK_PROGRAM_DIR` / HKLM `InstallDir`), sibling **TypeDuck-Windows-backend** (protobuf Go module), Go on PATH, pipe `\\.\pipe\<USERNAME>\TypeDuckIME\Launcher`. CI uses `scripts/Invoke-TypeDuckCiPipeNeiSmoke.ps1` after staging `%LOCALAPPDATA%\TypeDuckIME-debug`.
 - For **runtime proof** (Windows + built tree): Win32 Debug build via `scripts/build.ps1`, then CTest candidate tests or `Invoke-TypeDuckTypingMvpProof.ps1` on a Windows machine with staged `TypeDuckRuntime`.
 - For **live TSF typing** (secondary): installed IME on Windows 10/11; interactive checklist — not available in Linux CI agents.
 
