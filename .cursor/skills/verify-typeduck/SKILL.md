@@ -84,7 +84,7 @@ Pass criterion: exit code `0` and final line `doctor: OK`.
 
 **Debug deploy (no Program Files):** `scripts/Install-TypeDuckDebug.ps1` stages build outputs under `%LOCALAPPDATA%\TypeDuckIME-debug`; set `TYPEDUCK_PROGRAM_DIR` to that path before starting Launcher.
 
-**CI optional pipe smoke:** `.github/workflows/ci.yml` runs `pipe-nei-smoke.ps1` only when `TypeDuckLauncher` is already running on the runner; otherwise emits `::notice` and continues unless `VERIFY_TYPEDUCK_REQUIRE_PIPE_NEI=1`.
+**CI required pipe smoke:** `.github/workflows/ci.yml` runs `scripts/Invoke-TypeDuckCiPipeNeiSmoke.ps1` after the Win32 Debug build. That script builds `TypeDuckRuntime` from the checked-out backend + TypeDuck-HK schema, stages `%LOCALAPPDATA%\TypeDuckIME-debug` via `Install-TypeDuckDebug.ps1`, starts `TypeDuckLauncher` with `VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER=1`, and runs `pipe-nei-smoke.ps1` (no skip when Launcher was absent).
 
 ### Latency / diagnostics
 

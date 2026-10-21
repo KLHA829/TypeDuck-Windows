@@ -116,10 +116,12 @@ if (Test-Path -LiteralPath $x64) {
 if (-not $SkipRuntime) {
   $runtimeSource = Resolve-FullPath $RuntimeSource
   if (-not $runtimeSource) {
+    $backendRoot = Join-Path ([System.IO.Path]::GetDirectoryName($root)) "TypeDuck-Windows-backend"
     $candidates = @(
       (Join-Path $root "runtime\TypeDuckRuntime"),
       (Join-Path $root "installer\stage\win32\TypeDuckIME\TypeDuckRuntime"),
-      (Join-Path ([System.IO.Path]::GetDirectoryName($root)) "TypeDuck-Windows-backend\build\TypeDuckRuntime")
+      (Join-Path $backendRoot "scripts\build\TypeDuckRuntime"),
+      (Join-Path $backendRoot "build\TypeDuckRuntime")
     )
     foreach ($candidate in $candidates) {
       if (Test-Path -LiteralPath (Join-Path $candidate "server.exe")) {
