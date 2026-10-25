@@ -47,6 +47,7 @@
 
 #include "../libIME2/src/DebugLogFile.h"
 #include "BackendServer.h"
+#include "LauncherProcessIdentity.h"
 #include "resource.h"
 #include "Utils.h"
 
@@ -567,6 +568,10 @@ bool PipeServer::initSingleInstance() {
   singleInstanceMutex_ = ::CreateMutex(NULL, FALSE, singleInstanceMutexName_);
   if (GetLastError() == ERROR_ALREADY_EXISTS) {
     // mutex already exists: found an existing process.
+    if (singleInstanceMutex_ != nullptr) {
+      ::CloseHandle(singleInstanceMutex_);
+      singleInstanceMutex_ = nullptr;
+    }
     return false;
   }
   return true;
@@ -581,9 +586,15 @@ int PipeServer::exec(LPSTR cmd) {
     }
     return 0;
   }
+
+  if (!isLauncherProcessIdentityAllowed()) {
+    showLauncherWrongProcessIdentityMessage();
+    return kExitLauncherWrongProcessIdentity;
+  }
+
   // ensure that only one instance of MoqiLauncher can be running
   if (!initSingleInstance()) {
-    return 0;
+    return exitCodeForExistingLauncherMutexConflict();
   }
 
   // Ask Windows to restart our process when crashes happen.

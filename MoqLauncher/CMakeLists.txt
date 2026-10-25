@@ -41,6 +41,8 @@ add_executable(MoqiLauncher WIN32
     ${MOQI_PROTO_CPP}
     UvPipe.h
     MoqiLauncher.cpp
+    LauncherProcessIdentity.cpp
+    LauncherProcessIdentity.h
     PipeServer.cpp
     PipeServer.h
     PipeClient.cpp
