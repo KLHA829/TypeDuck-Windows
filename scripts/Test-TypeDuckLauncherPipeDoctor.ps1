@@ -33,6 +33,35 @@ function Add-Failure([string] $Message) {
   $failures.Add($Message) | Out-Null
 }
 
+function Get-PipeServerExecBody {
+  param([string] $PipeServerCpp)
+
+  $match = [regex]::Match(
+    $PipeServerCpp,
+    'int\s+PipeServer::exec\s*\([^)]*\)\s*\{'
+  )
+  if (-not $match.Success) {
+    return $null
+  }
+
+  $start = $match.Index + $match.Length
+  $depth = 1
+  $i = $start
+  while ($i -lt $PipeServerCpp.Length -and $depth -gt 0) {
+    $ch = $PipeServerCpp[$i]
+    if ($ch -eq '{') {
+      $depth++
+    } elseif ($ch -eq '}') {
+      $depth--
+    }
+    $i++
+  }
+  if ($depth -ne 0) {
+    return $null
+  }
+  return $PipeServerCpp.Substring($start, $i - $start - 1)
+}
+
 # Pure rule: SYSTEM pipe segment must FAIL when interactive user is Aidan.
 if (Test-TypeDuckLauncherPipeUserSegmentRule -LiveSegment "SYSTEM" -InteractiveUser "Aidan") {
   Add-Failure "Pipe user rule should FAIL when live segment is SYSTEM and interactive user is Aidan."
@@ -71,11 +100,16 @@ if ($failures.Count -eq 0) {
   if ($identityText -notmatch "SECURITY_MANDATORY_MEDIUM_RID") {
     Add-Failure "LauncherProcessIdentity.cpp must reject integrity above Medium."
   }
-  # Ensure identity check runs before CreateMutex in exec().
-  $mutexPos = $pipeText.IndexOf("initSingleInstance")
-  $identityPos = $pipeText.IndexOf("isLauncherProcessIdentityAllowed")
-  if ($identityPos -lt 0 -or $mutexPos -lt 0 -or $identityPos -gt $mutexPos) {
-    Add-Failure "isLauncherProcessIdentityAllowed must be called before initSingleInstance in PipeServer::exec."
+  # Ensure identity check runs before the initSingleInstance() call in exec() only.
+  $execBody = Get-PipeServerExecBody -PipeServerCpp $pipeText
+  if (-not $execBody) {
+    Add-Failure "Could not parse PipeServer::exec body in PipeServer.cpp."
+  } else {
+    $identityPos = $execBody.IndexOf("isLauncherProcessIdentityAllowed")
+    $mutexCallPos = $execBody.IndexOf("initSingleInstance(")
+    if ($identityPos -lt 0 -or $mutexCallPos -lt 0 -or $identityPos -gt $mutexCallPos) {
+      Add-Failure "isLauncherProcessIdentityAllowed must be called before initSingleInstance() in PipeServer::exec."
+    }
   }
 }
 
