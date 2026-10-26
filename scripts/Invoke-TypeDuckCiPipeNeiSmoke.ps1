@@ -132,6 +132,7 @@ if ([string]::IsNullOrWhiteSpace($runId)) {
 
 $env:TYPEDUCK_PROGRAM_DIR = $debugRoot
 $env:VERIFY_TYPEDUCK_ALLOW_START_LAUNCHER = "1"
+$env:VERIFY_TYPEDUCK_ALLOW_ELEVATED_LAUNCHER = "1"
 $env:VERIFY_TYPEDUCK_RUN_ID = $runId
 
 $smokeScript = Join-Path $root ".cursor\skills\verify-typeduck\bin\pipe-nei-smoke.ps1"

@@ -150,6 +150,16 @@ if ($backend) {
 $install = Get-InstalledTypeDuckSummary
 Write-Host "  install:  platform=$($install.platform) installDir=$($install.installDir) launcher=$($install.launcherRunning) runtime=$($install.runtimeRunning)"
 
+$launcherPipeDoctor = Join-Path $PSScriptRoot "LauncherPipeDoctor.ps1"
+if (Test-Path -LiteralPath $launcherPipeDoctor) {
+  . $launcherPipeDoctor
+}
+
+if ($onWindows) {
+  Assert-TypeDuckLauncherPipeMatchesInteractiveUser
+  Write-Host "  pipe:     launcher pipe user segment matches $env:USERNAME"
+}
+
 if ($onWindows -and $install.launcherRunning) {
   Write-Warning "TypeDuckLauncher is already running. Do not start a second launcher instance (single-instance mutex). Prefer pipe-nei-smoke against the live session only when the operator owns it, or static guards."
 }
@@ -164,6 +174,8 @@ if (-not $SkipGuards) {
     Write-Host ">> static guard: Test-TypeDuckSettingsPersistence.ps1"
     & (Join-Path $frontend "scripts\Test-TypeDuckSettingsPersistence.ps1") -RepoRoot $frontend -BackendRoot $backend -Strict
   }
+  Write-Host ">> static guard: Test-TypeDuckLauncherPipeDoctor.ps1"
+  & (Join-Path $frontend "scripts\Test-TypeDuckLauncherPipeDoctor.ps1") -RepoRoot $frontend
 }
 
 Write-Host "doctor: OK"
