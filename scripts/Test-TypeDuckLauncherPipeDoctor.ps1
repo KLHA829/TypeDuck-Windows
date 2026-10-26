@@ -100,6 +100,17 @@ if ($failures.Count -eq 0) {
   if ($identityText -notmatch "SECURITY_MANDATORY_MEDIUM_RID") {
     Add-Failure "LauncherProcessIdentity.cpp must reject integrity above Medium."
   }
+  if ($identityText -notmatch "GITHUB_ACTIONS|VERIFY_TYPEDUCK_ALLOW_ELEVATED_LAUNCHER") {
+    Add-Failure "LauncherProcessIdentity.cpp must allow elevated launcher only for CI/verify (GITHUB_ACTIONS or VERIFY_TYPEDUCK_ALLOW_ELEVATED_LAUNCHER)."
+  }
+  if ($identityText -notmatch "canShowLauncherUiMessage|WSF_VISIBLE") {
+    Add-Failure "LauncherProcessIdentity.cpp must gate MessageBox on an interactive desktop (headless must log and exit)."
+  }
+  $uiGatePos = $identityText.IndexOf("canShowLauncherUiMessage")
+  $messageBoxPos = $identityText.IndexOf("MessageBoxW")
+  if ($uiGatePos -lt 0 -or $messageBoxPos -lt 0 -or $uiGatePos -gt $messageBoxPos) {
+    Add-Failure "MessageBoxW must be gated behind canShowLauncherUiMessage in LauncherProcessIdentity.cpp."
+  }
   # Ensure identity check runs before the initSingleInstance() call in exec() only.
   $execBody = Get-PipeServerExecBody -PipeServerCpp $pipeText
   if (-not $execBody) {
